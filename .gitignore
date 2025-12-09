@@ -1,0 +1,20 @@
+# Ignorar archivos de desarrollo
+*.bak
+*.backup
+*.log
+
+# Carpetas de desarrollo
+backups/
+backup funcional/
+
+# Archivos temporales
+*.tmp
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
