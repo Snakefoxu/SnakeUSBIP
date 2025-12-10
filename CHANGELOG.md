@@ -1,5 +1,16 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.4.0.0] - 2025-12-10
+
+### Añadido
+- **Múltiples Servidores Simultáneos** 🎉
+  - Escaneo encuentra TODOS los servidores en la subred (no para en el primero)
+  - TreeView muestra múltiples servidores al mismo tiempo
+  - Dispositivos de diferentes servidores claramente organizados
+  - Contador actualizado: "X servidor(es), Y dispositivo(s)"
+
+---
+
 ## [1.3.0.0] - 2025-12-10
 
 ### Añadido
