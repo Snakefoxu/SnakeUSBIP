@@ -1,5 +1,18 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.3.0.0] - 2025-12-10
+
+### Añadido
+- **System Tray (Bandeja del sistema)** 🎉
+  - Ícono en la bandeja del sistema con el logo de SnakeFoxU
+  - Minimizar a tray (al minimizar o cerrar la ventana)
+  - Menú contextual: Escanear Red, Mostrar Ventana, Salir
+  - Doble-click en ícono restaura la ventana
+  - Notificación balloon al minimizar
+  - La app sigue corriendo en segundo plano
+
+---
+
 ## [1.2.0.0] - 2025-12-09
 
 ### Añadido
@@ -14,6 +27,7 @@
   - Favoritos: Bus ID, Servidor, Auto-conectar (Sí/No)
 
 ---
+
 
 ## [1.0.0.0] - 2025-12-09 (Release)
 
@@ -39,9 +53,9 @@
 ---
 
 ### Pendiente (Futuras versiones)
-- [ ] Notificaciones (conexión/desconecti ón)
+- [ ] Notificaciones (conexión/desconexión)
 - [ ] Log de actividad
-- [ ] Ícono en bandeja del sistema (System Tray)
+- [x] ~~Ícono en bandeja del sistema (System Tray)~~ ✅ v1.3.0
 - [ ] Soporte múltiples servidores simultáneos
 
 ---

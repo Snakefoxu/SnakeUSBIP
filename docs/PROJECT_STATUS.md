@@ -1,6 +1,6 @@
-# Estado del Proyecto: SnakeUSBIP v1.2
+# Estado del Proyecto: SnakeUSBIP v1.3
 
-## ✅ Versión Actual: 1.2.0 [2025-12-09]
+## ✅ Versión Actual: 1.3.0 [2025-12-10]
 
 ### Funcionalidades Implementadas
 - ✅ **Conexión/Desconexión USB/IP**
@@ -11,12 +11,12 @@
 - ✅ **Información VID:PID** - Datos extendidos
 - ✅ **Contador de dispositivos** - "(X)" en cada nodo
 - ✅ **Tooltips** - Info al pasar el mouse
+- ✅ **System Tray** - Minimizar a bandeja del sistema 🆕
 - ✅ **Portable** - Listo para distribuir
 
 ### Pendiente
 - [ ] Notificaciones (conexión/desconexión)
 - [ ] Log de actividad
-- [ ] System Tray
 - [ ] Múltiples servidores simultáneos
 
 ---
@@ -25,7 +25,7 @@
 
 ```
 USBIP GEMINI/
-├── SnakeUSBIP.ps1/exe    # v1.2
+├── SnakeUSBIP.ps1/exe    # v1.3
 ├── Portable/             # Distribución
 ├── github/               # Release GitHub
 ├── drivers/              # USB/IP drivers
