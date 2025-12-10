@@ -2,9 +2,15 @@
 
 **Cliente USB/IP para Windows** - Gestiona dispositivos USB remotos a través de la red.
 
-![Version](https://img.shields.io/badge/version-1.0-blue)
+![Version](https://img.shields.io/badge/version-1.6-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey)
 ![License](https://img.shields.io/badge/license-MIT-green)
+
+## 🎬 Video Tutorial
+
+[![Video Tutorial](https://img.youtube.com/vi/mETEs9INlq4/maxresdefault.jpg)](https://www.youtube.com/watch?v=mETEs9INlq4)
+
+▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)**
 
 ## ✨ Características
 
@@ -13,7 +19,8 @@
 - ⭐ **Favoritos** - Guarda dispositivos para reconexión rápida
 - 🖥️ **SSH integrado** - Configura servidores Raspberry Pi directamente
 - 📋 **Info detallada** - VID:PID y fabricante de cada dispositivo
-- 🎨 **GUI moderna** - Interfaz estilo moderno
+- 🎨 **GUI moderna** - Interfaz estilo macOS con botones redondos
+- 🌐 **Multi-idioma** - Español e Inglés
 
 ## 📦 Instalación
 
