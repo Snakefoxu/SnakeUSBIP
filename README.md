@@ -8,7 +8,7 @@
 
 ## 🎬 Video Tutorial
 
-[![Video Tutorial](https://img.youtube.com/vi/mETEs9INlq4/maxresdefault.jpg)](https://www.youtube.com/watch?v=mETEs9INlq4)
+[![Video Tutorial](youtube_thumbnail.png)](https://www.youtube.com/watch?v=mETEs9INlq4)
 
 ▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)**
 
