@@ -8,7 +8,9 @@
 
 ## 🎬 Video Tutorial
 
-[![Video Tutorial](youtube_thumbnail.png)](https://www.youtube.com/watch?v=mETEs9INlq4)
+<a href="https://www.youtube.com/watch?v=mETEs9INlq4">
+  <img src="youtube_thumbnail.png" width="50%" alt="Video Tutorial">
+</a>
 
 ▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)**
 
