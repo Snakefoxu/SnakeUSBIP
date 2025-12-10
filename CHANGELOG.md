@@ -1,13 +1,28 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.5.0.0] - 2025-12-10
+
+### Añadido
+- **Multi-idioma** 🌐
+  - Español (ESP) e Inglés (ENG)
+  - Botón selector en barra de título
+  - Se guarda preferencia en config
+- **Auto-actualización** ⬆️
+  - Comprueba versión en GitHub
+  - Descarga e instala automáticamente
+
+### Cambiado  
+- Botón cerrar (X) ahora cierra la aplicación
+- Botón minimizar sigue enviando a bandeja del sistema
+
+---
+
 ## [1.4.0.0] - 2025-12-10
 
 ### Añadido
 - **Múltiples Servidores Simultáneos** 🎉
-  - Escaneo encuentra TODOS los servidores en la subred (no para en el primero)
+  - Escaneo encuentra TODOS los servidores en la subred
   - TreeView muestra múltiples servidores al mismo tiempo
-  - Dispositivos de diferentes servidores claramente organizados
-  - Contador actualizado: "X servidor(es), Y dispositivo(s)"
 
 ---
 
