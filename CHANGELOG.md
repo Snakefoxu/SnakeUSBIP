@@ -1,5 +1,22 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.6.0.0] - 2025-12-10
+
+### Añadido
+- **Interfaz estilo macOS** 🍎
+  - Botones de ventana redondos (🟡🟢🔴)
+  - Sin barra de Windows (custom title bar)
+  - Arrastrar ventana desde barra de título
+- **Estilos mejorados** ✨
+  - Botones con efectos hover
+  - Colores vibrantes y modernos
+  - Zorro naranja en el título
+- **Traducciones mejoradas** 🌐
+  - Más elementos se traducen al cambiar idioma
+  - TreeView y labels actualizados
+
+---
+
 ## [1.5.0.0] - 2025-12-10
 
 ### Añadido
