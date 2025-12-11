@@ -1,84 +1,160 @@
-# 🦊 SnakeUSBIP
+# 🦊 SnakeUSBIP - Cliente USB/IP Gratuito para Windows
 
-**Cliente USB/IP para Windows** - Gestiona dispositivos USB remotos a través de la red.
+> **La mejor alternativa gratuita a VirtualHere** para compartir dispositivos USB por red.
 
-![Version](https://img.shields.io/badge/version-1.6-blue)
-![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey)
-![License](https://img.shields.io/badge/license-MIT-green)
+Conecta impresoras, escáneres, cámaras, dongles y cualquier dispositivo USB de forma remota a través de tu red local (WiFi o Ethernet). Transforma tu **Raspberry Pi** o servidor Linux en un Hub USB virtual accesible desde **Windows 10/11**.
 
-## 🎬 Video Tutorial
+[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
+[![License](https://img.shields.io/badge/license-Custom-orange?style=flat-square)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
+
+---
+
+## 🎬 Video Tutorial - Cómo usar SnakeUSBIP
 
 <a href="https://www.youtube.com/watch?v=mETEs9INlq4">
-  <img src="youtube_thumbnail.png" width="50%" alt="Video Tutorial">
+  <img src="youtube_thumbnail.png" width="50%" alt="Tutorial SnakeUSBIP - USB over IP Windows">
 </a>
 
-▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)**
+▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)** - Aprende a conectar USB remotos en 5 minutos
 
-## ✨ Características
+---
 
-- 🔍 **Autodescubrimiento** - Escanea servidores USB/IP en tu red local
-- 🔌 **Conexión fácil** - Conecta/desconecta dispositivos con un click
-- ⭐ **Favoritos** - Guarda dispositivos para reconexión rápida
-- 🖥️ **SSH integrado** - Configura servidores Raspberry Pi directamente
-- 📋 **Info detallada** - VID:PID y fabricante de cada dispositivo
-- 🎨 **GUI moderna** - Interfaz estilo macOS con botones redondos
-- 🌐 **Multi-idioma** - Español e Inglés
+## ✨ Características Principales
 
-## 📦 Instalación
+| Característica | Descripción |
+|----------------|-------------|
+| 🔍 **Autodescubrimiento** | Encuentra automáticamente servidores USB/IP en tu red |
+| 🔌 **Un click para conectar** | Conecta y desconecta dispositivos USB remotos fácilmente |
+| ⭐ **Sistema de Favoritos** | Guarda dispositivos para reconexión automática al iniciar |
+| 🖥️ **Asistente SSH** | Configura servidores Raspberry Pi directamente desde la app |
+| 📋 **Info detallada** | Muestra VID:PID, fabricante y producto de cada dispositivo |
+| 🎨 **Interfaz moderna** | GUI estilo macOS con botones redondos y efectos hover |
+| 🌐 **Multi-idioma** | Disponible en Español e Inglés |
+| 📦 **100% Portable** | No requiere instalación, ejecuta desde USB |
 
-### Opción 1: Portable (Recomendado)
-1. Descarga la carpeta `Portable/`
-2. Ejecuta `SnakeUSBIP.exe` como Administrador
-3. ¡Listo!
+---
 
-### Opción 2: Desde código fuente
-```powershell
-# Requiere PS2EXE
-Invoke-PS2EXE -InputFile "SnakeUSBIP.ps1" -OutputFile "SnakeUSBIP.exe" -NoConsole -requireAdmin
+## 📥 Descarga e Instalación
+
+### ⬇️ [Descargar última versión](https://github.com/SnakeFoxu/SnakeUSBIP/releases/latest)
+
+**Opción 1: Instalador (Recomendado)**
+- Descarga `SnakeUSBIP_Setup_v1.6.exe`
+- Ejecuta como Administrador
+- Incluye instalación automática de drivers USB/IP
+
+**Opción 2: Portable**
+- Descarga `SnakeUSBIP_Portable_v1.6.zip`
+- Extrae y ejecuta `SnakeUSBIP.exe` como Administrador
+
+---
+
+## 🚀 Guía de Uso Rápido
+
+```
+1. Escanear    → Click en 🔍 para encontrar servidores en tu red
+2. Seleccionar → Elige un dispositivo USB del árbol
+3. Conectar    → Doble-click o clic derecho → Conectar
+4. ¡Listo!     → El dispositivo USB aparece en tu PC
 ```
 
-## 🚀 Uso Rápido
+---
 
-1. **Escanear** - Click en `🔍 Escanear` para encontrar servidores
-2. **Listar** - Click en `🔄 Listar` para ver dispositivos disponibles
-3. **Conectar** - Doble-click en un dispositivo o click derecho → Conectar
-4. **Desconectar** - Click derecho → Desconectar
+## 🍓 Configurar Servidor en Raspberry Pi / Linux
 
-## 🍓 Servidor en Raspberry Pi
+**Requisitos:** Raspberry Pi OS, Ubuntu, Debian o cualquier distribución Linux.
 
-Ver [docs/RASPBERRY_PI_SERVER.md](docs/RASPBERRY_PI_SERVER.md) para instrucciones completas.
-
-**Resumen rápido:**
 ```bash
-sudo apt update && sudo apt install -y linux-tools-generic
+# 1. Instalar paquetes necesarios
+sudo apt update && sudo apt install -y usbip hwdata usbutils
+
+# 2. Cargar el módulo del kernel
 sudo modprobe usbip_host
+
+# 3. Iniciar el demonio USB/IP
 sudo usbipd -D
-sudo usbip list -l
-sudo usbip bind -b 1-1.4  # Reemplaza con tu bus-id
+
+# 4. Ver dispositivos USB disponibles
+usbip list -l
+
+# 5. Exportar un dispositivo (ejemplo: bus-id 1-1.4)
+sudo usbip bind -b 1-1.4
 ```
 
-## 📁 Estructura
+📖 **[Guía completa de configuración](docs/RASPBERRY_PI_SERVER.md)**
+
+---
+
+## 💡 Casos de Uso
+
+- **🖨️ Impresoras** - Comparte una impresora USB entre múltiples PCs
+- **📷 Cámaras** - Accede a cámaras USB desde cualquier equipo de la red
+- **🔐 Dongles de licencia** - Comparte dongles USB entre máquinas virtuales
+- **💾 Memorias USB** - Accede a pendrives conectados a un servidor
+- **🎮 Controladores** - Usa gamepads conectados a otro PC
+- **🔧 Arduino/ESP32** - Programa microcontroladores remotamente
+
+---
+
+## ⚙️ Requisitos del Sistema
+
+| Componente | Requisito |
+|------------|-----------|
+| **Sistema Operativo** | Windows 10 / Windows 11 (64 bits) |
+| **Permisos** | Administrador (para drivers) |
+| **Red** | LAN, WiFi o VPN con acceso al servidor |
+| **Servidor** | Raspberry Pi, Linux, o cualquier sistema con usbipd |
+
+---
+
+## 📁 Estructura del Paquete
 
 ```
-Portable/
+SnakeUSBIP/
 ├── SnakeUSBIP.exe      # Aplicación principal
-├── usbipw.exe          # Cliente USB/IP
-├── devnode.exe         # Gestor de dispositivos
-├── drivers/            # Drivers USB/IP
-└── usb.ids             # Base de datos USB
+├── usbipw.exe          # Cliente USB/IP (Vadim)
+├── devnode.exe         # Gestor de nodos de dispositivo
+├── drivers/            # Drivers USB/IP para Windows
+│   ├── usbip2_ude.inf
+│   └── usbip2_filter.inf
+└── usb.ids             # Base de datos de fabricantes USB
 ```
 
-## ⚙️ Requisitos
+---
 
-- Windows 10/11
-- Permisos de Administrador
-- Red local con servidor USB/IP
+## 🆚 Comparativa con otras soluciones
+
+| Característica | SnakeUSBIP | VirtualHere | USB Network Gate |
+|----------------|------------|-------------|------------------|
+| **Precio** | ✅ Gratis | ❌ $49 USD | ❌ $159 USD |
+| **Open Source** | ✅ Sí | ❌ No | ❌ No |
+| **GUI gráfica** | ✅ Sí | ✅ Sí | ✅ Sí |
+| **Autodescubrimiento** | ✅ Sí | ✅ Sí | ✅ Sí |
+| **Multi-idioma** | ✅ ES/EN | ❌ Solo EN | ✅ Varios |
+| **Portable** | ✅ Sí | ❌ No | ❌ No |
+
+---
 
 ## 📄 Licencia
 
-MIT License - Ver [LICENSE](LICENSE)
+**Uso y distribución permitidos - Modificación NO permitida**
 
-## 🙏 Créditos
+Puedes usar y distribuir este software libremente, pero no puedes modificarlo ni crear obras derivadas.
 
-- **USB/IP**: Proyecto original de Linux
-- **SnakeUSBIP**: GUI por SnakeFoxu 2025
+Ver [LICENSE](LICENSE) para más detalles.
+
+---
+
+## 🙏 Créditos y Agradecimientos
+
+- **[USB/IP Project](http://usbip.sourceforge.net/)** - Protocolo original de Linux
+- **[usbip-win](https://github.com/cezanne/usbip-win)** - Implementación Drivers para Windows
+- **SnakeUSBIP** - GUI desarrollada por [SnakeFoxu](https://github.com/SnakeFoxu) © 2025
+
+---
+
+## 🔑 Keywords / Palabras Clave
+
+`USB over IP` `USB remoto` `USB por red` `VirtualHere alternativa gratis` `USB/IP Windows` `Raspberry Pi USB` `compartir USB` `USB network` `usb redirection` `remote usb` `usb over ethernet` `usb over wifi` `usbip windows 10` `usbip windows 11`
