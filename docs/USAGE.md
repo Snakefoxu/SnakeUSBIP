@@ -48,6 +48,26 @@ Abre configuración para conectar a Raspberry Pi vía SSH.
 
 Los favoritos se guardan en `config.json` y pueden reconectarse automáticamente al iniciar la aplicación.
 
+## 📝 Log de Actividad
+
+El panel inferior muestra un historial de eventos:
+- ✅ **Conexiones exitosas** - Dispositivos conectados
+- ❌ **Errores** - Fallos de conexión o escaneo
+- 🔍 **Escaneos** - Servidores encontrados
+- ⚠️ **Advertencias** - Problemas menores
+
+Usa el botón **Limpiar** para borrar el historial.
+
+## 🖥️ System Tray (Bandeja del Sistema)
+
+- Al minimizar, la aplicación se oculta en la bandeja del sistema
+- **Doble-click** en el icono para restaurar la ventana
+- **Click derecho** para menú: Escanear Red, Mostrar Ventana, Salir
+
+## 🌐 Cambiar Idioma
+
+Usa el botón **ESP/ENG** en la barra de título para alternar entre Español e Inglés.
+
 ## Drivers
 
 - **Instalar Drivers**: Instala drivers USB/IP en Windows

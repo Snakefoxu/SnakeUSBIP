@@ -1,5 +1,7 @@
 # 🦊 SnakeUSBIP - Cliente USB/IP Gratuito para Windows
 
+**v1.6.1** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+
 **Comparte y conecta dispositivos USB por red (LAN/WiFi) fácilmente.**
 Transforma tu Raspberry Pi o servidor Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
 
@@ -31,14 +33,20 @@ Transforma tu Raspberry Pi o servidor Linux en un Hub USB Virtual accesible desd
 ## 📦 Instalación
 
 ### Opción 1: Portable (Recomendado)
-1. Descarga la carpeta `Portable/`
-2. Ejecuta `SnakeUSBIP.exe` como Administrador
-3. ¡Listo!
+1. Descarga `SnakeUSBIP-Portable.zip` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+2. Extrae el ZIP en cualquier carpeta
+3. Ejecuta `SnakeUSBIP.exe` como Administrador
+4. ¡Listo!
 
-### Opción 2: Desde código fuente
+### Opción 2: Instalador
+1. Descarga `SnakeUSBIP-Setup.exe` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+2. Ejecuta el instalador como Administrador
+3. Sigue el asistente de instalación
+
+### Opción 3: Desde código fuente
 ```powershell
-# Requiere PS2EXE
-Invoke-PS2EXE -InputFile "SnakeUSBIP.ps1" -OutputFile "SnakeUSBIP.exe" -NoConsole -requireAdmin
+# Requiere PS2EXE (https://github.com/MScholtes/PS2EXE)
+Invoke-PS2EXE -InputFile "SnakeUSBIP.ps1" -OutputFile "SnakeUSBIP.exe" -NoConsole -requireAdmin -iconFile "Logo-SnakeFoxU-con-e.ico"
 ```
 
 ## 🚀 Uso Rápido
@@ -77,10 +85,14 @@ sudo usbip bind -b 1-1.4  # Reemplaza con tu bus-id
 ```
 Portable/
 ├── SnakeUSBIP.exe      # Aplicación principal
+├── SnakeUSBIP.ps1      # Código fuente PowerShell
 ├── usbipw.exe          # Cliente USB/IP
 ├── devnode.exe         # Gestor de dispositivos
+├── libusbip.dll        # Librería USB/IP
 ├── drivers/            # Drivers USB/IP
-└── usb.ids             # Base de datos USB
+├── usb.ids             # Base de datos USB
+├── CleanDrivers.ps1    # Script para limpiar drivers
+└── Logo-SnakeFoxU-con-e.ico  # Icono de la app
 ```
 
 ## ⚙️ Requisitos
