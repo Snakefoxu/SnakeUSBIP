@@ -2,7 +2,7 @@
 
 > **La mejor alternativa gratuita a VirtualHere** para compartir dispositivos USB por red.
 
-> **Solución libre y de código abierto** para compartir dispositivos USB por red. Alternativa gratuita a VirtualHere, USB Redirector, FlexiHub y USB Network Gate.
+> **Solución libre y de código abierto** para compartir dispositivos USB por red. Alternativa gratuita a VirtualHere, USB Redirector, FlexiHub, Free USB over Network y USB Network Gate.
 
 Conecta impresoras, escáneres, cámaras, dongles y cualquier dispositivo USB de forma remota a través de tu red local (WiFi o Ethernet). Transforma tu **Raspberry Pi** o servidor Linux en un Hub USB virtual accesible desde **Windows 10/11**.
 
@@ -128,14 +128,18 @@ SnakeUSBIP/
 
 ## 🆚 Comparativa con otras soluciones
 
-| Característica | SnakeUSBIP | VirtualHere | USB Redirector | FlexiHub | USB Network Gate |
-|----------------|------------|-------------|----------------|----------|------------------|
-| **Precio** | ✅ Gratis | ❌ $49 USD | ❌ $55-180 USD | ❌ Suscripción | ❌ $159 USD |
-| **Open Source** | ✅ Sí | ❌ No | ❌ No | ❌ No | ❌ No |
-| **GUI gráfica** | ✅ Sí | ✅ Sí | ⚠️ Básica | ✅ Sí | ✅ Sí |
-| **Autodescubrimiento** | ✅ Sí | ✅ Sí | ❌ No | ✅ Sí | ✅ Sí |
-| **Multi-idioma** | ✅ ES/EN | ❌ Solo EN | ❌ Solo EN | ❌ Solo EN | ✅ Varios |
-| **Portable** | ✅ Sí | ❌ No | ⚠️ Limitado | ❌ No | ❌ No |
+| Característica | SnakeUSBIP | VirtualHere | USB Redirector | FlexiHub | Free USB Network* | USB Network Gate |
+|----------------|------------|-------------|----------------|----------|-------------------|------------------|
+| **Precio** | ✅ Gratis | ❌ $49 USD | ❌ $55-180 USD | ❌ Suscripción | ✅ Gratis* | ❌ $159 USD |
+| **Open Source** | ✅ Sí | ❌ No | ❌ No | ❌ No | ❌ No | ❌ No |
+| **GUI gráfica** | ✅ Sí | ✅ Sí | ⚠️ Básica | ✅ Sí | ⚠️ Básica | ✅ Sí |
+| **Autodescubrimiento** | ✅ Sí | ✅ Sí | ❌ No | ✅ Sí | ✅ Sí | ✅ Sí |
+| **Multi-idioma** | ✅ ES/EN | ❌ Solo EN | ❌ Solo EN | ❌ Solo EN | ❌ Solo EN | ✅ Varios |
+| **Portable** | ✅ Sí | ❌ No | ⚠️ Limitado | ❌ No | ❌ No | ❌ No |
+| **Multiplataforma** | 🔄 Planeado | ✅ Sí | ⚠️ Win/Linux | ✅ Sí | ❌ Solo Win* | ✅ Sí |
+| **Cifrado** | 🔄 Roadmap | ✅ Sí | ❌ No | ✅ Sí | ❌ No* | ✅ Sí |
+
+**\*Free USB over Network:** Versión gratuita limitada de "USB Network Gate" (mismo desarrollador). Features avanzadas como cifrado, multiplataforma y compresión requieren upgrade a versión de pago ($159).
 
 ---
 
@@ -188,5 +192,5 @@ Ver [LICENSE](LICENSE) para más detalles.
 
 ## 🔑 Keywords / Palabras Clave
 
-`USB over IP` `USB remoto` `USB por red` `compartir USB` `USB network` `usb redirection` `remote usb` `usb over ethernet` `usb over wifi` `USB/IP Windows` `usbip windows 10` `usbip windows 11` `usbip client windows` `free usb over ip` `open source usb sharing` `VirtualHere alternativa gratis` `VirtualHere free alternative` `VirtualHere open source` `USB Redirector free alternative` `USB Redirector gratis` `FlexiHub free` `FlexiHub alternative` `USB Network Gate alternative` `USB Network Gate gratis` `Raspberry Pi USB server` `Raspberry Pi USB sharing` `Linux USB server` `compartir impresora USB red` `usb printer sharing` `usb scanner network` `remote usb devices` `usb passthrough` `usb forwarding` `virtual usb` `usb hub over ip` `network usb hub` `usb over lan` `usb over vpn` `usb tunnel` `remote desktop usb` `hyper-v usb` `vmware usb passthrough` `virtualbox usb` `usb redirection windows` `cliente usbip` `servidor usb red` `dongle usb remoto` `usb network sharing free`
+`USB over IP` `USB remoto` `USB por red` `compartir USB` `USB network` `usb redirection` `remote usb` `usb over ethernet` `usb over wifi` `USB/IP Windows` `usbip windows 10` `usbip windows 11` `usbip client windows` `free usb over ip` `open source usb sharing` `VirtualHere alternativa gratis` `VirtualHere free alternative` `VirtualHere open source` `USB Redirector free alternative` `USB Redirector gratis` `FlexiHub free` `FlexiHub alternative` `USB Network Gate alternative` `USB Network Gate gratis` `Free USB over Network alternative` `HHD Software free` `Raspberry Pi USB server` `Raspberry Pi USB sharing` `Linux USB server` `compartir impresora USB red` `usb printer sharing` `usb scanner network` `remote usb devices` `usb passthrough` `usb forwarding` `virtual usb` `usb hub over ip` `network usb hub` `usb over lan` `usb over vpn` `usb tunnel` `remote desktop usb` `hyper-v usb` `vmware usb passthrough` `virtualbox usb` `usb redirection windows` `cliente usbip` `servidor usb red` `dongle usb remoto` `usb network sharing free`
 
