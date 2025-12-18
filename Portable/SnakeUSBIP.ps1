@@ -33,10 +33,16 @@ Add-Type -AssemblyName System.Drawing
 # CONFIGURACION
 # ============================================
 $script:USBIP_PORT = 3240
-$script:SCAN_TIMEOUT_MS = 100
+$script:SCAN_TIMEOUT_MS = 300
 $script:BUSID_DEFAULT = "1-1"
-$script:APP_VERSION = "1.6.0"
+$script:APP_VERSION = "1.6.1"
 $script:GITHUB_REPO = "Snakefoxu/SnakeUSBIP"
+
+# ============================================
+# SISTEMA DE LOG DE ACTIVIDAD
+# ============================================
+$script:ActivityLog = [System.Collections.ArrayList]::new()
+$script:MaxLogEntries = 100
 
 # ============================================
 # SISTEMA MULTI-IDIOMA
@@ -110,6 +116,20 @@ $script:Translations = @{
         # Título
         "title_main"            = "SnakeFoxu    USB/IP Manager"
         "title_language"        = "🌐 ESP"
+        
+        # Log
+        "log_title"             = "📋 Log de Actividad"
+        "log_connected"         = "Conectado"
+        "log_disconnected"      = "Desconectado"
+        "log_scan_start"        = "Escaneando red..."
+        "log_scan_found"        = "servidor(es) encontrado(s)"
+        "log_scan_none"         = "Ningún servidor encontrado"
+        "log_error"             = "Error"
+        "log_drivers_ok"        = "Drivers verificados OK"
+        "log_drivers_missing"   = "Drivers no instalados"
+        "log_favorite_added"    = "Añadido a favoritos"
+        "log_favorite_removed"  = "Quitado de favoritos"
+        "log_clear"             = "Limpiar"
     }
     "en" = @{
         # Main buttons
@@ -177,6 +197,20 @@ $script:Translations = @{
         # Title
         "title_main"            = "SnakeFoxu    USB/IP Manager"
         "title_language"        = "🌐 ENG"
+        
+        # Log
+        "log_title"             = "📋 Activity Log"
+        "log_connected"         = "Connected"
+        "log_disconnected"      = "Disconnected"
+        "log_scan_start"        = "Scanning network..."
+        "log_scan_found"        = "server(s) found"
+        "log_scan_none"         = "No servers found"
+        "log_error"             = "Error"
+        "log_drivers_ok"        = "Drivers verified OK"
+        "log_drivers_missing"   = "Drivers not installed"
+        "log_favorite_added"    = "Added to favorites"
+        "log_favorite_removed"  = "Removed from favorites"
+        "log_clear"             = "Clear"
     }
 }
 
@@ -185,6 +219,53 @@ function Get-Text {
     $text = $script:Translations[$script:Language][$Key]
     if (-not $text) { return $Key }
     return $text
+}
+
+function Add-LogEntry {
+    <#
+    .SYNOPSIS
+        Añade una entrada al log de actividad
+    .PARAMETER Type
+        Tipo de entrada: Info, Success, Error, Warning
+    .PARAMETER Message
+        Mensaje a registrar
+    #>
+    param(
+        [ValidateSet("Info", "Success", "Error", "Warning")]
+        [string]$Type = "Info",
+        [string]$Message
+    )
+    
+    $timestamp = Get-Date -Format "HH:mm:ss"
+    $icon = switch ($Type) {
+        "Info"    { "ℹ️" }
+        "Success" { "✅" }
+        "Error"   { "❌" }
+        "Warning" { "⚠️" }
+    }
+    
+    $entry = @{
+        Timestamp = $timestamp
+        Type      = $Type
+        Icon      = $icon
+        Message   = $Message
+    }
+    
+    [void]$script:ActivityLog.Insert(0, $entry)
+    
+    # Limitar tamaño del log
+    while ($script:ActivityLog.Count -gt $script:MaxLogEntries) {
+        $script:ActivityLog.RemoveAt($script:ActivityLog.Count - 1)
+    }
+    
+    # Actualizar UI si existe el control
+    if ($script:logTextBox) {
+        $logText = ""
+        foreach ($e in $script:ActivityLog) {
+            $logText += "[$($e.Timestamp)] $($e.Icon) $($e.Message)`r`n"
+        }
+        $script:logTextBox.Text = $logText
+    }
 }
 
 function Get-DeviceIcon {
@@ -597,6 +678,7 @@ function Start-SubnetScan {
         [scriptblock]$OnServerFound = $null
     )
     
+    Add-LogEntry -Type "Info" -Message "$(Get-Text 'log_scan_start') $SubnetBase.0/24"
     $StatusLabel.Text = "Escaneando $SubnetBase.0/24..."
     $StatusLabel.ForeColor = [System.Drawing.Color]::FromArgb(86, 156, 214)
     $ProgressBar.Value = 0
@@ -698,10 +780,12 @@ function Start-SubnetScan {
                 if ($script:foundServers.Count -eq 0) {
                     $StatusLabel.Text = "No se encontró servidor en la subred"
                     $StatusLabel.ForeColor = [System.Drawing.Color]::FromArgb(255, 200, 100)
+                    Add-LogEntry -Type "Warning" -Message "$(Get-Text 'log_scan_none')"
                 }
                 else {
                     $StatusLabel.Text = "✓ $($script:foundServers.Count) servidor(es) encontrado(s)"
                     $StatusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                    Add-LogEntry -Type "Success" -Message "$($script:foundServers.Count) $(Get-Text 'log_scan_found')"
                 }
             }
         }.GetNewClosure())
@@ -1535,7 +1619,7 @@ function Show-MainWindow {
     # ============================================
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "SnakeFoxu - USB/IP Manager"
-    $form.Size = New-Object System.Drawing.Size(520, 580)
+    $form.Size = New-Object System.Drawing.Size(520, 720)
     $form.StartPosition = "CenterScreen"
     $form.FormBorderStyle = "None"  # Sin barra de Windows, estilo moderno
     $form.MaximizeBox = $false
@@ -2009,7 +2093,7 @@ function Show-MainWindow {
     # TREEVIEW - ESTILO VIRTUALHERE
     # ============================================
     $treeView = New-Object System.Windows.Forms.TreeView
-    $treeView.Size = New-Object System.Drawing.Size(496, 350)
+    $treeView.Size = New-Object System.Drawing.Size(496, 280)
     $treeView.Location = New-Object System.Drawing.Point(12, 100)
     $treeView.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
     $treeView.ForeColor = [System.Drawing.Color]::White
@@ -2059,11 +2143,57 @@ function Show-MainWindow {
     $treeView.ContextMenuStrip = $contextMenu
     
     # ============================================
+    # PANEL DE LOG DE ACTIVIDAD
+    # ============================================
+    $logPanel = New-Object System.Windows.Forms.Panel
+    $logPanel.Size = New-Object System.Drawing.Size(496, 120)
+    $logPanel.Location = New-Object System.Drawing.Point(12, 385)
+    $logPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
+    $logPanel.BorderStyle = "FixedSingle"
+    $form.Controls.Add($logPanel)
+    
+    $logLabel = New-Object System.Windows.Forms.Label
+    $logLabel.Text = Get-Text "log_title"
+    $logLabel.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
+    $logLabel.AutoSize = $true
+    $logLabel.Location = New-Object System.Drawing.Point(5, 3)
+    $logLabel.ForeColor = [System.Drawing.Color]::FromArgb(86, 156, 214)
+    $logPanel.Controls.Add($logLabel)
+    
+    $clearLogButton = New-Object System.Windows.Forms.Button
+    $clearLogButton.Text = Get-Text "log_clear"
+    $clearLogButton.Size = New-Object System.Drawing.Size(60, 20)
+    $clearLogButton.Location = New-Object System.Drawing.Point(425, 2)
+    $clearLogButton.FlatStyle = "Flat"
+    $clearLogButton.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66)
+    $clearLogButton.ForeColor = [System.Drawing.Color]::White
+    $clearLogButton.Font = New-Object System.Drawing.Font("Segoe UI", 7)
+    $clearLogButton.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $clearLogButton.FlatAppearance.BorderSize = 0
+    $logPanel.Controls.Add($clearLogButton)
+    $clearLogButton.Add_Click({
+        $script:ActivityLog.Clear()
+        $script:logTextBox.Text = ""
+    })
+    
+    $script:logTextBox = New-Object System.Windows.Forms.TextBox
+    $script:logTextBox.Multiline = $true
+    $script:logTextBox.ReadOnly = $true
+    $script:logTextBox.ScrollBars = "Vertical"
+    $script:logTextBox.Size = New-Object System.Drawing.Size(486, 90)
+    $script:logTextBox.Location = New-Object System.Drawing.Point(3, 25)
+    $script:logTextBox.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+    $script:logTextBox.ForeColor = [System.Drawing.Color]::FromArgb(200, 200, 200)
+    $script:logTextBox.Font = New-Object System.Drawing.Font("Consolas", 8)
+    $script:logTextBox.BorderStyle = "None"
+    $logPanel.Controls.Add($script:logTextBox)
+    
+    # ============================================
     # BARRA DE PROGRESO
     # ============================================
     $progressBar = New-Object System.Windows.Forms.ProgressBar
     $progressBar.Size = New-Object System.Drawing.Size(496, 5)
-    $progressBar.Location = New-Object System.Drawing.Point(12, 458)
+    $progressBar.Location = New-Object System.Drawing.Point(12, 510)
     $progressBar.Style = "Continuous"
     $progressBar.Visible = $false
     $form.Controls.Add($progressBar)
@@ -2073,7 +2203,7 @@ function Show-MainWindow {
     # ============================================
     $statusPanel = New-Object System.Windows.Forms.Panel
     $statusPanel.Size = New-Object System.Drawing.Size(496, 100)
-    $statusPanel.Location = New-Object System.Drawing.Point(12, 470)
+    $statusPanel.Location = New-Object System.Drawing.Point(12, 520)
     $statusPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
     $form.Controls.Add($statusPanel)
     
@@ -2136,7 +2266,7 @@ function Show-MainWindow {
     function Update-TreeView {
         param(
             [string]$ServerIP,
-            [switch]$ClearFirst = $true  # Por defecto limpia, pero puede ser incremental
+            [bool]$ClearFirst = $true  # Por defecto limpia, pero puede ser incremental
         )
         
         # Si ClearFirst, limpiar todos los servidores existentes
@@ -2147,6 +2277,9 @@ function Show-MainWindow {
         }
         
         if (-not $ServerIP) { return }
+        
+        # Procesar eventos pendientes para evitar bloqueos de UI
+        [System.Windows.Forms.Application]::DoEvents()
         
         # Verificar si el servidor ya existe en el árbol
         $existingServer = $hubsNode.Nodes | Where-Object { $_.Name -eq "server_$ServerIP" }
@@ -2410,12 +2543,12 @@ function Show-MainWindow {
                 $subnetBase = Get-SubnetBase -IPAddress $localIP
                 if ($subnetBase) {
                     # Limpiar TreeView antes de escanear
-                    Update-TreeView -ServerIP $null -ClearFirst
+                    Update-TreeView -ServerIP $null -ClearFirst $true
                     
                     # Callback: añadir cada servidor encontrado (sin limpiar)
                     $autoListCallback = {
                         param($ServerIP)
-                        Update-TreeView -ServerIP $ServerIP -ClearFirst:$false
+                        Update-TreeView -ServerIP $ServerIP -ClearFirst $false
                         Update-ConnectedDevices
                     }
                     Start-SubnetScan -SubnetBase $subnetBase -IPTextBox $ipTextBox -StatusLabel $statusLabel -ProgressBar $progressBar -OnServerFound $autoListCallback
@@ -2438,7 +2571,7 @@ function Show-MainWindow {
         
             # Ejecutar escaneo
             # Limpiar TreeView antes de escanear
-            Update-TreeView -ServerIP $null -ClearFirst
+            Update-TreeView -ServerIP $null -ClearFirst $true
             
             $localIP = Get-LocalIPAddress
             if ($localIP) {
@@ -2446,7 +2579,7 @@ function Show-MainWindow {
                 if ($subnetBase) {
                     $autoListCallback = {
                         param($ServerIP)
-                        Update-TreeView -ServerIP $ServerIP -ClearFirst:$false
+                        Update-TreeView -ServerIP $ServerIP -ClearFirst $false
                         Update-ConnectedDevices
                     }
                     Start-SubnetScan -SubnetBase $subnetBase -IPTextBox $ipTextBox -StatusLabel $statusLabel -ProgressBar $progressBar -OnServerFound $autoListCallback
@@ -2658,11 +2791,13 @@ function Show-MainWindow {
                 if ($result.Success) {
                     $statusLabel.Text = "✓ Conectado: $busId"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                    Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_connected'): $busId @ $serverIP"
                     Update-ConnectedDevices
                 }
                 else {
                     $statusLabel.Text = "Error: $($result.Error)"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(244, 135, 113)
+                    Add-LogEntry -Type "Error" -Message "$(Get-Text 'log_error'): $busId - $($result.Error)"
                 }
             }
         })
@@ -2686,11 +2821,13 @@ function Show-MainWindow {
                     if ($result.Success) {
                         $statusLabel.Text = "✓ Conectado: $busId"
                         $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                        Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_connected'): $busId @ $serverIP"
                         Update-ConnectedDevices
                     }
                     else {
                         $statusLabel.Text = "Error: $($result.Error)"
                         $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(244, 135, 113)
+                        Add-LogEntry -Type "Error" -Message "$(Get-Text 'log_error'): $busId - $($result.Error)"
                     }
                 }
             }
@@ -2711,11 +2848,13 @@ function Show-MainWindow {
                 if ($result.Success) {
                     $statusLabel.Text = "✓ Desconectado puerto $port"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                    Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_disconnected'): Port $port"
                     Update-ConnectedDevices
                 }
                 else {
                     $statusLabel.Text = "Error: $($result.Error)"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(244, 135, 113)
+                    Add-LogEntry -Type "Error" -Message "$(Get-Text 'log_error'): Port $port - $($result.Error)"
                 }
             }
         })
@@ -2774,6 +2913,7 @@ function Show-MainWindow {
                 if ($result.Success) {
                     $statusLabel.Text = "⭐ $($result.Message): $($tag.BusId)"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(255, 200, 100)
+                    Add-LogEntry -Type "Info" -Message "$(Get-Text 'log_favorite_added'): $($tag.BusId)"
                     Update-FavoritesNode
                 }
                 else {
@@ -2797,6 +2937,7 @@ function Show-MainWindow {
                     if ($result.Success) {
                         $statusLabel.Text = "✓ $($result.Message): $busId"
                         $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                        Add-LogEntry -Type "Info" -Message "$(Get-Text 'log_favorite_removed'): $busId"
                         Update-FavoritesNode
                     }
                     else {
@@ -2862,10 +3003,12 @@ function Show-MainWindow {
             if ($driverCheck.Installed) {
                 $driverLabel.Text = "Drivers: Instalado ✓"
                 $driverLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_drivers_ok')"
             }
             else {
                 $driverLabel.Text = "Drivers: No instalado"
                 $driverLabel.ForeColor = [System.Drawing.Color]::FromArgb(255, 200, 100)
+                Add-LogEntry -Type "Warning" -Message "$(Get-Text 'log_drivers_missing')"
             }
         
             # Verificar usbip
@@ -2922,9 +3065,13 @@ function Show-MainWindow {
             if ($localIP) {
                 $subnetBase = Get-SubnetBase -IPAddress $localIP
                 if ($subnetBase) {
+                    # Limpiar TreeView antes de escanear
+                    Update-TreeView -ServerIP $null -ClearFirst $true
+                    
+                    # Callback: añadir cada servidor encontrado (sin limpiar)
                     $autoListCallback = {
                         param($ServerIP)
-                        Update-TreeView -ServerIP $ServerIP
+                        Update-TreeView -ServerIP $ServerIP -ClearFirst $false
                         Update-ConnectedDevices
                     }
                     Start-SubnetScan -SubnetBase $subnetBase -IPTextBox $ipTextBox -StatusLabel $statusLabel -ProgressBar $progressBar -OnServerFound $autoListCallback
