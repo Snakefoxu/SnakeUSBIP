@@ -139,6 +139,35 @@ SnakeUSBIP/
 
 ---
 
+## 🚀 Próximas Actualizaciones
+
+Estamos trabajando en mejoras continuas. Aquí está lo que viene:
+
+### 📅 Corto Plazo (v1.7-1.8)
+- 🔄 **Auto-Reconnect Inteligente** - Reconexión automática si se pierde la red
+- 📊 **Logs Visuales Mejorados** - Panel de logs con colores, filtros y búsqueda
+- 🌙 **Modo Oscuro/Claro** - Toggle de tema visual
+- 🔔 **Notificaciones Mejoradas** - Avisos cuando dispositivos se conectan/desconectan
+
+### 🎯 Mediano Plazo (v2.0)
+- 🗜️ **Compresión de Datos** - Reduce ancho de banda para conexiones lentas
+- 📈 **Dashboard de Rendimiento** - Gráficos de latencia y throughput en tiempo real
+- 🏷️ **Nicknames para Dispositivos** - Nombres amigables en lugar de VID:PID
+- 🔒 **Filtros IP** - Control de acceso por IP permitida
+- 💾 **Perfiles de Configuración** - Guardar y cargar configuraciones completas
+
+### 🔮 Largo Plazo (v2.x)
+- 🌍 **Conexión por Internet** - NAT traversal sin port forwarding
+- 🖥️ **Servidor Windows Nativo** - Sin necesidad de Linux/Raspberry Pi
+- 🐧 **Cliente Multiplataforma** - Versión para Linux y macOS
+- 🤖 **Detección Automática** - Identificación inteligente de tipo de dispositivo
+- 🎮 **Modo Gaming** - Optimización para periféricos de baja latencia
+- 📱 **Notificaciones Push** - Notificaciones push para dispositivos remotos
+- 📊 **Dashboard de Rendimiento** - Gráficos de latencia y throughput en tiempo real
+- 📦 **Perfiles de Configuración** - Guardar y cargar configuraciones completa
+
+---
+
 ## 📄 Licencia
 
 **Uso y distribución permitidos - Modificación NO permitida**
