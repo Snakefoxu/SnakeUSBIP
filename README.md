@@ -20,7 +20,9 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 
 ## ✨ Características
 
-- 🔍 **Autodescubrimiento** - Escanea servidores USB/IP en tu red local- 🌐 **Conexión por Internet** - Conecta vía Tailscale/ZeroTier (NAT traversal)- 🔌 **Conexión fácil** - Conecta/desconecta dispositivos con un click
+- 🔍 **Autodescubrimiento** - Escanea servidores USB/IP en tu red local- 
+- 🌐 **Conexión por Internet** - Conecta vía Tailscale/ZeroTier (NAT traversal)- 
+- 🔌 **Conexión fácil** - Conecta/desconecta dispositivos con un click
 - ⭐ **Favoritos** - Guarda dispositivos para reconexión rápida
 - � **Log de Actividad** - Historial de conexiones, escaneos y errores
 - 🖥️ **SSH integrado** - Configura servidores Raspberry Pi directamente
@@ -100,7 +102,7 @@ usbipd -D
 
 | Dispositivo | Caso de Uso |
 |-------------|-------------|
-| 🖨️ **CrealityBox** | Comparte la impresora 3D USB por red. Conecta desde cualquier PC sin cables |
+| 🖨️ **CrealityBox** | Comparte la impresora 3D USB, por red. Conecta desde cualquier PC sin cables |
 | 🍓 **Raspberry Pi** | Hub USB central: escáneres, dongles de licencia, lectores de tarjetas |
 | 🍊 **Orange Pi** | Servidor USB compacto y económico para oficina |
 | 📡 **Router OpenWRT** | Comparte USB de almacenamiento o impresora desde el router |
