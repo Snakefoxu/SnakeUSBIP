@@ -3,19 +3,64 @@
 ## Interfaz Principal
 
 ```
-┌─────────────────────────────────────────┐
-│ 🦊 SnakeFoxu    USB/IP Manager          │
-├─────────────────────────────────────────┤
-│ Servidor: [192.168.1.x] [Escanear][Listar][SSH] │
-├─────────────────────────────────────────┤
-│ 📡 USB Hubs                             │
-│   └─ 🖥️ 192.168.1.100                  │
-│       └─ 📱 1-1.4: USB Device           │
-│ ✅ Dispositivos Conectados              │
-│ ⭐ Favoritos                            │
-├─────────────────────────────────────────┤
-│ ✓ Listo                  [Drivers: OK] │
-└─────────────────────────────────────────┘
+╔═══════════════════════════════════════════════════════════════════╗
+║ 🦊 SnakeFoxu   USB/IP Manager   [ESP] [🔄 Actualizar]    🟡 🟢 🔴 ║
+╠═══════════════════════════════════════════════════════════════════╣
+║  Servidor: ┌─────────────────┐  ┌──────────┐ ┌───────┐ ┌───────┐  ║
+║            │ 192.168.1.100   │  │🔍Escanear│ │🔄Listar│ │🖥️ SSH│  ║
+║            └─────────────────┘  └──────────┘ └───────┘ └───────┘  ║
+╠═══════════════════════════════════════════════════════════════════╣
+║  📡 USB Hubs (3)                                                  ║
+║   ├─ 🖥️ 192.168.1.100 (2)                                        ║
+║   │   ├─ 📱 1-1.2: Arduino Uno (2341:0043)                        ║
+║   │   └─ 🖨️ 1-1.4: HP LaserJet (03f0:002a)                       ║
+║   └─ 🖥️ 192.168.1.101 (1)                                        ║
+║       └─ 💾 1-1.1: SanDisk USB (0781:5567)                        ║
+║                                                                   ║
+║  ✅ Dispositivos Conectados (1)                                   ║
+║   └─ 🔌 Puerto 00: Arduino Uno ← 192.168.1.100                    ║
+║                                                                   ║
+║  ⭐ Favoritos (2)                                                 ║
+║   ├─ 🖨️ 1-1.4 @ 192.168.1.100                                    ║
+║   └─ 💾 1-1.1 @ 192.168.1.101                                     ║
+╠═══════════════════════════════════════════════════════════════════╣
+║ 📋 Log de Actividad                                    [Limpiar]  ║
+╠───────────────────────────────────────────────────────────────────╣
+║ [14:32:15] ✅ Conectado: Arduino Uno (1-1.2) desde 192.168.1.100  ║
+║ [14:32:10] 🔍 Escaneando red 192.168.1.0/24...                    ║
+║ [14:32:12] ✅ 2 servidor(es) encontrado(s)                        ║
+║ [14:30:05] ⚠️ Timeout conectando a 192.168.1.50                   ║
+╠═══════════════════════════════════════════════════════════════════╣
+║  ✓ Listo         Drivers: ✅ Instalados    [Instalar][Desinstalar]║
+╚═══════════════════════════════════════════════════════════════════╝
+```
+
+### Barra de Título (estilo macOS)
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ 🦊 SnakeFoxu   USB/IP Manager   [🌐ESP] [🔄Actualizar]  🟡 🟢 🔴 │
+└──────────────────────────────────────────────────────────────────┘
+                                                          │  │  │
+                                              Minimizar ──┘  │  │
+                                              Maximizar ─────┘  │
+                                              Cerrar ───────────┘
+```
+
+### Panel de Servidor
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Servidor: [___192.168.1.100___]  [🔍Escanear] [🔄Listar] [🖥️SSH]│
+└─────────────────────────────────────────────────────────────────┘
+                    │                     │          │         │
+     IP del servidor│     Buscar en red ──┘          │         │
+     (editable)     │     (escanea subred)           │         │
+                    │                                │         │
+                    │          Listar dispositivos ──┘         │
+                    │          del servidor actual             │
+                    │                                          │
+                    │                    Abrir configuración ──┘
+                    │                    SSH para Raspberry Pi
+                    │
 ```
 
 ## Acciones Principales
@@ -31,12 +76,32 @@ Abre configuración para conectar a Raspberry Pi vía SSH.
 
 ## Menú Contextual (Click Derecho)
 
+```
+┌─────────────────────────────────────┐
+│ 📱 1-1.4: Arduino Uno              │ ← Click derecho aquí
+└─────────────────────────────────────┘
+                    │
+                    ▼
+        ┌─────────────────────────┐
+        │ 🔌 Conectar             │
+        │ ❌ Desconectar          │
+        ├─────────────────────────┤
+        │ ⭐ Añadir a Favoritos   │
+        │ ❌ Quitar de Favoritos  │
+        │ 🗑️ Quitar servidor      │
+        ├─────────────────────────┤
+        │ 📋 Propiedades          │
+        └─────────────────────────┘
+```
+
 | Opción | Descripción |
 |--------|-------------|
-| 🔌 Conectar | Conecta el dispositivo a tu PC |
-| ❌ Desconectar | Desconecta el dispositivo |
-| ⭐ Añadir a Favoritos | Guarda para reconexión rápida |
-| 📋 Propiedades | Muestra info detallada |
+| 🔌 Conectar | Conecta el dispositivo USB remoto a tu PC |
+| ❌ Desconectar | Libera el dispositivo USB conectado |
+| ⭐ Añadir a Favoritos | Guarda el dispositivo para reconexión rápida |
+| ❌ Quitar de Favoritos | Elimina de la lista de favoritos |
+| 🗑️ Quitar servidor | Elimina el servidor del árbol |
+| 📋 Propiedades | Muestra información detallada (VID:PID, fabricante, etc.) |
 
 ## Atajos
 
@@ -50,27 +115,118 @@ Los favoritos se guardan en `config.json` y pueden reconectarse automáticamente
 
 ## 📝 Log de Actividad
 
-El panel inferior muestra un historial de eventos:
-- ✅ **Conexiones exitosas** - Dispositivos conectados
-- ❌ **Errores** - Fallos de conexión o escaneo
-- 🔍 **Escaneos** - Servidores encontrados
-- ⚠️ **Advertencias** - Problemas menores
+```
+╔════════════════════════════════════════════════════════════════╗
+║ 📋 Log de Actividad                                  [Limpiar] ║
+╠════════════════════════════════════════════════════════════════╣
+║ [14:35:22] ✅ Conectado: Arduino Uno (1-1.2) desde 192.168.1.10║
+║ [14:35:20] 🔍 Listando dispositivos en 192.168.1.100...        ║
+║ [14:35:15] ✅ 2 servidor(es) encontrado(s)                     ║
+║ [14:35:10] 🔍 Escaneando red 192.168.1.0/24...                 ║
+║ [14:34:55] ❌ Error: Timeout conectando a 192.168.1.50         ║
+║ [14:34:50] ⚠️ Drivers no detectados, instalando...            ║
+║ [14:34:45] ✅ Drivers verificados OK                           ║
+╚════════════════════════════════════════════════════════════════╝
+```
 
-Usa el botón **Limpiar** para borrar el historial.
+El panel inferior muestra un historial de eventos en tiempo real:
+
+| Icono | Tipo | Descripción |
+|-------|------|-------------|
+| ✅ | Éxito | Conexiones exitosas, servidores encontrados, drivers OK |
+| ❌ | Error | Fallos de conexión, timeouts, dispositivos no disponibles |
+| 🔍 | Info | Escaneos en progreso, operaciones informativas |
+| ⚠️ | Advertencia | Problemas menores, configuración incompleta |
+
+Usa el botón **[Limpiar]** para borrar el historial.
 
 ## 🖥️ System Tray (Bandeja del Sistema)
 
-- Al minimizar, la aplicación se oculta en la bandeja del sistema
+```
+                                    ┌─────────────────────────────┐
+                                    │   Bandeja del Sistema       │
+                                    │   (junto al reloj)          │
+                                    └──────────┬──────────────────┘
+                                               │
+     ┌─────────────────────────────────────────┼────────────────────┐
+     │  🔊  📶  🔋  ⚡ ... 🦊                  │                    │
+     └─────────────────────────────────────────┼────────────────────┘
+                                               │
+                                               ▼ Click derecho
+                                    ┌─────────────────────────┐
+                                    │ 📡 Escanear Red         │
+                                    │ 🔼 Mostrar Ventana      │
+                                    ├─────────────────────────┤
+                                    │ ❌ Salir                │
+                                    └─────────────────────────┘
+```
+
+- Al **minimizar**, la aplicación se oculta en la bandeja del sistema (icono 🦊)
 - **Doble-click** en el icono para restaurar la ventana
-- **Click derecho** para menú: Escanear Red, Mostrar Ventana, Salir
+- **Click derecho** para menú rápido: Escanear Red, Mostrar Ventana, Salir
+- La aplicación sigue corriendo en segundo plano hasta que pulses "Salir"
 
 ## 🌐 Cambiar Idioma
 
-Usa el botón **ESP/ENG** en la barra de título para alternar entre Español e Inglés.
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ 🦊 SnakeFoxu   USB/IP Manager   [🌐ESP] [🔄Actualizar]  🟡 🟢 🔴 │
+└──────────────────────────────────────────────────────────────────┘
+                                      │
+                            Click aquí│
+                                      ▼
+                            ┌────────────────┐
+                            │ 🌐 ESP → ENG   │  (alterna)
+                            │ 🌐 ENG → ESP   │
+                            └────────────────┘
+```
 
-## Drivers
+Usa el botón **[🌐 ESP]** o **[🌐 ENG]** en la barra de título para alternar entre Español e Inglés. El idioma se guarda automáticamente en `config.json`.
 
-- **Instalar Drivers**: Instala drivers USB/IP en Windows
-- **Desinstalar Drivers**: Elimina drivers (requiere reinicio)
+## 🔧 Barra de Estado y Drivers
 
-> ⚠️ La primera instalación de drivers puede requerir reiniciar Windows.
+```
+╔════════════════════════════════════════════════════════════════════╗
+║  ✓ Listo         Drivers: ✅ Instalados      [Instalar][Desinstalar]║
+╚════════════════════════════════════════════════════════════════════╝
+     │                   │                          │          │
+     │                   │               Instalar ──┘          │
+     │                   │               drivers USB/IP        │
+     │                   │                                     │
+     │                   │                    Desinstalar ─────┘
+     │                   │                    (requiere reinicio)
+     │                   │
+     Estado actual ──────┘                   
+     de la conexión      Estado de drivers ─────┘
+                         ✅ Instalados
+                         ❌ No instalados
+```
+
+> ⚠️ **Importante:** La primera instalación de drivers puede requerir reiniciar Windows.
+
+---
+
+## 🆘 Solución de Problemas
+
+### "No se encontró servidor"
+1. Verifica que el servidor USB/IP esté corriendo: `sudo usbipd` en Linux
+2. Comprueba que el puerto 3240 esté abierto en el firewall
+3. Verifica que estés en la misma subred (ej: 192.168.1.x)
+
+### "Error al conectar dispositivo"
+1. Asegúrate de que los drivers están instalados (barra inferior)
+2. El dispositivo debe estar "bindeado" en el servidor: `sudo usbip bind -b X-X`
+3. Ejecuta SnakeUSBIP como Administrador
+
+### "Dispositivo conectado pero no funciona"
+1. Revisa en Administrador de Dispositivos si necesita drivers adicionales
+2. Algunos dispositivos USB 3.0 pueden no ser compatibles
+3. Prueba con otro puerto USB en el servidor
+
+---
+
+## 📚 Más Información
+
+- **[README.md](../README.md)** - Instalación y características
+- **[RASPBERRY_PI_SERVER.md](RASPBERRY_PI_SERVER.md)** - Configurar servidor en Raspberry Pi
+- **[CHANGELOG.md](../CHANGELOG.md)** - Historial de versiones
