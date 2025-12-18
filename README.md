@@ -164,5 +164,18 @@ MIT License - Ver [LICENSE](LICENSE)
 
 ## 🙏 Créditos
 
-- **USB/IP**: Proyecto original de Linux
-- **SnakeUSBIP**: GUI por SnakeFoxu 2025
+Este proyecto no sería posible sin el trabajo de:
+
+| Proyecto | Autor | Contribución |
+|----------|-------|--------------|
+| [usbip-win2](https://github.com/vadimgrn/usbip-win2) | **Vadim Grn** | Drivers USB/IP firmados por Microsoft (WHLK certified). Core del cliente Windows. |
+| [OctoWrt](https://github.com/ihrapsa/OctoWrt) | **ihrapsa** | Guía original para OpenWrt en CrealityBox. Inspiración para soporte de dispositivos embebidos. |
+| [OctoWrt Fork](https://github.com/shivajiva101/OctoWrt) | **ShivaJiva** | Mantenimiento activo de OctoWrt. Releases actualizados para CrealityBox. |
+| [USB/IP](https://www.kernel.org/doc/html/latest/usb/usbip_protocol.html) | **Linux Kernel** | Protocolo original USB/IP |
+| **SnakeUSBIP** | **SnakeFoxu** | GUI PowerShell, integración VPN, documentación |
+
+### Agradecimientos especiales
+
+- 🦊 **Vadim Grn** - Por los drivers firmados que hacen posible usar USB/IP en Windows sin modo test
+- 🐙 **Comunidad OctoWrt** - Por demostrar que la CrealityBox puede ser mucho más que un pisapapeles
+- 🐧 **Linux USB/IP Team** - Por crear el protocolo que hace todo esto posible
