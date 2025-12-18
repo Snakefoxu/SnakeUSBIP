@@ -1,6 +1,6 @@
 # 🦊 SnakeUSBIP - Cliente USB/IP Gratuito para Windows
 
-**v1.6.1** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+**v1.6.1** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md)
 
 **Comparte y conecta dispositivos USB por red (LAN/WiFi) fácilmente.**
 Transforma tu Raspberry Pi o servidor Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
