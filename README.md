@@ -1,8 +1,8 @@
 # 🦊 SnakeUSBIP - Cliente USB/IP Gratuito para Windows
 
-**v1.6.1** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md)
+**v1.7.0** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md) | [🌐 Conexión VPN](docs/VPN_INTERNET.md)
 
-**Comparte y conecta dispositivos USB por red (LAN/WiFi) fácilmente.**
+**Comparte y conecta dispositivos USB por red (LAN/WiFi/Internet) fácilmente.**
 Transforma tu Raspberry Pi o servidor Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
 
 [![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
@@ -20,8 +20,7 @@ Transforma tu Raspberry Pi o servidor Linux en un Hub USB Virtual accesible desd
 
 ## ✨ Características
 
-- 🔍 **Autodescubrimiento** - Escanea servidores USB/IP en tu red local
-- 🔌 **Conexión fácil** - Conecta/desconecta dispositivos con un click
+- 🔍 **Autodescubrimiento** - Escanea servidores USB/IP en tu red local- 🌐 **Conexión por Internet** - Conecta vía Tailscale/ZeroTier (NAT traversal)- 🔌 **Conexión fácil** - Conecta/desconecta dispositivos con un click
 - ⭐ **Favoritos** - Guarda dispositivos para reconexión rápida
 - � **Log de Actividad** - Historial de conexiones, escaneos y errores
 - 🖥️ **SSH integrado** - Configura servidores Raspberry Pi directamente
@@ -56,6 +55,14 @@ Invoke-PS2EXE -InputFile "SnakeUSBIP.ps1" -OutputFile "SnakeUSBIP.exe" -NoConsol
 3. **Conectar** - Doble-click en un dispositivo o click derecho → Conectar
 4. **Desconectar** - Click derecho → Desconectar
 
+### 🌐 Conexión por Internet (VPN)
+
+1. Instala **[Tailscale](https://tailscale.com/download)** en Windows y en tu servidor
+2. Click en `🌐 VPN` para ver peers con USB/IP activo
+3. Selecciona un servidor remoto y conecta
+
+Ver [docs/VPN_INTERNET.md](docs/VPN_INTERNET.md) para guía completa.
+
 ## 🍓 Servidor en Raspberry Pi
 
 Ver [docs/RASPBERRY_PI_SERVER.md](docs/RASPBERRY_PI_SERVER.md) para instrucciones completas.
@@ -71,14 +78,14 @@ sudo usbip bind -b 1-1.4  # Reemplaza con tu bus-id
 
 ## 🚀 Próximas Actualizaciones
 
-**v1.7-1.8:**
-- 🔄 Auto-Reconnect | 📊 Logs Mejorados | 🌙 Modo Oscuro | 🔔 Notificaciones
+**v1.8:**
+- 🔄 Auto-Reconnect | 🌙 Modo Oscuro | 🔔 Notificaciones
 
 **v2.0:**
 - 🗜️ Compresión de Datos | 📈 Dashboard de Rendimiento | 🏷️ Nicknames | 🔒 Filtros IP
 
 **v2.x:**
-- 🌍 Conexión Internet (NAT traversal) | 🖥️ Servidor Windows | 🐧 Cliente Multiplataforma (Linux/Mac) | 🤖 Detección Auto
+- 🖥️ Servidor Windows | 🐧 Cliente Multiplataforma (Linux/Mac) | 🤖 Detección Auto
 
 ## 📁 Estructura
 

@@ -1,5 +1,25 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.7.0] - 2025-12-19
+
+### Añadido
+- **Botón VPN / Internet** 🌐
+  - Nuevo botón "🌐 VPN" para conexión remota por Internet
+  - Detecta automáticamente Tailscale y ZeroTier instalados
+  - Escanea peers VPN buscando servidores USB/IP activos
+  - Dialog con lista de peers y estado de conexión
+  - Conectar directamente a servidores USB/IP remotos
+- **Traducciones VPN**
+  - Nuevas cadenas en español e inglés para la funcionalidad VPN
+- **Interfaz más ancha**
+  - Formulario principal ampliado de 520 a 590 píxeles
+  - Espacio para nuevo botón sin afectar diseño existente
+
+### Cambiado
+- Ajustados anchos de TreeView, LogPanel y ServerPanel
+
+---
+
 ## [1.6.1] - 2025-12-18
 
 ### Añadido
