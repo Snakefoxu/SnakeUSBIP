@@ -1,6 +1,24 @@
 # CHANGELOG - SnakeUSBIP
 
-## [1.6.0.0] - 2025-12-10
+## [1.6.1] - 2025-12-18
+
+### Añadido
+- **Log de Actividad** 📋
+  - Panel con historial de eventos
+  - Registra conexiones, desconexiones, escaneos y errores
+  - Botón para limpiar historial
+  - Timestamps en cada entrada
+
+### Corregido
+- **Escaneo inicial** 🐛
+  - Ahora encuentra todos los servidores desde el arranque
+  - Solucionado problema de concurrencia en callbacks
+- **Timeout de escaneo** ⏱️
+  - Aumentado de 100ms a 300ms para servidores lentos
+
+---
+
+## [1.6.0] - 2025-12-10
 
 ### Añadido
 - **Interfaz estilo macOS** 🍎
@@ -17,7 +35,7 @@
 
 ---
 
-## [1.5.0.0] - 2025-12-10
+## [1.5.0] - 2025-12-10
 
 ### Añadido
 - **Multi-idioma** 🌐
