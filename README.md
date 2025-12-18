@@ -3,7 +3,7 @@
 **v1.7.0** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md) | [🌐 Conexión VPN](docs/VPN_INTERNET.md)
 
 **Comparte y conecta dispositivos USB por red (LAN/WiFi/Internet) fácilmente.**
-Transforma tu Raspberry Pi o servidor Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
+Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Compatible con **Raspberry Pi, Orange Pi, Banana Pi, routers OpenWRT, CrealityBox** y cualquier placa ARM/x86 con Linux. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
 
 [![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
@@ -63,17 +63,35 @@ Invoke-PS2EXE -InputFile "SnakeUSBIP.ps1" -OutputFile "SnakeUSBIP.exe" -NoConsol
 
 Ver [docs/VPN_INTERNET.md](docs/VPN_INTERNET.md) para guía completa.
 
-## 🍓 Servidor en Raspberry Pi
+## 🐧 Servidor USB/IP (Linux)
+
+Funciona en **cualquier dispositivo con Linux** que tenga puertos USB:
+
+| Dispositivo | Compatibilidad |
+|-------------|----------------|
+| 🍓 Raspberry Pi (todos) | ✅ Recomendado |
+| 🍊 Orange Pi / Banana Pi | ✅ |
+| 📦 Arduino Yún / similar | ✅ |
+| 📡 Routers con OpenWRT | ✅ |
+| 🖨️ CrealityBox (OpenWRT) | ✅ |
+| 💻 Cualquier PC Linux | ✅ |
+| 🖥️ Servidor x86/ARM | ✅ |
 
 Ver [docs/RASPBERRY_PI_SERVER.md](docs/RASPBERRY_PI_SERVER.md) para instrucciones completas.
 
-**Resumen rápido:**
+**Resumen rápido (Debian/Ubuntu/Raspbian):**
 ```bash
-sudo apt update && sudo apt install -y linux-tools-generic
+sudo apt update && sudo apt install -y linux-tools-generic hwdata
 sudo modprobe usbip_host
 sudo usbipd -D
 sudo usbip list -l
 sudo usbip bind -b 1-1.4  # Reemplaza con tu bus-id
+```
+
+**OpenWRT:**
+```bash
+opkg update && opkg install usbip-server kmod-usb-ohci
+usbipd -D
 ```
 
 ## 🚀 Próximas Actualizaciones
