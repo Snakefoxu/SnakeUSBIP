@@ -94,7 +94,37 @@ opkg update && opkg install usbip-server kmod-usb-ohci
 usbipd -D
 ```
 
-## 🚀 Próximas Actualizaciones
+## � ¿Qué puedo hacer con mi dispositivo?
+
+¿Tienes una **Raspberry Pi, Orange Pi o CrealityBox** sin usar? ¡Conviértelos en un Hub USB remoto!
+
+| Dispositivo | Caso de Uso |
+|-------------|-------------|
+| 🖨️ **CrealityBox** | Comparte la impresora 3D USB por red. Conecta desde cualquier PC sin cables |
+| 🍓 **Raspberry Pi** | Hub USB central: escáneres, dongles de licencia, lectores de tarjetas |
+| 🍊 **Orange Pi** | Servidor USB compacto y económico para oficina |
+| 📡 **Router OpenWRT** | Comparte USB de almacenamiento o impresora desde el router |
+| 🔐 **Dongle de Licencia** | Comparte llaves USB de software (AutoCAD, etc.) entre PCs |
+
+### Ejemplo real: CrealityBox como servidor USB
+```bash
+# 1. Accede por SSH a tu CrealityBox
+ssh root@192.168.1.x
+
+# 2. Instala USB/IP
+opkg update && opkg install usbip-server kmod-usb-ohci
+
+# 3. Inicia el servidor
+usbipd -D
+
+# 4. Exporta la impresora USB
+usbip list -l          # Ver dispositivos
+usbip bind -b 1-1      # Exportar impresora
+```
+
+Ahora conecta desde Windows con SnakeUSBIP y tu impresora 3D aparece como si estuviera conectada localmente.
+
+## �🚀 Próximas Actualizaciones
 
 **v1.8:**
 - 🔄 Auto-Reconnect | 🌙 Modo Oscuro | 🔔 Notificaciones
