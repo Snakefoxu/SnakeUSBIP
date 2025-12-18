@@ -8,7 +8,7 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 [![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
 [![License](https://img.shields.io/github/license/SnakeFoxu/SnakeUSBIP?style=flat-square&color=green)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64%20%26%20ARM64)-lightgrey?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
 
 ## 🎬 Video Tutorial
 
@@ -34,13 +34,15 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 ## 📦 Instalación
 
 ### Opción 1: Portable (Recomendado)
-1. Descarga `SnakeUSBIP-Portable.zip` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+1. Descarga desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
+   - **Windows x64**: `SnakeUSBIP_v1.7.0_Portable.zip`
+   - **Windows ARM64**: `SnakeUSBIP_v1.7.0_Portable-ARM64.zip` (Surface Pro X, etc.)
 2. Extrae el ZIP en cualquier carpeta
 3. Ejecuta `SnakeUSBIP.exe` como Administrador
 4. ¡Listo!
 
-### Opción 2: Instalador
-1. Descarga `SnakeUSBIP-Setup.exe` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+### Opción 2: Instalador (solo x64)
+1. Descarga `SnakeUSBIP_Setup_v1.7.0.exe` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
 2. Ejecuta el instalador como Administrador
 3. Sigue el asistente de instalación
 
