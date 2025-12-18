@@ -35,7 +35,7 @@ Add-Type -AssemblyName System.Drawing
 $script:USBIP_PORT = 3240
 $script:SCAN_TIMEOUT_MS = 300
 $script:BUSID_DEFAULT = "1-1"
-$script:APP_VERSION = "1.6.1"
+$script:APP_VERSION = "1.7.0"
 $script:GITHUB_REPO = "Snakefoxu/SnakeUSBIP"
 
 # ============================================
@@ -130,6 +130,20 @@ $script:Translations = @{
         "log_favorite_added"    = "Añadido a favoritos"
         "log_favorite_removed"  = "Quitado de favoritos"
         "log_clear"             = "Limpiar"
+        
+        # VPN / Internet
+        "btn_vpn"               = "🌐 VPN"
+        "vpn_title"             = "Conexión por Internet (VPN)"
+        "vpn_no_vpn"            = "No se detectó Tailscale ni ZeroTier instalado"
+        "vpn_scanning"          = "Escaneando peers VPN..."
+        "vpn_no_peers"          = "No se encontraron peers con USB/IP activo"
+        "vpn_peer_name"         = "Nombre"
+        "vpn_peer_ip"           = "IP"
+        "vpn_peer_status"       = "USB/IP"
+        "vpn_connect"           = "Conectar"
+        "vpn_refresh"           = "Actualizar"
+        "vpn_close"             = "Cerrar"
+        "vpn_found_peers"       = "peers con USB/IP encontrados"
     }
     "en" = @{
         # Main buttons
@@ -211,6 +225,20 @@ $script:Translations = @{
         "log_favorite_added"    = "Added to favorites"
         "log_favorite_removed"  = "Removed from favorites"
         "log_clear"             = "Clear"
+        
+        # VPN / Internet
+        "btn_vpn"               = "🌐 VPN"
+        "vpn_title"             = "Internet Connection (VPN)"
+        "vpn_no_vpn"            = "Neither Tailscale nor ZeroTier detected"
+        "vpn_scanning"          = "Scanning VPN peers..."
+        "vpn_no_peers"          = "No peers with active USB/IP found"
+        "vpn_peer_name"         = "Name"
+        "vpn_peer_ip"           = "IP"
+        "vpn_peer_status"       = "USB/IP"
+        "vpn_connect"           = "Connect"
+        "vpn_refresh"           = "Refresh"
+        "vpn_close"             = "Close"
+        "vpn_found_peers"       = "peers with USB/IP found"
     }
 }
 
@@ -266,6 +294,209 @@ function Add-LogEntry {
         }
         $script:logTextBox.Text = $logText
     }
+}
+
+# ============================================
+# FUNCIONES VPN/INTERNET (Tailscale/ZeroTier)
+# ============================================
+
+function Test-TailscaleInstalled {
+    return (Get-Command "tailscale" -ErrorAction SilentlyContinue) -ne $null
+}
+
+function Test-ZeroTierInstalled {
+    return (Get-Command "zerotier-cli" -ErrorAction SilentlyContinue) -ne $null
+}
+
+function Get-TailscalePeers {
+    if (-not (Test-TailscaleInstalled)) { return @() }
+    try {
+        $status = & tailscale status --json 2>$null | ConvertFrom-Json
+        $peers = @()
+        foreach ($peer in $status.Peer.PSObject.Properties) {
+            $p = $peer.Value
+            if ($p.TailscaleIPs -and $p.TailscaleIPs.Count -gt 0) {
+                $peers += [PSCustomObject]@{
+                    Name   = $p.HostName
+                    IP     = $p.TailscaleIPs[0]
+                    Online = $p.Online
+                    OS     = $p.OS
+                    Type   = "Tailscale"
+                }
+            }
+        }
+        return $peers
+    } catch { return @() }
+}
+
+function Get-ZeroTierPeers {
+    if (-not (Test-ZeroTierInstalled)) { return @() }
+    try {
+        $networks = & zerotier-cli listnetworks -j 2>$null | ConvertFrom-Json
+        $peers = @()
+        foreach ($net in $networks) {
+            if ($net.status -eq "OK" -and $net.assignedAddresses.Count -gt 0) {
+                $peers += [PSCustomObject]@{
+                    Name   = $net.name
+                    IP     = ($net.assignedAddresses[0] -replace '/\d+$','')
+                    Online = $true
+                    Type   = "ZeroTier"
+                }
+            }
+        }
+        return $peers
+    } catch { return @() }
+}
+
+function Get-AllVPNPeers {
+    $allPeers = @()
+    $allPeers += Get-TailscalePeers
+    $allPeers += Get-ZeroTierPeers
+    return $allPeers
+}
+
+function Test-USBIPOnPeer {
+    param([string]$IP)
+    try {
+        $tcp = New-Object System.Net.Sockets.TcpClient
+        $result = $tcp.BeginConnect($IP, 3240, $null, $null)
+        $success = $result.AsyncWaitHandle.WaitOne(1000)
+        $tcp.Close()
+        return $success
+    } catch { return $false }
+}
+
+function Show-InternetConnectionDialog {
+    param([System.Windows.Forms.TextBox]$ServerTextBox)
+    
+    $dialog = New-Object System.Windows.Forms.Form
+    $dialog.Text = Get-Text "vpn_title"
+    $dialog.Size = New-Object System.Drawing.Size(450, 380)
+    $dialog.StartPosition = "CenterScreen"
+    $dialog.FormBorderStyle = "FixedDialog"
+    $dialog.MaximizeBox = $false
+    $dialog.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+    
+    # Detectar VPNs
+    $hasTailscale = Test-TailscaleInstalled
+    $hasZeroTier = Test-ZeroTierInstalled
+    
+    # Label estado
+    $lblStatus = New-Object System.Windows.Forms.Label
+    $lblStatus.Location = New-Object System.Drawing.Point(20, 15)
+    $lblStatus.Size = New-Object System.Drawing.Size(400, 40)
+    $lblStatus.Font = New-Object System.Drawing.Font("Segoe UI", 10)
+    
+    if ($hasTailscale -or $hasZeroTier) {
+        $vpnName = if ($hasTailscale) { "Tailscale" } else { "ZeroTier" }
+        $lblStatus.Text = "✅ $vpnName detectado. Buscando servidores USB/IP..."
+        $lblStatus.ForeColor = [System.Drawing.Color]::LightGreen
+    } else {
+        $lblStatus.Text = "⚠️ No se detectó Tailscale ni ZeroTier.`nInstala uno para conectar por Internet."
+        $lblStatus.ForeColor = [System.Drawing.Color]::Orange
+    }
+    $dialog.Controls.Add($lblStatus)
+    
+    # ListView peers
+    $listPeers = New-Object System.Windows.Forms.ListView
+    $listPeers.Location = New-Object System.Drawing.Point(20, 60)
+    $listPeers.Size = New-Object System.Drawing.Size(400, 180)
+    $listPeers.View = "Details"
+    $listPeers.FullRowSelect = $true
+    $listPeers.BackColor = [System.Drawing.Color]::FromArgb(45, 45, 45)
+    $listPeers.ForeColor = [System.Drawing.Color]::White
+    $listPeers.Font = New-Object System.Drawing.Font("Segoe UI", 9)
+    [void]$listPeers.Columns.Add("Nombre", 140)
+    [void]$listPeers.Columns.Add("IP", 120)
+    [void]$listPeers.Columns.Add("Estado", 70)
+    [void]$listPeers.Columns.Add("USB/IP", 55)
+    $dialog.Controls.Add($listPeers)
+    
+    # Cargar peers
+    if ($hasTailscale -or $hasZeroTier) {
+        $peers = Get-AllVPNPeers
+        foreach ($peer in $peers) {
+            $item = New-Object System.Windows.Forms.ListViewItem($peer.Name)
+            [void]$item.SubItems.Add($peer.IP)
+            [void]$item.SubItems.Add($(if ($peer.Online) { "🟢 Online" } else { "🔴 Offline" }))
+            $hasUSBIP = Test-USBIPOnPeer -IP $peer.IP
+            [void]$item.SubItems.Add($(if ($hasUSBIP) { "✅" } else { "❌" }))
+            $item.Tag = $peer.IP
+            if ($hasUSBIP) { $item.ForeColor = [System.Drawing.Color]::LightGreen }
+            [void]$listPeers.Items.Add($item)
+        }
+        if ($peers.Count -eq 0) {
+            $lblStatus.Text = "ℹ️ VPN conectada pero no hay peers online.`nAsegúrate que el servidor esté en la VPN."
+            $lblStatus.ForeColor = [System.Drawing.Color]::Yellow
+        }
+    }
+    
+    # Botón Tailscale
+    $btnTailscale = New-Object System.Windows.Forms.Button
+    $btnTailscale.Location = New-Object System.Drawing.Point(20, 250)
+    $btnTailscale.Size = New-Object System.Drawing.Size(120, 30)
+    $btnTailscale.Text = "📥 Tailscale"
+    $btnTailscale.BackColor = [System.Drawing.Color]::FromArgb(60, 60, 60)
+    $btnTailscale.ForeColor = [System.Drawing.Color]::White
+    $btnTailscale.FlatStyle = "Flat"
+    $btnTailscale.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btnTailscale.Add_Click({ Start-Process "https://tailscale.com/download" })
+    $dialog.Controls.Add($btnTailscale)
+    
+    # Botón ZeroTier
+    $btnZeroTier = New-Object System.Windows.Forms.Button
+    $btnZeroTier.Location = New-Object System.Drawing.Point(150, 250)
+    $btnZeroTier.Size = New-Object System.Drawing.Size(120, 30)
+    $btnZeroTier.Text = "📥 ZeroTier"
+    $btnZeroTier.BackColor = [System.Drawing.Color]::FromArgb(60, 60, 60)
+    $btnZeroTier.ForeColor = [System.Drawing.Color]::White
+    $btnZeroTier.FlatStyle = "Flat"
+    $btnZeroTier.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btnZeroTier.Add_Click({ Start-Process "https://www.zerotier.com/download/" })
+    $dialog.Controls.Add($btnZeroTier)
+    
+    # Botón Conectar
+    $btnConnect = New-Object System.Windows.Forms.Button
+    $btnConnect.Location = New-Object System.Drawing.Point(300, 250)
+    $btnConnect.Size = New-Object System.Drawing.Size(120, 30)
+    $btnConnect.Text = "🔗 Conectar"
+    $btnConnect.BackColor = [System.Drawing.Color]::FromArgb(255, 140, 0)
+    $btnConnect.ForeColor = [System.Drawing.Color]::White
+    $btnConnect.FlatStyle = "Flat"
+    $btnConnect.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btnConnect.Enabled = $false
+    $dialog.Controls.Add($btnConnect)
+    
+    # Habilitar botón al seleccionar
+    $listPeers.Add_SelectedIndexChanged({
+        $btnConnect.Enabled = $listPeers.SelectedItems.Count -gt 0
+    })
+    
+    # Acción conectar
+    $btnConnect.Add_Click({
+        if ($listPeers.SelectedItems.Count -gt 0) {
+            $script:selectedVPNIP = $listPeers.SelectedItems[0].Tag
+            $dialog.DialogResult = [System.Windows.Forms.DialogResult]::OK
+            $dialog.Close()
+        }
+    })
+    
+    # Info
+    $lblInfo = New-Object System.Windows.Forms.Label
+    $lblInfo.Location = New-Object System.Drawing.Point(20, 295)
+    $lblInfo.Size = New-Object System.Drawing.Size(400, 35)
+    $lblInfo.Text = "💡 Tailscale/ZeroTier son gratuitos y no requieren`n   abrir puertos en el router (port forwarding)."
+    $lblInfo.ForeColor = [System.Drawing.Color]::Gray
+    $lblInfo.Font = New-Object System.Drawing.Font("Segoe UI", 8)
+    $dialog.Controls.Add($lblInfo)
+    
+    $script:selectedVPNIP = $null
+    $result = $dialog.ShowDialog()
+    
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK -and $script:selectedVPNIP) {
+        return $script:selectedVPNIP
+    }
+    return $null
 }
 
 function Get-DeviceIcon {
@@ -1903,7 +2134,7 @@ function Show-MainWindow {
     $serverPanel.Controls.Add($ipLabel)
     
     $ipTextBox = New-Object System.Windows.Forms.TextBox
-    $ipTextBox.Size = New-Object System.Drawing.Size(140, 24)
+    $ipTextBox.Size = New-Object System.Drawing.Size(120, 24)
     $ipTextBox.Location = New-Object System.Drawing.Point(70, 5)
     $ipTextBox.Font = New-Object System.Drawing.Font("Consolas", 10)
     $ipTextBox.BackColor = [System.Drawing.Color]::FromArgb(51, 51, 55)
@@ -1913,8 +2144,8 @@ function Show-MainWindow {
     
     $scanButton = New-Object System.Windows.Forms.Button
     $scanButton.Text = "🔍 Escanear"
-    $scanButton.Size = New-Object System.Drawing.Size(90, 26)
-    $scanButton.Location = New-Object System.Drawing.Point(220, 4)
+    $scanButton.Size = New-Object System.Drawing.Size(85, 26)
+    $scanButton.Location = New-Object System.Drawing.Point(198, 4)
     $scanButton.FlatStyle = "Flat"
     $scanButton.BackColor = [System.Drawing.Color]::FromArgb(0, 122, 204)  # Azul vibrante
     $scanButton.ForeColor = [System.Drawing.Color]::White
@@ -1928,8 +2159,8 @@ function Show-MainWindow {
     
     $refreshButton = New-Object System.Windows.Forms.Button
     $refreshButton.Text = "🔄 Listar"
-    $refreshButton.Size = New-Object System.Drawing.Size(70, 26)
-    $refreshButton.Location = New-Object System.Drawing.Point(320, 4)
+    $refreshButton.Size = New-Object System.Drawing.Size(68, 26)
+    $refreshButton.Location = New-Object System.Drawing.Point(288, 4)
     $refreshButton.FlatStyle = "Flat"
     $refreshButton.BackColor = [System.Drawing.Color]::FromArgb(78, 78, 82)  # Gris oscuro
     $refreshButton.ForeColor = [System.Drawing.Color]::White
@@ -1943,8 +2174,8 @@ function Show-MainWindow {
     
     $sshButton = New-Object System.Windows.Forms.Button
     $sshButton.Text = "🖥️ SSH"
-    $sshButton.Size = New-Object System.Drawing.Size(65, 26)
-    $sshButton.Location = New-Object System.Drawing.Point(395, 4)
+    $sshButton.Size = New-Object System.Drawing.Size(60, 26)
+    $sshButton.Location = New-Object System.Drawing.Point(361, 4)
     $sshButton.FlatStyle = "Flat"
     $sshButton.BackColor = [System.Drawing.Color]::FromArgb(96, 80, 112)  # Púrpura
     $sshButton.ForeColor = [System.Drawing.Color]::White
@@ -2088,6 +2319,27 @@ function Show-MainWindow {
         
             $sshForm.ShowDialog() | Out-Null
         }.GetNewClosure())
+    
+    # Botón VPN / Internet
+    $vpnButton = New-Object System.Windows.Forms.Button
+    $vpnButton.Text = Get-Text "btn_vpn"
+    $vpnButton.Size = New-Object System.Drawing.Size(60, 26)
+    $vpnButton.Location = New-Object System.Drawing.Point(426, 4)
+    $vpnButton.FlatStyle = "Flat"
+    $vpnButton.BackColor = [System.Drawing.Color]::FromArgb(0, 128, 128)  # Teal
+    $vpnButton.ForeColor = [System.Drawing.Color]::White
+    $vpnButton.Font = New-Object System.Drawing.Font("Segoe UI", 9)
+    $vpnButton.FlatAppearance.BorderSize = 0
+    $vpnButton.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $serverPanel.Controls.Add($vpnButton)
+    # Hover effect
+    $vpnButton.Add_MouseEnter({ $this.BackColor = [System.Drawing.Color]::FromArgb(0, 160, 160) })
+    $vpnButton.Add_MouseLeave({ $this.BackColor = [System.Drawing.Color]::FromArgb(0, 128, 128) })
+    
+    # Click handler para botón VPN
+    $vpnButton.Add_Click({
+        Show-InternetConnectionDialog
+    })
     
     # ============================================
     # TREEVIEW - ESTILO VIRTUALHERE
@@ -2489,6 +2741,7 @@ function Show-MainWindow {
             $connectedNode.Text = Get-Text "node_connected"
             $favoritesNode.Text = Get-Text "node_favorites"
             $sshButton.Text = Get-Text "btn_ssh"
+            $vpnButton.Text = Get-Text "btn_vpn"
         
             $statusLabel.Text = Get-Text "status_ready"
         }.GetNewClosure())
