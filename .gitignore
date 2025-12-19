@@ -1,0 +1,121 @@
+# ═══════════════════════════════════════════════════════════════════
+# SNAKEUSBIP - GITIGNORE PARA RELEASE PÚBLICA
+# Solo se suben archivos para USUARIO FINAL
+# ═══════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════
+# CÓDIGO FUENTE Y DESARROLLO (SOLO LOCAL)
+# ═══════════════════════════════════════════════════════════════════
+
+# Código fuente principal
+SnakeUSBIP.ps1
+SnakeUSBIP.iss
+CleanDrivers.ps1
+
+# Excepto la carpeta src/ (placeholders para detección de lenguaje)
+!src/
+!src/**
+
+# Herramientas de build
+rcedit.exe
+sfx_config.txt
+config.json
+
+# ═══════════════════════════════════════════════════════════════════
+# DOCUMENTACIÓN INTERNA (SOLO LOCAL)
+# ═══════════════════════════════════════════════════════════════════
+
+docs/
+ROADMAP.md
+
+# ═══════════════════════════════════════════════════════════════════
+# PROCESO DE DESARROLLO / INVESTIGACIÓN (CONFIDENCIAL)
+# ═══════════════════════════════════════════════════════════════════
+
+# Prompts de IA, guías, videos de producción
+video_assets/
+
+# Backups con historial de desarrollo
+backups/
+backup funcional/
+
+# Entornos de desarrollo
+.venv/
+wiki_temp/
+
+# Repos embebidos
+github/
+.github/
+
+# ═══════════════════════════════════════════════════════════════════
+# RECURSOS DE MARKETING / BUILD (SOLO LOCAL)
+# ═══════════════════════════════════════════════════════════════════
+
+# Imágenes de marketing
+Logo SnakeFoxU con e.png
+Logo-SnakeFoxU-con-e.ico
+youtube_thumbnail.png
+wizard_image.bmp
+wizard_small.bmp
+
+# ═══════════════════════════════════════════════════════════════════
+# DUPLICADOS EN RAÍZ (YA ESTÁN EN PORTABLE/)
+# ═══════════════════════════════════════════════════════════════════
+
+PathMgr.dll
+libusbip.dll
+resources.dll
+devnode.exe
+usbip.exe
+usbipw.exe
+SnakeUSBIP.exe
+usb.ids
+usbipenum.cat
+USBIPEnum.inf
+USBIPEnum_x64.sys
+USBIPEnum_x86.sys
+drivers/
+
+# ═══════════════════════════════════════════════════════════════════
+# RELEASES ANTIGUAS (SOLO ÚLTIMA VERSIÓN)
+# ═══════════════════════════════════════════════════════════════════
+
+SnakeUSBIP-v1.5-Windows.zip
+SnakeUSBIP_Setup_v1.5.exe
+SnakeUSBIP_v1.5.0_Portable.zip
+SnakeUSBIP_v1.6.0_Portable.zip
+SnakeUSBIP_v1.6.1_Portable.zip
+installer/SnakeUSBIP_Portable_v1.6.zip
+installer/SnakeUSBIP_Setup_v1.6.exe
+
+# ═══════════════════════════════════════════════════════════════════
+# ARCHIVOS TEMPORALES Y SISTEMA
+# ═══════════════════════════════════════════════════════════════════
+
+*.bak
+*.backup
+*.log
+*.tmp
+*~
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# Código fuente dentro de Portable (no subir)
+Portable/*.ps1
+Portable-ARM64/*.ps1
+
+# ═══════════════════════════════════════════════════════════════════
+# EXCEPCIONES - INCLUIR CARPETAS PORTABLE (para claridad del usuario)
+# ═══════════════════════════════════════════════════════════════════
+!Portable/
+!Portable/**
+!Portable-ARM64/
+!Portable-ARM64/**
+
+# Pero excluir el código fuente de dentro
+Portable/SnakeUSBIP.ps1
+Portable/CleanDrivers.ps1
+Portable-ARM64/SnakeUSBIP.ps1
+Portable-ARM64/CleanDrivers.ps1
