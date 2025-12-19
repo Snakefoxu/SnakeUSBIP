@@ -35,7 +35,7 @@ Add-Type -AssemblyName System.Drawing
 $script:USBIP_PORT = 3240
 $script:SCAN_TIMEOUT_MS = 300
 $script:BUSID_DEFAULT = "1-1"
-$script:APP_VERSION = "1.7.1"
+$script:APP_VERSION = "1.7.2"
 $script:GITHUB_REPO = "Snakefoxu/SnakeUSBIP"
 
 # ============================================
@@ -438,7 +438,7 @@ function Show-InternetConnectionDialog {
     # Botón Tailscale
     $btnTailscale = New-Object System.Windows.Forms.Button
     $btnTailscale.Location = New-Object System.Drawing.Point(20, 250)
-    $btnTailscale.Size = New-Object System.Drawing.Size(120, 30)
+    $btnTailscale.Size = New-Object System.Drawing.Size(95, 30)
     $btnTailscale.Text = "📥 Tailscale"
     $btnTailscale.BackColor = [System.Drawing.Color]::FromArgb(60, 60, 60)
     $btnTailscale.ForeColor = [System.Drawing.Color]::White
@@ -449,8 +449,8 @@ function Show-InternetConnectionDialog {
     
     # Botón ZeroTier
     $btnZeroTier = New-Object System.Windows.Forms.Button
-    $btnZeroTier.Location = New-Object System.Drawing.Point(150, 250)
-    $btnZeroTier.Size = New-Object System.Drawing.Size(120, 30)
+    $btnZeroTier.Location = New-Object System.Drawing.Point(120, 250)
+    $btnZeroTier.Size = New-Object System.Drawing.Size(95, 30)
     $btnZeroTier.Text = "📥 ZeroTier"
     $btnZeroTier.BackColor = [System.Drawing.Color]::FromArgb(60, 60, 60)
     $btnZeroTier.ForeColor = [System.Drawing.Color]::White
@@ -459,10 +459,36 @@ function Show-InternetConnectionDialog {
     $btnZeroTier.Add_Click({ Start-Process "https://www.zerotier.com/download/" })
     $dialog.Controls.Add($btnZeroTier)
     
-    # Botón Conectar
+    # Botón Añadir Todos
+    $btnAddAll = New-Object System.Windows.Forms.Button
+    $btnAddAll.Location = New-Object System.Drawing.Point(220, 250)
+    $btnAddAll.Size = New-Object System.Drawing.Size(95, 30)
+    $btnAddAll.Text = "➕ Todos"
+    $btnAddAll.BackColor = [System.Drawing.Color]::FromArgb(0, 128, 0)  # Verde
+    $btnAddAll.ForeColor = [System.Drawing.Color]::White
+    $btnAddAll.FlatStyle = "Flat"
+    $btnAddAll.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $dialog.Controls.Add($btnAddAll)
+    
+    # Acción Añadir Todos - devuelve array de IPs
+    $btnAddAll.Add_Click({
+            $script:selectedVPNIPs = @()
+            foreach ($item in $listPeers.Items) {
+                # Solo añadir los que tienen USB/IP (columna 3 = "✅")
+                if ($item.SubItems[3].Text -eq "✅") {
+                    $script:selectedVPNIPs += $item.Tag
+                }
+            }
+            if ($script:selectedVPNIPs.Count -gt 0) {
+                $dialog.DialogResult = [System.Windows.Forms.DialogResult]::Yes  # Yes = Todos
+                $dialog.Close()
+            }
+        })
+    
+    # Botón Conectar (uno solo)
     $btnConnect = New-Object System.Windows.Forms.Button
-    $btnConnect.Location = New-Object System.Drawing.Point(300, 250)
-    $btnConnect.Size = New-Object System.Drawing.Size(120, 30)
+    $btnConnect.Location = New-Object System.Drawing.Point(320, 250)
+    $btnConnect.Size = New-Object System.Drawing.Size(100, 30)
     $btnConnect.Text = "🔗 Conectar"
     $btnConnect.BackColor = [System.Drawing.Color]::FromArgb(255, 140, 0)
     $btnConnect.ForeColor = [System.Drawing.Color]::White
@@ -476,10 +502,11 @@ function Show-InternetConnectionDialog {
             $btnConnect.Enabled = $listPeers.SelectedItems.Count -gt 0
         })
     
-    # Acción conectar
+    # Acción conectar (uno solo)
     $btnConnect.Add_Click({
             if ($listPeers.SelectedItems.Count -gt 0) {
                 $script:selectedVPNIP = $listPeers.SelectedItems[0].Tag
+                $script:selectedVPNIPs = @()  # Limpiar array
                 $dialog.DialogResult = [System.Windows.Forms.DialogResult]::OK
                 $dialog.Close()
             }
@@ -495,10 +522,17 @@ function Show-InternetConnectionDialog {
     $dialog.Controls.Add($lblInfo)
     
     $script:selectedVPNIP = $null
+    $script:selectedVPNIPs = @()
     $result = $dialog.ShowDialog()
     
-    if ($result -eq [System.Windows.Forms.DialogResult]::OK -and $script:selectedVPNIP) {
-        return $script:selectedVPNIP
+    # Devolver resultado según el botón pulsado
+    if ($result -eq [System.Windows.Forms.DialogResult]::Yes -and $script:selectedVPNIPs.Count -gt 0) {
+        # Botón "Añadir Todos" - devolver array de IPs
+        return @{ All = $true; IPs = $script:selectedVPNIPs }
+    }
+    elseif ($result -eq [System.Windows.Forms.DialogResult]::OK -and $script:selectedVPNIP) {
+        # Botón "Conectar" - devolver una sola IP
+        return @{ All = $false; IPs = @($script:selectedVPNIP) }
     }
     return $null
 }
@@ -842,12 +876,26 @@ function Connect-Favorites {
 # ============================================
 
 function Get-LocalIPAddress {
+    <#
+    .SYNOPSIS
+        Obtiene la IP de la red LOCAL (Ethernet/WiFi), excluyendo VPNs
+    .DESCRIPTION
+        Prioriza interfaces físicas y excluye IPs de Tailscale (100.x.x.x)
+        para que el escaneo normal solo busque en la LAN real
+    #>
     try {
+        # Priorizar interfaces físicas (Ethernet, WiFi)
+        $physicalTypes = @('Ethernet', 'Wireless80211', 'GigabitEthernet')
+        
         $networkInterfaces = [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() | 
         Where-Object { 
             $_.OperationalStatus -eq 'Up' -and 
-            $_.NetworkInterfaceType -ne 'Loopback'
-            # Nota: NO excluimos Tunnel para detectar Tailscale/ZeroTier
+            $_.NetworkInterfaceType -ne 'Loopback' -and
+            $_.NetworkInterfaceType -ne 'Tunnel'  # Excluir VPNs
+        } |
+        Sort-Object { 
+            # Priorizar interfaces físicas
+            if ($_.NetworkInterfaceType -in $physicalTypes) { 0 } else { 1 }
         }
         
         foreach ($interface in $networkInterfaces) {
@@ -857,7 +905,8 @@ function Get-LocalIPAddress {
             
             foreach ($addr in $ipv4Addresses) {
                 $ip = $addr.Address.ToString()
-                if ($ip -notmatch '^(169\.254\.|127\.)') {
+                # Excluir link-local, loopback, y rango Tailscale/CGNAT (100.64.0.0/10)
+                if ($ip -notmatch '^(169\.254\.|127\.|100\.(6[4-9]|[7-9][0-9]|1[0-2][0-7])\.)') {
                     return $ip
                 }
             }
@@ -2342,7 +2391,26 @@ function Show-MainWindow {
     
     # Click handler para botón VPN
     $vpnButton.Add_Click({
-            Show-InternetConnectionDialog
+            $vpnResult = Show-InternetConnectionDialog
+            if ($vpnResult -and $vpnResult.IPs.Count -gt 0) {
+                foreach ($vpnIP in $vpnResult.IPs) {
+                    # Listar dispositivos del servidor VPN
+                    Add-LogEntry -Type "Info" -Message "Conectando a servidor VPN: $vpnIP"
+                    Update-TreeView -ServerIP $vpnIP -ClearFirst $false
+                }
+                Update-ConnectedDevices
+                
+                # Actualizar UI
+                $ipTextBox.Text = $vpnResult.IPs[0]  # Primera IP en el textbox
+                $count = $vpnResult.IPs.Count
+                if ($count -eq 1) {
+                    $statusLabel.Text = "✓ Servidor VPN añadido: $($vpnResult.IPs[0])"
+                }
+                else {
+                    $statusLabel.Text = "✓ $count servidores VPN añadidos"
+                }
+                $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+            }
         })
     
     # ============================================
@@ -2793,7 +2861,7 @@ function Show-MainWindow {
             }
         }.GetNewClosure())
     
-    # Escanear red
+    # Escanear red (SOLO red local, VPN se usa con botón aparte)
     $scanButton.Add_Click({
             $localIP = Get-LocalIPAddress
             if ($localIP) {
@@ -2812,7 +2880,7 @@ function Show-MainWindow {
                 }
             }
             else {
-                $statusLabel.Text = "Error: No se pudo detectar la IP local"
+                $statusLabel.Text = "Error: No se detectó red local"
                 $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(244, 135, 113)
             }
         })

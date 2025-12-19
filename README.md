@@ -1,6 +1,6 @@
 # 🦊 SnakeUSBIP - Cliente USB/IP Gratuito para Windows
 
-**v1.7.1** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md) | [🌐 Conexión VPN](docs/VPN_INTERNET.md)
+**v1.7.2** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md) | [🌐 Conexión VPN](docs/VPN_INTERNET.md)
 
 **Comparte y conecta dispositivos USB por red (LAN/WiFi/Internet) fácilmente.**
 Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Compatible con **Raspberry Pi, Orange Pi, Banana Pi, routers OpenWRT, CrealityBox** y cualquier placa ARM/x86 con Linux. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
@@ -35,8 +35,8 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 
 ### Opción 1: Portable (Recomendado)
 1. Descarga desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
-   - **Windows x64**: `SnakeUSBIP_v1.7.1_Portable.zip`
-   - **Windows ARM64**: `SnakeUSBIP_v1.7.1_Portable-ARM64.zip` (Surface Pro X, etc.)
+   - **Windows x64**: `SnakeUSBIP_v1.7.2_Portable.zip`
+   - **Windows ARM64**: `SnakeUSBIP_v1.7.2_Portable-ARM64.zip` (Surface Pro X, etc.)
 2. Extrae el ZIP en cualquier carpeta
 3. Ejecuta `SnakeUSBIP.exe` como Administrador
 4. ¡Listo!

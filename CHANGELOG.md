@@ -1,12 +1,20 @@
 # CHANGELOG - SnakeUSBIP
 
-## [1.7.1] - 2025-12-19
+## [1.7.2] - 2025-12-19
+
+### Añadido
+- **Botón "Añadir Todos" en diálogo VPN** ➕
+  - Nuevo botón verde que añade todos los servidores VPN con USB/IP activo
+  - Permite conectar múltiples servidores Tailscale/ZeroTier de golpe
 
 ### Corregido
-- **Escaneo de redes VPN** 🌐
-  - Ahora el escaneo automático detecta subredes de Tailscale/ZeroTier (100.x.x.x)
-  - Eliminado filtro que excluía interfaces tipo "Tunnel"
-  - Permite encontrar servidores USB/IP conectados vía VPN
+- **Escaneo de red local separado de VPN** 🔍
+  - El botón "Escanear" ahora solo busca en la red LOCAL (192.168.x.x, etc.)
+  - Excluye automáticamente subredes de Tailscale (100.64.0.0/10)
+  - Para buscar servidores VPN, usar el botón "🌐 VPN"
+- **Botón VPN ahora lista dispositivos** 🔗
+  - Al seleccionar un peer y pulsar "Conectar", se listan sus dispositivos en el TreeView
+  - Ya no es necesario escribir manualmente la IP del servidor VPN
 
 ---
 
