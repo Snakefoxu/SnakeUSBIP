@@ -162,7 +162,7 @@ Portable/
 
 ## 📄 Licencia
 
-MIT License - Ver [LICENSE](LICENSE)
+GPL v3 (GNU General Public License) - Ver [LICENSE](LICENSE)
 
 ## 🙏 Créditos
 
