@@ -7,8 +7,10 @@
 # CÓDIGO FUENTE Y DESARROLLO (SOLO LOCAL)
 # ═══════════════════════════════════════════════════════════════════
 
-# Código fuente principal
-SnakeUSBIP.ps1
+# Código fuente principal - SE INCLUYE en el repo
+# SnakeUSBIP.ps1 → Subido para que usuarios puedan contribuir
+
+# Scripts de build (solo local)
 SnakeUSBIP.iss
 CleanDrivers.ps1
 
