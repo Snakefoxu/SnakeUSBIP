@@ -24,10 +24,9 @@ sfx_config.txt
 config.json
 
 # ═══════════════════════════════════════════════════════════════════
-# DOCUMENTACIÓN INTERNA (SOLO LOCAL)
-# ═══════════════════════════════════════════════════════════════════
-
-docs/
+# Documentación interna (solo local)
+docs/TAREAS_PENDIENTES.md
+docs/RASPBERRY_PI_SERVER.md
 ROADMAP.md
 
 # ═══════════════════════════════════════════════════════════════════
