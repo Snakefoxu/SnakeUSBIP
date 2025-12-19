@@ -35,7 +35,7 @@ Add-Type -AssemblyName System.Drawing
 $script:USBIP_PORT = 3240
 $script:SCAN_TIMEOUT_MS = 300
 $script:BUSID_DEFAULT = "1-1"
-$script:APP_VERSION = "1.7.0"
+$script:APP_VERSION = "1.7.1"
 $script:GITHUB_REPO = "Snakefoxu/SnakeUSBIP"
 
 # ============================================
@@ -266,9 +266,9 @@ function Add-LogEntry {
     
     $timestamp = Get-Date -Format "HH:mm:ss"
     $icon = switch ($Type) {
-        "Info"    { "ℹ️" }
+        "Info" { "ℹ️" }
         "Success" { "✅" }
-        "Error"   { "❌" }
+        "Error" { "❌" }
         "Warning" { "⚠️" }
     }
     
@@ -326,7 +326,8 @@ function Get-TailscalePeers {
             }
         }
         return $peers
-    } catch { return @() }
+    }
+    catch { return @() }
 }
 
 function Get-ZeroTierPeers {
@@ -338,14 +339,15 @@ function Get-ZeroTierPeers {
             if ($net.status -eq "OK" -and $net.assignedAddresses.Count -gt 0) {
                 $peers += [PSCustomObject]@{
                     Name   = $net.name
-                    IP     = ($net.assignedAddresses[0] -replace '/\d+$','')
+                    IP     = ($net.assignedAddresses[0] -replace '/\d+$', '')
                     Online = $true
                     Type   = "ZeroTier"
                 }
             }
         }
         return $peers
-    } catch { return @() }
+    }
+    catch { return @() }
 }
 
 function Get-AllVPNPeers {
@@ -363,7 +365,8 @@ function Test-USBIPOnPeer {
         $success = $result.AsyncWaitHandle.WaitOne(1000)
         $tcp.Close()
         return $success
-    } catch { return $false }
+    }
+    catch { return $false }
 }
 
 function Show-InternetConnectionDialog {
@@ -391,7 +394,8 @@ function Show-InternetConnectionDialog {
         $vpnName = if ($hasTailscale) { "Tailscale" } else { "ZeroTier" }
         $lblStatus.Text = "✅ $vpnName detectado. Buscando servidores USB/IP..."
         $lblStatus.ForeColor = [System.Drawing.Color]::LightGreen
-    } else {
+    }
+    else {
         $lblStatus.Text = "⚠️ No se detectó Tailscale ni ZeroTier.`nInstala uno para conectar por Internet."
         $lblStatus.ForeColor = [System.Drawing.Color]::Orange
     }
@@ -469,17 +473,17 @@ function Show-InternetConnectionDialog {
     
     # Habilitar botón al seleccionar
     $listPeers.Add_SelectedIndexChanged({
-        $btnConnect.Enabled = $listPeers.SelectedItems.Count -gt 0
-    })
+            $btnConnect.Enabled = $listPeers.SelectedItems.Count -gt 0
+        })
     
     # Acción conectar
     $btnConnect.Add_Click({
-        if ($listPeers.SelectedItems.Count -gt 0) {
-            $script:selectedVPNIP = $listPeers.SelectedItems[0].Tag
-            $dialog.DialogResult = [System.Windows.Forms.DialogResult]::OK
-            $dialog.Close()
-        }
-    })
+            if ($listPeers.SelectedItems.Count -gt 0) {
+                $script:selectedVPNIP = $listPeers.SelectedItems[0].Tag
+                $dialog.DialogResult = [System.Windows.Forms.DialogResult]::OK
+                $dialog.Close()
+            }
+        })
     
     # Info
     $lblInfo = New-Object System.Windows.Forms.Label
@@ -842,8 +846,8 @@ function Get-LocalIPAddress {
         $networkInterfaces = [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() | 
         Where-Object { 
             $_.OperationalStatus -eq 'Up' -and 
-            $_.NetworkInterfaceType -ne 'Loopback' -and
-            $_.NetworkInterfaceType -ne 'Tunnel'
+            $_.NetworkInterfaceType -ne 'Loopback'
+            # Nota: NO excluimos Tunnel para detectar Tailscale/ZeroTier
         }
         
         foreach ($interface in $networkInterfaces) {
@@ -2338,8 +2342,8 @@ function Show-MainWindow {
     
     # Click handler para botón VPN
     $vpnButton.Add_Click({
-        Show-InternetConnectionDialog
-    })
+            Show-InternetConnectionDialog
+        })
     
     # ============================================
     # TREEVIEW - ESTILO VIRTUALHERE
@@ -2424,9 +2428,9 @@ function Show-MainWindow {
     $clearLogButton.FlatAppearance.BorderSize = 0
     $logPanel.Controls.Add($clearLogButton)
     $clearLogButton.Add_Click({
-        $script:ActivityLog.Clear()
-        $script:logTextBox.Text = ""
-    })
+            $script:ActivityLog.Clear()
+            $script:logTextBox.Text = ""
+        })
     
     $script:logTextBox = New-Object System.Windows.Forms.TextBox
     $script:logTextBox.Multiline = $true

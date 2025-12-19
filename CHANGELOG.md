@@ -1,5 +1,15 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.7.1] - 2025-12-19
+
+### Corregido
+- **Escaneo de redes VPN** 🌐
+  - Ahora el escaneo automático detecta subredes de Tailscale/ZeroTier (100.x.x.x)
+  - Eliminado filtro que excluía interfaces tipo "Tunnel"
+  - Permite encontrar servidores USB/IP conectados vía VPN
+
+---
+
 ## [1.7.0] - 2025-12-19
 
 ### Añadido
