@@ -1,5 +1,17 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.7.3] - 2025-12-20
+
+### Changed
+- **Default language is now English** 🌐
+  - App starts in English by default (was Spanish)
+  - Spanish-speaking users can switch with one click
+- **Language button shows flag emojis** 🇬🇧🇪🇸
+  - `🇬🇧 EN` for English, `🇪🇸 ES` for Spanish
+  - Clearer visual indicator of current language
+
+---
+
 ## [1.7.2] - 2025-12-19
 
 ### Añadido
