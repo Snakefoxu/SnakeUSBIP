@@ -144,6 +144,18 @@ $script:Translations = @{
         "vpn_refresh"           = "Actualizar"
         "vpn_close"             = "Cerrar"
         "vpn_found_peers"       = "peers con USB/IP encontrados"
+        "vpn_detected"          = "detectado. Buscando servidores USB/IP..."
+        "vpn_install_hint"      = "Instala uno para conectar por Internet."
+        "vpn_no_peers_online"   = "VPN conectada pero no hay peers online."
+        "vpn_ensure_server"     = "Asegúrate que el servidor esté en la VPN."
+        "vpn_col_name"          = "Nombre"
+        "vpn_col_ip"            = "IP"
+        "vpn_col_status"        = "Estado"
+        "vpn_col_usbip"         = "USB/IP"
+        "vpn_online"            = "Online"
+        "vpn_offline"           = "Offline"
+        "vpn_info"              = "Tailscale/ZeroTier son gratuitos y no requieren abrir puertos en el router."
+        "vpn_add_all"           = "Todos"
     }
     "en" = @{
         # Main buttons
@@ -239,6 +251,18 @@ $script:Translations = @{
         "vpn_refresh"           = "Refresh"
         "vpn_close"             = "Close"
         "vpn_found_peers"       = "peers with USB/IP found"
+        "vpn_detected"          = "detected. Searching for USB/IP servers..."
+        "vpn_install_hint"      = "Install one to connect over Internet."
+        "vpn_no_peers_online"   = "VPN connected but no peers online."
+        "vpn_ensure_server"     = "Make sure the server is on the VPN."
+        "vpn_col_name"          = "Name"
+        "vpn_col_ip"            = "IP"
+        "vpn_col_status"        = "Status"
+        "vpn_col_usbip"         = "USB/IP"
+        "vpn_online"            = "Online"
+        "vpn_offline"           = "Offline"
+        "vpn_info"              = "Tailscale/ZeroTier are free and don't require port forwarding."
+        "vpn_add_all"           = "All"
     }
 }
 
@@ -392,11 +416,11 @@ function Show-InternetConnectionDialog {
     
     if ($hasTailscale -or $hasZeroTier) {
         $vpnName = if ($hasTailscale) { "Tailscale" } else { "ZeroTier" }
-        $lblStatus.Text = "✅ $vpnName detectado. Buscando servidores USB/IP..."
+        $lblStatus.Text = "✅ $vpnName $(Get-Text 'vpn_detected')"
         $lblStatus.ForeColor = [System.Drawing.Color]::LightGreen
     }
     else {
-        $lblStatus.Text = "⚠️ No se detectó Tailscale ni ZeroTier.`nInstala uno para conectar por Internet."
+        $lblStatus.Text = "⚠️ $(Get-Text 'vpn_no_vpn')`n$(Get-Text 'vpn_install_hint')"
         $lblStatus.ForeColor = [System.Drawing.Color]::Orange
     }
     $dialog.Controls.Add($lblStatus)
@@ -410,10 +434,10 @@ function Show-InternetConnectionDialog {
     $listPeers.BackColor = [System.Drawing.Color]::FromArgb(45, 45, 45)
     $listPeers.ForeColor = [System.Drawing.Color]::White
     $listPeers.Font = New-Object System.Drawing.Font("Segoe UI", 9)
-    [void]$listPeers.Columns.Add("Nombre", 140)
-    [void]$listPeers.Columns.Add("IP", 120)
-    [void]$listPeers.Columns.Add("Estado", 70)
-    [void]$listPeers.Columns.Add("USB/IP", 55)
+    [void]$listPeers.Columns.Add((Get-Text 'vpn_col_name'), 140)
+    [void]$listPeers.Columns.Add((Get-Text 'vpn_col_ip'), 120)
+    [void]$listPeers.Columns.Add((Get-Text 'vpn_col_status'), 70)
+    [void]$listPeers.Columns.Add((Get-Text 'vpn_col_usbip'), 55)
     $dialog.Controls.Add($listPeers)
     
     # Cargar peers
@@ -422,7 +446,7 @@ function Show-InternetConnectionDialog {
         foreach ($peer in $peers) {
             $item = New-Object System.Windows.Forms.ListViewItem($peer.Name)
             [void]$item.SubItems.Add($peer.IP)
-            [void]$item.SubItems.Add($(if ($peer.Online) { "🟢 Online" } else { "🔴 Offline" }))
+            [void]$item.SubItems.Add($(if ($peer.Online) { "🟢 $(Get-Text 'vpn_online')" } else { "🔴 $(Get-Text 'vpn_offline')" }))
             $hasUSBIP = Test-USBIPOnPeer -IP $peer.IP
             [void]$item.SubItems.Add($(if ($hasUSBIP) { "✅" } else { "❌" }))
             $item.Tag = $peer.IP
@@ -430,7 +454,7 @@ function Show-InternetConnectionDialog {
             [void]$listPeers.Items.Add($item)
         }
         if ($peers.Count -eq 0) {
-            $lblStatus.Text = "ℹ️ VPN conectada pero no hay peers online.`nAsegúrate que el servidor esté en la VPN."
+            $lblStatus.Text = "ℹ️ $(Get-Text 'vpn_no_peers_online')`n$(Get-Text 'vpn_ensure_server')"
             $lblStatus.ForeColor = [System.Drawing.Color]::Yellow
         }
     }
@@ -463,7 +487,7 @@ function Show-InternetConnectionDialog {
     $btnAddAll = New-Object System.Windows.Forms.Button
     $btnAddAll.Location = New-Object System.Drawing.Point(220, 250)
     $btnAddAll.Size = New-Object System.Drawing.Size(95, 30)
-    $btnAddAll.Text = "➕ Todos"
+    $btnAddAll.Text = "➕ $(Get-Text 'vpn_add_all')"
     $btnAddAll.BackColor = [System.Drawing.Color]::FromArgb(0, 128, 0)  # Verde
     $btnAddAll.ForeColor = [System.Drawing.Color]::White
     $btnAddAll.FlatStyle = "Flat"
@@ -489,7 +513,7 @@ function Show-InternetConnectionDialog {
     $btnConnect = New-Object System.Windows.Forms.Button
     $btnConnect.Location = New-Object System.Drawing.Point(320, 250)
     $btnConnect.Size = New-Object System.Drawing.Size(100, 30)
-    $btnConnect.Text = "🔗 Conectar"
+    $btnConnect.Text = "🔗 $(Get-Text 'vpn_connect')"
     $btnConnect.BackColor = [System.Drawing.Color]::FromArgb(255, 140, 0)
     $btnConnect.ForeColor = [System.Drawing.Color]::White
     $btnConnect.FlatStyle = "Flat"
@@ -516,7 +540,7 @@ function Show-InternetConnectionDialog {
     $lblInfo = New-Object System.Windows.Forms.Label
     $lblInfo.Location = New-Object System.Drawing.Point(20, 295)
     $lblInfo.Size = New-Object System.Drawing.Size(400, 35)
-    $lblInfo.Text = "💡 Tailscale/ZeroTier son gratuitos y no requieren`n   abrir puertos en el router (port forwarding)."
+    $lblInfo.Text = "💡 $(Get-Text 'vpn_info')"
     $lblInfo.ForeColor = [System.Drawing.Color]::Gray
     $lblInfo.Font = New-Object System.Drawing.Font("Segoe UI", 8)
     $dialog.Controls.Add($lblInfo)
