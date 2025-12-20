@@ -35,7 +35,7 @@ Add-Type -AssemblyName System.Drawing
 $script:USBIP_PORT = 3240
 $script:SCAN_TIMEOUT_MS = 300
 $script:BUSID_DEFAULT = "1-1"
-$script:APP_VERSION = "1.7.2"
+$script:APP_VERSION = "1.7.3"
 $script:GITHUB_REPO = "Snakefoxu/SnakeUSBIP"
 
 # ============================================
@@ -47,7 +47,7 @@ $script:MaxLogEntries = 100
 # ============================================
 # SISTEMA MULTI-IDIOMA
 # ============================================
-$script:Language = "es"  # Idioma por defecto
+$script:Language = "en"  # Default language (English)
 
 $script:Translations = @{
     "es" = @{
@@ -612,7 +612,7 @@ function Get-AppConfig {
         Favorites          = @()
         AutoConnectOnStart = $false
         Servers            = @()
-        Language           = "es"
+        Language           = "en"
         WizardCompleted    = $false  # Se pone a true cuando el usuario completa o salta el wizard
     }
     
@@ -635,7 +635,7 @@ function Get-AppConfig {
             
             # Idioma
             if (-not $config.Language) { 
-                $config | Add-Member -NotePropertyName "Language" -NotePropertyValue "es" -Force 
+                $config | Add-Member -NotePropertyName "Language" -NotePropertyValue "en" -Force 
             }
             
             # Wizard completado
@@ -2064,7 +2064,7 @@ function Show-MainWindow {
     
     # Botón de idioma (toggle ES/EN) - muestra idioma ACTUAL
     $langButton = New-Object System.Windows.Forms.Button
-    $langButton.Text = if ($script:Language -eq "es") { "🌐 ES" } else { "🌐 EN" }
+    $langButton.Text = if ($script:Language -eq "es") { "🇪🇸 ES" } else { "🇬🇧 EN" }
     $langButton.Size = New-Object System.Drawing.Size(55, 26)
     $langButton.Location = New-Object System.Drawing.Point(280, 12)
     $langButton.FlatStyle = "Flat"
@@ -2780,12 +2780,12 @@ function Show-MainWindow {
             # Toggle idioma
             if ($script:Language -eq "es") {
                 $script:Language = "en"
-                $langButton.Text = "🌐 EN"
+                $langButton.Text = "🇬🇧 EN"
                 $updateButton.Text = "⬆️ Update"
             }
             else {
                 $script:Language = "es"
-                $langButton.Text = "🌐 ES"
+                $langButton.Text = "🇪🇸 ES"
                 $updateButton.Text = "⬆️ Actualizar"
             }
         
