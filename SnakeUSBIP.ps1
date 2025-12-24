@@ -120,6 +120,20 @@ $script:Translations = @{
         "title_main"             = "SnakeFoxu    USB/IP Manager"
         "title_language"         = "🌐 ESP"
         
+        # SSH Dialog
+        "ssh_title"              = "SSH - Configurar Servidor USB/IP"
+        "ssh_instructions"       = "📋 Instrucciones para Linux/Raspberry Pi:"
+        "ssh_step1"              = "1. Instalar paquetes:"
+        "ssh_step2"              = "2. Cargar módulo del kernel:"
+        "ssh_step3"              = "3. Iniciar servicio:"
+        "ssh_step4"              = "4. Ver dispositivos USB disponibles:"
+        "ssh_step5"              = "5. Exportar dispositivo (ej: 1-1.4):"
+        "ssh_step6"              = "6. Auto-inicio (agregar a /etc/rc.local):"
+        "ssh_user"               = "Usuario:"
+        "ssh_connect"            = "🔗 Conectar"
+        "ssh_copy"               = "📋 Copiar comandos"
+        "ssh_close"              = "Cerrar"
+        
         # Log
         "log_title"              = "📋 Log de Actividad"
         "log_connected"          = "Conectado"
@@ -255,6 +269,20 @@ $script:Translations = @{
         # Title
         "title_main"             = "SnakeFoxu    USB/IP Manager"
         "title_language"         = "🌐 ENG"
+        
+        # SSH Dialog
+        "ssh_title"              = "SSH - Configure USB/IP Server"
+        "ssh_instructions"       = "📋 Instructions for Linux/Raspberry Pi:"
+        "ssh_step1"              = "1. Install packages:"
+        "ssh_step2"              = "2. Load kernel module:"
+        "ssh_step3"              = "3. Start service:"
+        "ssh_step4"              = "4. List available USB devices:"
+        "ssh_step5"              = "5. Export device (e.g.: 1-1.4):"
+        "ssh_step6"              = "6. Auto-start (add to /etc/rc.local):"
+        "ssh_user"               = "User:"
+        "ssh_connect"            = "🔗 Connect"
+        "ssh_copy"               = "📋 Copy commands"
+        "ssh_close"              = "Close"
         
         # Log
         "log_title"              = "📋 Activity Log"
@@ -2457,7 +2485,7 @@ function Show-MainWindow {
         
             # Crear ventana de instrucciones SSH
             $sshForm = New-Object System.Windows.Forms.Form
-            $sshForm.Text = "SSH - Configurar Servidor USB/IP"
+            $sshForm.Text = Get-Text "ssh_title"
             $sshForm.Size = New-Object System.Drawing.Size(480, 450)
             $sshForm.StartPosition = "CenterScreen"
             $sshForm.FormBorderStyle = "FixedDialog"
@@ -2466,19 +2494,19 @@ function Show-MainWindow {
         
             # Instrucciones
             $instructionsLabel = New-Object System.Windows.Forms.Label
-            $instructionsLabel.Text = "📋 Instrucciones para Linux/Raspberry Pi:`n`n" +
-            "1. Instalar paquetes:`n" +
+            $instructionsLabel.Text = "$(Get-Text 'ssh_instructions')`n`n" +
+            "$(Get-Text 'ssh_step1')`n" +
             "   sudo apt update`n" +
             "   sudo apt install usbip hwdata usbutils`n`n" +
-            "2. Cargar módulo del kernel:`n" +
+            "$(Get-Text 'ssh_step2')`n" +
             "   sudo modprobe usbip_host`n`n" +
-            "3. Iniciar servicio:`n" +
+            "$(Get-Text 'ssh_step3')`n" +
             "   sudo usbipd`n`n" +
-            "4. Ver dispositivos USB disponibles:`n" +
+            "$(Get-Text 'ssh_step4')`n" +
             "   usbip list -l`n`n" +
-            "5. Exportar dispositivo (ej: 1-1.4):`n" +
+            "$(Get-Text 'ssh_step5')`n" +
             "   sudo usbip bind -b 1-1.4`n`n" +
-            "6. Auto-inicio (agregar a /etc/rc.local):`n" +
+            "$(Get-Text 'ssh_step6')`n" +
             "   modprobe usbip_host && usbipd -D"
             $instructionsLabel.Font = New-Object System.Drawing.Font("Consolas", 9)
             $instructionsLabel.ForeColor = [System.Drawing.Color]::FromArgb(200, 200, 200)
@@ -2494,7 +2522,7 @@ function Show-MainWindow {
             $sshForm.Controls.Add($connPanel)
         
             $userLabel = New-Object System.Windows.Forms.Label
-            $userLabel.Text = "Usuario:"
+            $userLabel.Text = Get-Text "ssh_user"
             $userLabel.ForeColor = [System.Drawing.Color]::White
             $userLabel.Location = New-Object System.Drawing.Point(10, 15)
             $userLabel.AutoSize = $true
@@ -2524,7 +2552,7 @@ function Show-MainWindow {
             $connPanel.Controls.Add($sshIpTextBox)
         
             $connectBtn = New-Object System.Windows.Forms.Button
-            $connectBtn.Text = "🔗 Conectar"
+            $connectBtn.Text = Get-Text "ssh_connect"
             $connectBtn.Size = New-Object System.Drawing.Size(100, 28)
             $connectBtn.Location = New-Object System.Drawing.Point(345, 10)
             $connectBtn.FlatStyle = "Flat"
@@ -2534,7 +2562,7 @@ function Show-MainWindow {
             $connPanel.Controls.Add($connectBtn)
         
             $copyBtn = New-Object System.Windows.Forms.Button
-            $copyBtn.Text = "📋 Copiar comandos"
+            $copyBtn.Text = Get-Text "ssh_copy"
             $copyBtn.Size = New-Object System.Drawing.Size(130, 28)
             $copyBtn.Location = New-Object System.Drawing.Point(10, 45)
             $copyBtn.FlatStyle = "Flat"
