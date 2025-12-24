@@ -2,7 +2,7 @@
 
 🌐 **Language / Idioma:** **English** | [Español](README_ES.md)
 
-**v1.7.3** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [🌐 VPN Connection](docs/VPN_INTERNET_EN.md)
+**v1.8.0** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [🌐 VPN Connection](docs/VPN_INTERNET_EN.md)
 
 **Share and connect USB devices over network (LAN/WiFi/Internet) easily.**
 Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and 11. Compatible with **Raspberry Pi, Orange Pi, Banana Pi, OpenWRT routers, CrealityBox** and any ARM/x86 board running Linux. Forget the command line; use our **modern GUI** to connect printers, scanners, and dongles remotely.
@@ -35,18 +35,18 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 
 ## 📦 Installation
 
-### Option 1: Portable (Recommended)
-1. Download from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
-   - **Windows x64**: `SnakeUSBIP_v1.7.2_Portable.zip`
-   - **Windows ARM64**: `SnakeUSBIP_v1.7.2_Portable-ARM64.zip` (Surface Pro X, etc.)
-2. Extract the ZIP to any folder
-3. Run `SnakeUSBIP.exe` as Administrator
-4. Done!
+### Opción 1: Portable (Recomendado)
+1. Descarga desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
+   - **Windows x64**: `SnakeUSBIP_v1.8.0_Portable.zip`
+   - **Windows ARM64**: `SnakeUSBIP_v1.8.0_Portable-ARM64.zip` (Surface Pro X, etc.)
+2. Extrae el ZIP en cualquier carpeta
+3. Ejecuta `SnakeUSBIP.exe` como Administrador
+4. ¡Listo!
 
-### Option 2: Installer (x64 only)
-1. Download `SnakeUSBIP_Setup_v1.7.0.exe` from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
-2. Run the installer as Administrator
-3. Follow the installation wizard
+### Opción 2: Instalador (solo x64)
+1. Descarga `SnakeUSBIP_Setup_v1.7.0.exe` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+2. Ejecuta el instalador como Administrador
+3. Sigue el asistente de instalación
 
 ### Option 3: From source code
 ```powershell
