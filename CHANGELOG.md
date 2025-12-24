@@ -1,5 +1,28 @@
 # CHANGELOG - SnakeUSBIP
 
+## [1.8.0] - 2025-12-24
+
+### Añadido
+- **Auto-Reconexión** 🔄
+  - Reconexión automática de dispositivos favoritos al iniciar la aplicación.
+  - Opciones de configuración para activar/desactivar.
+- **Modo Oscuro / Claro** 🌙☀️
+  - Soporte completo para temas visuales.
+  - Detección inicial basada en el sistema o preferencia del usuario.
+- **Notificaciones Toast** 🔔
+  - Notificaciones no intrusivas para estados de conexión/desconexión y errores.
+- **Soporte ARM64** 🚀
+  - Release oficial para dispositivos **Windows on ARM** (Surface Pro X, etc.).
+  - Paquete portable nativo para ARM64.
+
+### Mejorado
+- **Interfaz Gráfica** 🎨
+  - Refinamiento general de la interfaz de usuario.
+- **Internals** 🔧
+  - Limpieza y optimización del código base.
+
+---
+
 ## [1.7.3] - 2025-12-20
 
 ### Changed
