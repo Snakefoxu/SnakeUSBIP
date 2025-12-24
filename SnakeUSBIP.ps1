@@ -105,6 +105,8 @@ $script:Translations = @{
         "dlg_server_ip"          = "IP del Servidor:"
         "dlg_confirm"            = "Confirmar"
         "dlg_cancel"             = "Cancelar"
+        "enter_ip"               = "Introduce una IP de servidor"
+        "enter_ip_ssh"           = "Introduce la IP del servidor para SSH"
         
         # Tooltips
         "tooltip_busid"          = "Bus ID"
@@ -239,6 +241,8 @@ $script:Translations = @{
         "dlg_server_ip"          = "Server IP:"
         "dlg_confirm"            = "Confirm"
         "dlg_cancel"             = "Cancel"
+        "enter_ip"               = "Enter a server IP"
+        "enter_ip_ssh"           = "Enter the server IP for SSH"
         
         # Tooltips
         "tooltip_busid"          = "Bus ID"
@@ -1153,7 +1157,7 @@ function Start-SubnetScan {
     )
     
     Add-LogEntry -Type "Info" -Message "$(Get-Text 'log_scan_start') $SubnetBase.0/24"
-    $StatusLabel.Text = "Escaneando $SubnetBase.0/24..."
+    $StatusLabel.Text = "$(Get-Text 'status_scanning') $SubnetBase.0/24"
     $StatusLabel.ForeColor = [System.Drawing.Color]::FromArgb(86, 156, 214)
     $ProgressBar.Value = 0
     $ProgressBar.Visible = $true
@@ -1252,12 +1256,12 @@ function Start-SubnetScan {
                 $ProgressBar.Visible = $false
             
                 if ($script:foundServers.Count -eq 0) {
-                    $StatusLabel.Text = "No se encontró servidor en la subred"
+                    $StatusLabel.Text = Get-Text "status_no_server"
                     $StatusLabel.ForeColor = [System.Drawing.Color]::FromArgb(255, 200, 100)
                     Add-LogEntry -Type "Warning" -Message "$(Get-Text 'log_scan_none')"
                 }
                 else {
-                    $StatusLabel.Text = "✓ $($script:foundServers.Count) servidor(es) encontrado(s)"
+                    $StatusLabel.Text = "✓ $($script:foundServers.Count) $(Get-Text 'status_servers_found')"
                     $StatusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
                     Add-LogEntry -Type "Success" -Message "$($script:foundServers.Count) $(Get-Text 'log_scan_found')"
                 }
@@ -2093,7 +2097,7 @@ function Show-MainWindow {
     # ============================================
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "SnakeFoxu - USB/IP Manager"
-    $form.Size = New-Object System.Drawing.Size(520, 720)
+    $form.Size = New-Object System.Drawing.Size(560, 720)
     $form.StartPosition = "CenterScreen"
     $form.FormBorderStyle = "None"  # Sin barra de Windows, estilo moderno
     $form.MaximizeBox = $false
@@ -2207,7 +2211,7 @@ function Show-MainWindow {
     # PANEL TITULO
     # ============================================
     $titlePanel = New-Object System.Windows.Forms.Panel
-    $titlePanel.Size = New-Object System.Drawing.Size(520, 50)
+    $titlePanel.Size = New-Object System.Drawing.Size(560, 50)
     $titlePanel.Location = New-Object System.Drawing.Point(0, 0)
     $titlePanel.BackColor = [System.Drawing.Color]::FromArgb(45, 45, 48)
     $titlePanel.Cursor = [System.Windows.Forms.Cursors]::SizeAll  # Cursor de arrastre
@@ -2256,8 +2260,8 @@ function Show-MainWindow {
     # Botón de idioma (toggle ES/EN) - muestra idioma ACTUAL
     $langButton = New-Object System.Windows.Forms.Button
     $langButton.Text = if ($script:Language -eq "es") { "🌐 ES" } else { "🌐 EN" }
-    $langButton.Size = New-Object System.Drawing.Size(55, 26)
-    $langButton.Location = New-Object System.Drawing.Point(280, 12)
+    $langButton.Size = New-Object System.Drawing.Size(50, 26)
+    $langButton.Location = New-Object System.Drawing.Point(290, 12)
     $langButton.FlatStyle = "Flat"
     $langButton.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66)
     $langButton.ForeColor = [System.Drawing.Color]::White
@@ -2269,11 +2273,26 @@ function Show-MainWindow {
     $langButton.Add_MouseEnter({ $this.BackColor = [System.Drawing.Color]::FromArgb(90, 90, 95) })
     $langButton.Add_MouseLeave({ $this.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66) })
     
+    # Botón de tema (toggle dark/light)
+    $themeButton = New-Object System.Windows.Forms.Button
+    $themeButton.Text = "🌙"
+    $themeButton.Size = New-Object System.Drawing.Size(28, 26)
+    $themeButton.Location = New-Object System.Drawing.Point(345, 12)
+    $themeButton.FlatStyle = "Flat"
+    $themeButton.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66)
+    $themeButton.ForeColor = [System.Drawing.Color]::White
+    $themeButton.Font = New-Object System.Drawing.Font("Segoe UI", 9)
+    $themeButton.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $themeButton.FlatAppearance.BorderSize = 0
+    $titlePanel.Controls.Add($themeButton)
+    $themeButton.Add_MouseEnter({ $this.BackColor = [System.Drawing.Color]::FromArgb(90, 90, 95) })
+    $themeButton.Add_MouseLeave({ $this.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66) })
+    
     # Botón de actualización - más descriptivo
     $updateButton = New-Object System.Windows.Forms.Button
     $updateButton.Text = if ($script:Language -eq "es") { "⬆️ Actualizar" } else { "⬆️ Update" }
-    $updateButton.Size = New-Object System.Drawing.Size(90, 26)
-    $updateButton.Location = New-Object System.Drawing.Point(345, 12)
+    $updateButton.Size = New-Object System.Drawing.Size(80, 26)
+    $updateButton.Location = New-Object System.Drawing.Point(378, 12)
     $updateButton.FlatStyle = "Flat"
     $updateButton.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66)
     $updateButton.ForeColor = [System.Drawing.Color]::White
@@ -2293,7 +2312,7 @@ function Show-MainWindow {
     # Botón Minimizar (amarillo)
     $minimizeBtn = New-Object System.Windows.Forms.Button
     $minimizeBtn.Size = New-Object System.Drawing.Size(14, 14)
-    $minimizeBtn.Location = New-Object System.Drawing.Point(460, 18)
+    $minimizeBtn.Location = New-Object System.Drawing.Point(500, 18)
     $minimizeBtn.FlatStyle = "Flat"
     $minimizeBtn.BackColor = [System.Drawing.Color]::FromArgb(255, 189, 68)  # Amarillo macOS
     $minimizeBtn.FlatAppearance.BorderSize = 0
@@ -2308,7 +2327,7 @@ function Show-MainWindow {
     # Botón Maximizar/Restaurar (verde)
     $maximizeBtn = New-Object System.Windows.Forms.Button
     $maximizeBtn.Size = New-Object System.Drawing.Size(14, 14)
-    $maximizeBtn.Location = New-Object System.Drawing.Point(478, 18)
+    $maximizeBtn.Location = New-Object System.Drawing.Point(518, 18)
     $maximizeBtn.FlatStyle = "Flat"
     $maximizeBtn.BackColor = [System.Drawing.Color]::FromArgb(0, 202, 78)  # Verde macOS
     $maximizeBtn.FlatAppearance.BorderSize = 0
@@ -2322,7 +2341,7 @@ function Show-MainWindow {
     # Botón Cerrar (rojo)
     $closeBtn = New-Object System.Windows.Forms.Button
     $closeBtn.Size = New-Object System.Drawing.Size(14, 14)
-    $closeBtn.Location = New-Object System.Drawing.Point(496, 18)
+    $closeBtn.Location = New-Object System.Drawing.Point(536, 18)
     $closeBtn.FlatStyle = "Flat"
     $closeBtn.BackColor = [System.Drawing.Color]::FromArgb(255, 96, 92)  # Rojo macOS
     $closeBtn.FlatAppearance.BorderSize = 0
@@ -2364,7 +2383,7 @@ function Show-MainWindow {
     # PANEL SERVIDOR
     # ============================================
     $serverPanel = New-Object System.Windows.Forms.Panel
-    $serverPanel.Size = New-Object System.Drawing.Size(495, 35)
+    $serverPanel.Size = New-Object System.Drawing.Size(535, 35)
     $serverPanel.Location = New-Object System.Drawing.Point(12, 58)
     $serverPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
     $form.Controls.Add($serverPanel)
@@ -2568,7 +2587,7 @@ function Show-MainWindow {
     $vpnButton = New-Object System.Windows.Forms.Button
     $vpnButton.Text = Get-Text "btn_vpn"
     $vpnButton.Size = New-Object System.Drawing.Size(60, 26)
-    $vpnButton.Location = New-Object System.Drawing.Point(426, 4)
+    $vpnButton.Location = New-Object System.Drawing.Point(470, 4)
     $vpnButton.FlatStyle = "Flat"
     $vpnButton.BackColor = [System.Drawing.Color]::FromArgb(0, 128, 128)  # Teal
     $vpnButton.ForeColor = [System.Drawing.Color]::White
@@ -2608,7 +2627,7 @@ function Show-MainWindow {
     # TREEVIEW - ESTILO VIRTUALHERE
     # ============================================
     $treeView = New-Object System.Windows.Forms.TreeView
-    $treeView.Size = New-Object System.Drawing.Size(496, 280)
+    $treeView.Size = New-Object System.Drawing.Size(536, 280)
     $treeView.Location = New-Object System.Drawing.Point(12, 100)
     $treeView.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
     $treeView.ForeColor = [System.Drawing.Color]::White
@@ -2661,7 +2680,7 @@ function Show-MainWindow {
     # PANEL DE LOG DE ACTIVIDAD
     # ============================================
     $logPanel = New-Object System.Windows.Forms.Panel
-    $logPanel.Size = New-Object System.Drawing.Size(496, 120)
+    $logPanel.Size = New-Object System.Drawing.Size(536, 120)
     $logPanel.Location = New-Object System.Drawing.Point(12, 385)
     $logPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
     $logPanel.BorderStyle = "FixedSingle"
@@ -2677,8 +2696,8 @@ function Show-MainWindow {
     
     $clearLogButton = New-Object System.Windows.Forms.Button
     $clearLogButton.Text = Get-Text "log_clear"
-    $clearLogButton.Size = New-Object System.Drawing.Size(60, 20)
-    $clearLogButton.Location = New-Object System.Drawing.Point(425, 2)
+    $clearLogButton.Size = New-Object System.Drawing.Size(55, 18)
+    $clearLogButton.Location = New-Object System.Drawing.Point(474, 4)
     $clearLogButton.FlatStyle = "Flat"
     $clearLogButton.BackColor = [System.Drawing.Color]::FromArgb(62, 62, 66)
     $clearLogButton.ForeColor = [System.Drawing.Color]::White
@@ -2695,11 +2714,11 @@ function Show-MainWindow {
     $script:logTextBox.Multiline = $true
     $script:logTextBox.ReadOnly = $true
     $script:logTextBox.ScrollBars = "Vertical"
-    $script:logTextBox.Size = New-Object System.Drawing.Size(486, 90)
+    $script:logTextBox.Size = New-Object System.Drawing.Size(526, 90)
     $script:logTextBox.Location = New-Object System.Drawing.Point(3, 25)
     $script:logTextBox.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
     $script:logTextBox.ForeColor = [System.Drawing.Color]::FromArgb(200, 200, 200)
-    $script:logTextBox.Font = New-Object System.Drawing.Font("Consolas", 8)
+    $script:logTextBox.Font = New-Object System.Drawing.Font("Cascadia Mono", 8)
     $script:logTextBox.BorderStyle = "None"
     $logPanel.Controls.Add($script:logTextBox)
     
@@ -2707,7 +2726,7 @@ function Show-MainWindow {
     # BARRA DE PROGRESO
     # ============================================
     $progressBar = New-Object System.Windows.Forms.ProgressBar
-    $progressBar.Size = New-Object System.Drawing.Size(496, 5)
+    $progressBar.Size = New-Object System.Drawing.Size(536, 5)
     $progressBar.Location = New-Object System.Drawing.Point(12, 510)
     $progressBar.Style = "Continuous"
     $progressBar.Visible = $false
@@ -2717,7 +2736,7 @@ function Show-MainWindow {
     # PANEL ESTADO Y DRIVERS
     # ============================================
     $statusPanel = New-Object System.Windows.Forms.Panel
-    $statusPanel.Size = New-Object System.Drawing.Size(496, 100)
+    $statusPanel.Size = New-Object System.Drawing.Size(536, 100)
     $statusPanel.Location = New-Object System.Drawing.Point(12, 520)
     $statusPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
     $form.Controls.Add($statusPanel)
@@ -2755,9 +2774,9 @@ function Show-MainWindow {
     $installDriversButton.Add_MouseLeave({ $this.BackColor = [System.Drawing.Color]::FromArgb(75, 0, 130) })
     
     $uninstallDriversButton = New-Object System.Windows.Forms.Button
-    $uninstallDriversButton.Text = "Desinstalar"
+    $uninstallDriversButton.Text = Get-Text "btn_uninstall_drivers"
     $uninstallDriversButton.Size = New-Object System.Drawing.Size(80, 24)
-    $uninstallDriversButton.Location = New-Object System.Drawing.Point(355, 48)
+    $uninstallDriversButton.Location = New-Object System.Drawing.Point(395, 48)
     $uninstallDriversButton.FlatStyle = "Flat"
     $uninstallDriversButton.BackColor = [System.Drawing.Color]::FromArgb(100, 50, 50)
     $uninstallDriversButton.ForeColor = [System.Drawing.Color]::White
@@ -3006,6 +3025,36 @@ function Show-MainWindow {
             $statusLabel.Text = Get-Text "status_ready"
         })
     
+    # Toggle tema dark/light
+    $themeButton.Add_Click({
+            if ($script:CurrentTheme -eq "dark") {
+                $script:CurrentTheme = "light"
+                $themeButton.Text = "☀️"
+                # Aplicar tema claro
+                $form.BackColor = [System.Drawing.Color]::FromArgb(240, 240, 240)
+                $titlePanel.BackColor = [System.Drawing.Color]::FromArgb(220, 220, 220)
+                $serverPanel.BackColor = [System.Drawing.Color]::FromArgb(230, 230, 230)
+                $treeView.BackColor = [System.Drawing.Color]::FromArgb(255, 255, 255)
+                $treeView.ForeColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+                $logPanel.BackColor = [System.Drawing.Color]::FromArgb(230, 230, 230)
+                $logTextBox.BackColor = [System.Drawing.Color]::FromArgb(255, 255, 255)
+                $logTextBox.ForeColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+            }
+            else {
+                $script:CurrentTheme = "dark"
+                $themeButton.Text = "🌙"
+                # Aplicar tema oscuro
+                $form.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+                $titlePanel.BackColor = [System.Drawing.Color]::FromArgb(45, 45, 48)
+                $serverPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
+                $treeView.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+                $treeView.ForeColor = [System.Drawing.Color]::FromArgb(220, 220, 220)
+                $logPanel.BackColor = [System.Drawing.Color]::FromArgb(37, 37, 38)
+                $logTextBox.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+                $logTextBox.ForeColor = [System.Drawing.Color]::FromArgb(220, 220, 220)
+            }
+        })
+    
     # Buscar actualizaciones
     $updateButton.Add_Click({
             $statusLabel.Text = Get-Text "update_checking"
@@ -3109,7 +3158,7 @@ function Show-MainWindow {
                 Update-ConnectedDevices
             }
             else {
-                $statusLabel.Text = "Introduce una IP de servidor"
+                $statusLabel.Text = Get-Text "enter_ip"
                 $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(255, 200, 100)
             }
         })
@@ -3119,7 +3168,7 @@ function Show-MainWindow {
             $serverIP = $ipTextBox.Text.Trim()
         
             if (-not $serverIP) {
-                $statusLabel.Text = "Introduce la IP del servidor para SSH"
+                $statusLabel.Text = Get-Text "enter_ip_ssh"
                 $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(255, 200, 100)
                 return
             }
@@ -3323,7 +3372,7 @@ function Show-MainWindow {
             elseif ($nodeType -eq "connected") {
                 $port = $selectedNode.Tag.Port
                 
-                $statusLabel.Text = "Desconectando puerto $port..."
+                $statusLabel.Text = "$(Get-Text 'status_disconnecting') $port..."
                 $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(86, 156, 214)
                 $form.Refresh()
                 
