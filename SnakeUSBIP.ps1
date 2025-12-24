@@ -184,14 +184,6 @@ $script:Translations = @{
         "subnet_scanning"        = "Iniciando escaneo"
         "subnet_none_found"      = "No se encontraron subredes válidas"
         "subnet_not_selected"    = "No se seleccionó subred"
-        
-        # Status Labels
-        "status_connecting"      = "Conectando"
-        "status_disconnecting"   = "Desconectando puerto"
-        "status_connected"       = "Conectado"
-        "status_disconnected"    = "Desconectado puerto"
-        "status_reconnecting"    = "Reconectando"
-        "status_favorites"       = "favorito(s)"
     }
     "en" = @{
         # Main buttons
@@ -326,14 +318,6 @@ $script:Translations = @{
         "subnet_scanning"        = "Starting scan"
         "subnet_none_found"      = "No valid subnets found"
         "subnet_not_selected"    = "No subnet selected"
-        
-        # Status Labels
-        "status_connecting"      = "Connecting"
-        "status_disconnecting"   = "Disconnecting port"
-        "status_connected"       = "Connected"
-        "status_disconnected"    = "Disconnected port"
-        "status_reconnecting"    = "Reconnecting"
-        "status_favorites"       = "favorite(s)"
     }
 }
 
