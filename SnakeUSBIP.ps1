@@ -1011,7 +1011,8 @@ function Get-LocalIPAddress {
         Where-Object { 
             $_.OperationalStatus -eq 'Up' -and 
             $_.NetworkInterfaceType -ne 'Loopback' -and
-            $_.NetworkInterfaceType -ne 'Tunnel'  # Excluir VPNs
+            $_.NetworkInterfaceType -ne 'Tunnel' -and # Excluir VPNs
+            $_.Name -notmatch 'VMware|VirtualBox|Hyper-V|vEthernet|WSL'  # Excluir virtuales
         } |
         Sort-Object { 
             # Priorizar interfaces físicas
@@ -1045,6 +1046,54 @@ function Get-SubnetBase {
         return $Matches[1]
     }
     return $null
+}
+
+function Get-AllLocalSubnets {
+    <#
+    .SYNOPSIS
+        Obtiene todas las subredes locales válidas (excluyendo VPNs y virtuales)
+    .RETURNS
+        Array de objetos con Name, IP, Subnet
+    #>
+    $subnets = [System.Collections.ArrayList]::new()
+    $physicalTypes = @('Ethernet', 'Wireless80211', 'GigabitEthernet')
+    
+    try {
+        $networkInterfaces = [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces() | 
+        Where-Object { 
+            $_.OperationalStatus -eq 'Up' -and 
+            $_.NetworkInterfaceType -ne 'Loopback' -and
+            $_.NetworkInterfaceType -ne 'Tunnel' -and
+            $_.Name -notmatch 'VMware|VirtualBox|Hyper-V|vEthernet|WSL|Tailscale|ZeroTier'
+        } |
+        Sort-Object { 
+            if ($_.NetworkInterfaceType -in $physicalTypes) { 0 } else { 1 }
+        }
+        
+        foreach ($interface in $networkInterfaces) {
+            $ipProps = $interface.GetIPProperties()
+            $ipv4Addresses = $ipProps.UnicastAddresses | 
+            Where-Object { $_.Address.AddressFamily -eq 'InterNetwork' }
+            
+            foreach ($addr in $ipv4Addresses) {
+                $ip = $addr.Address.ToString()
+                # Excluir link-local, loopback, CGNAT
+                if ($ip -notmatch '^(169\.254\.|127\.|100\.(6[4-9]|[7-9][0-9]|1[0-2][0-7])\.)') {
+                    $subnet = Get-SubnetBase -IPAddress $ip
+                    if ($subnet) {
+                        [void]$subnets.Add(@{
+                                Name   = $interface.Name
+                                IP     = $ip
+                                Subnet = $subnet
+                            })
+                    }
+                }
+            }
+        }
+    }
+    catch { }
+    
+    return $subnets
 }
 
 function Test-PortOpen {
@@ -2129,6 +2178,7 @@ function Show-MainWindow {
                 catch { }
                 $script:notifyIcon = $null
             }
+            [System.Windows.Forms.Application]::Exit()
         })
     
 
@@ -3510,11 +3560,75 @@ function Show-MainWindow {
         
             Update-ConnectedDevices
         
-            # Auto-escanear red
-            $localIP = Get-LocalIPAddress
-            if ($localIP) {
-                $subnetBase = Get-SubnetBase -IPAddress $localIP
-                if ($subnetBase) {
+            # Auto-escanear red (con selector si hay múltiples subredes)
+            $allSubnets = @(Get-AllLocalSubnets)  # Forzar a array
+            
+            Add-LogEntry -Type "Info" -Message "Subredes detectadas: $($allSubnets.Count)"
+            
+            if ($allSubnets.Count -gt 0) {
+                $selectedSubnet = $null
+                
+                if ($allSubnets.Count -eq 1) {
+                    # Solo una subred, usarla directamente
+                    $selectedSubnet = $allSubnets[0].Subnet
+                    Add-LogEntry -Type "Info" -Message "Auto-seleccionada: $selectedSubnet"
+                }
+                else {
+                    # Múltiples subredes, mostrar selector
+                    $subnetForm = New-Object System.Windows.Forms.Form
+                    $subnetForm.Text = if ($script:Language -eq "es") { "Seleccionar Red" } else { "Select Network" }
+                    $subnetForm.Size = New-Object System.Drawing.Size(350, 200)
+                    $subnetForm.StartPosition = "CenterScreen"
+                    $subnetForm.FormBorderStyle = "FixedDialog"
+                    $subnetForm.MaximizeBox = $false
+                    $subnetForm.MinimizeBox = $false
+                    $subnetForm.BackColor = [System.Drawing.Color]::FromArgb(45, 45, 48)
+                    $subnetForm.ForeColor = [System.Drawing.Color]::White
+                    
+                    $lblInfo = New-Object System.Windows.Forms.Label
+                    $lblInfo.Text = if ($script:Language -eq "es") { "Se encontraron múltiples redes. Selecciona una:" } else { "Multiple networks found. Select one:" }
+                    $lblInfo.Location = New-Object System.Drawing.Point(15, 15)
+                    $lblInfo.AutoSize = $true
+                    $subnetForm.Controls.Add($lblInfo)
+                    
+                    $listBox = New-Object System.Windows.Forms.ListBox
+                    $listBox.Size = New-Object System.Drawing.Size(310, 80)
+                    $listBox.Location = New-Object System.Drawing.Point(15, 45)
+                    $listBox.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 30)
+                    $listBox.ForeColor = [System.Drawing.Color]::White
+                    $listBox.Font = New-Object System.Drawing.Font("Consolas", 10)
+                    
+                    foreach ($net in $allSubnets) {
+                        [void]$listBox.Items.Add("$($net.Subnet).0/24  [$($net.Name)]")
+                    }
+                    $listBox.SelectedIndex = 0
+                    $subnetForm.Controls.Add($listBox)
+                    
+                    $btnOK = New-Object System.Windows.Forms.Button
+                    $btnOK.Text = "OK"
+                    $btnOK.Size = New-Object System.Drawing.Size(80, 28)
+                    $btnOK.Location = New-Object System.Drawing.Point(245, 130)
+                    $btnOK.FlatStyle = "Flat"
+                    $btnOK.BackColor = [System.Drawing.Color]::FromArgb(0, 122, 204)
+                    $btnOK.ForeColor = [System.Drawing.Color]::White
+                    $btnOK.DialogResult = [System.Windows.Forms.DialogResult]::OK
+                    $subnetForm.Controls.Add($btnOK)
+                    $subnetForm.AcceptButton = $btnOK
+                    
+                    $result = $subnetForm.ShowDialog()
+                    $selectedIndex = $listBox.SelectedIndex
+                    $subnetForm.Dispose()
+                    
+                    if ($result -eq [System.Windows.Forms.DialogResult]::OK -and $selectedIndex -ge 0) {
+                        $selectedSubnet = $allSubnets[$selectedIndex].Subnet
+                    }
+                    else {
+                        $selectedSubnet = $allSubnets[0].Subnet
+                    }
+                    Add-LogEntry -Type "Info" -Message "Seleccionada: $selectedSubnet"
+                }
+                
+                if ($selectedSubnet) {
                     # Limpiar TreeView antes de escanear
                     Update-TreeView -ServerIP $null -ClearFirst $true
                     
@@ -3524,8 +3638,15 @@ function Show-MainWindow {
                         Update-TreeView -ServerIP $ServerIP -ClearFirst $false
                         Update-ConnectedDevices
                     }
-                    Start-SubnetScan -SubnetBase $subnetBase -IPTextBox $ipTextBox -StatusLabel $statusLabel -ProgressBar $progressBar -OnServerFound $autoListCallback
+                    Add-LogEntry -Type "Info" -Message "Iniciando escaneo: $selectedSubnet.0/24"
+                    Start-SubnetScan -SubnetBase $selectedSubnet -IPTextBox $ipTextBox -StatusLabel $statusLabel -ProgressBar $progressBar -OnServerFound $autoListCallback
                 }
+                else {
+                    Add-LogEntry -Type "Warning" -Message "No se seleccionó subred"
+                }
+            }
+            else {
+                Add-LogEntry -Type "Warning" -Message "No se encontraron subredes válidas"
             }
         })
     
