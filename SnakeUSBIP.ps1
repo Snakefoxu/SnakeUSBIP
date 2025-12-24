@@ -35,7 +35,7 @@ Add-Type -AssemblyName System.Drawing
 $script:USBIP_PORT = 3240
 $script:SCAN_TIMEOUT_MS = 300
 $script:BUSID_DEFAULT = "1-1"
-$script:APP_VERSION = "1.7.3"
+$script:APP_VERSION = "1.8.0"
 $script:GITHUB_REPO = "Snakefoxu/SnakeUSBIP"
 
 # ============================================
@@ -52,217 +52,251 @@ $script:Language = "en"  # Default language (English)
 $script:Translations = @{
     "es" = @{
         # Botones principales
-        "btn_scan"              = "🔍 Escanear"
-        "btn_refresh"           = "🔄 Listar"
-        "btn_ssh"               = "🖥️ SSH"
-        "btn_install_drivers"   = "Instalar"
-        "btn_uninstall_drivers" = "Desinstalar"
-        "btn_update"            = "🔄 Actualizar"
+        "btn_scan"               = "🔍 Escanear"
+        "btn_refresh"            = "🔄 Listar"
+        "btn_ssh"                = "🖥️ SSH"
+        "btn_install_drivers"    = "Instalar"
+        "btn_uninstall_drivers"  = "Desinstalar"
+        "btn_update"             = "🔄 Actualizar"
         
         # Labels
-        "lbl_server"            = "Servidor:"
+        "lbl_server"             = "Servidor:"
         
         # TreeView
-        "node_hubs"             = "📡 USB Hubs"
-        "node_connected"        = "✅ Dispositivos Conectados"
-        "node_favorites"        = "⭐ Favoritos"
+        "node_hubs"              = "📡 USB Hubs"
+        "node_connected"         = "✅ Dispositivos Conectados"
+        "node_favorites"         = "⭐ Favoritos"
         
         # Estados
-        "status_ready"          = "✓ Listo"
-        "status_scanning"       = "Escaneando..."
-        "status_listing"        = "Listando dispositivos en"
-        "status_connecting"     = "Conectando"
-        "status_disconnecting"  = "Desconectando"
-        "status_servers_found"  = "servidor(es) encontrado(s)"
-        "status_devices_found"  = "dispositivo(s)"
-        "status_no_server"      = "No se encontró servidor en la subred"
-        "status_error"          = "Error"
+        "status_ready"           = "✓ Listo"
+        "status_scanning"        = "Escaneando..."
+        "status_listing"         = "Listando dispositivos en"
+        "status_connecting"      = "Conectando"
+        "status_disconnecting"   = "Desconectando"
+        "status_servers_found"   = "servidor(es) encontrado(s)"
+        "status_devices_found"   = "dispositivo(s)"
+        "status_no_server"       = "No se encontró servidor en la subred"
+        "status_error"           = "Error"
         
         # Menú contextual
-        "menu_connect"          = "🔌 Conectar"
-        "menu_disconnect"       = "❌ Desconectar"
-        "menu_add_favorite"     = "⭐ Añadir a Favoritos"
-        "menu_remove_favorite"  = "❌ Quitar de Favoritos"
-        "menu_remove_server"    = "🗑️ Quitar servidor"
-        "menu_properties"       = "📋 Propiedades"
+        "menu_connect"           = "🔌 Conectar"
+        "menu_disconnect"        = "❌ Desconectar"
+        "menu_add_favorite"      = "⭐ Añadir a Favoritos"
+        "menu_remove_favorite"   = "❌ Quitar de Favoritos"
+        "menu_remove_server"     = "🗑️ Quitar servidor"
+        "menu_properties"        = "📋 Propiedades"
         
         # Tray
-        "tray_scan"             = "📡 Escanear Red"
-        "tray_show"             = "🔼 Mostrar Ventana"
-        "tray_exit"             = "❌ Salir"
-        "tray_minimized"        = "Minimizado a bandeja del sistema"
+        "tray_scan"              = "📡 Escanear Red"
+        "tray_show"              = "🔼 Mostrar Ventana"
+        "tray_exit"              = "❌ Salir"
+        "tray_minimized"         = "Minimizado a bandeja del sistema"
         
         # Actualizaciones
-        "update_checking"       = "Buscando actualizaciones..."
-        "update_available"      = "Nueva versión disponible"
-        "update_current"        = "Ya tienes la versión más reciente"
-        "update_download"       = "Descargar e instalar"
-        "update_downloading"    = "Descargando actualización..."
-        "update_error"          = "Error al buscar actualizaciones"
+        "update_checking"        = "Buscando actualizaciones..."
+        "update_available"       = "Nueva versión disponible"
+        "update_current"         = "Ya tienes la versión más reciente"
+        "update_download"        = "Descargar e instalar"
+        "update_downloading"     = "Descargando actualización..."
+        "update_error"           = "Error al buscar actualizaciones"
         
         # Diálogos
-        "dlg_server_ip"         = "IP del Servidor:"
-        "dlg_confirm"           = "Confirmar"
-        "dlg_cancel"            = "Cancelar"
+        "dlg_server_ip"          = "IP del Servidor:"
+        "dlg_confirm"            = "Confirmar"
+        "dlg_cancel"             = "Cancelar"
         
         # Tooltips
-        "tooltip_busid"         = "Bus ID"
-        "tooltip_vidpid"        = "VID:PID"
-        "tooltip_vendor"        = "Fabricante"
-        "tooltip_product"       = "Producto"
-        "tooltip_server"        = "Servidor"
-        "tooltip_autoconnect"   = "Auto-conectar"
+        "tooltip_busid"          = "Bus ID"
+        "tooltip_vidpid"         = "VID:PID"
+        "tooltip_vendor"         = "Fabricante"
+        "tooltip_product"        = "Producto"
+        "tooltip_server"         = "Servidor"
+        "tooltip_autoconnect"    = "Auto-conectar"
         
         # Título
-        "title_main"            = "SnakeFoxu    USB/IP Manager"
-        "title_language"        = "🌐 ESP"
+        "title_main"             = "SnakeFoxu    USB/IP Manager"
+        "title_language"         = "🌐 ESP"
         
         # Log
-        "log_title"             = "📋 Log de Actividad"
-        "log_connected"         = "Conectado"
-        "log_disconnected"      = "Desconectado"
-        "log_scan_start"        = "Escaneando red..."
-        "log_scan_found"        = "servidor(es) encontrado(s)"
-        "log_scan_none"         = "Ningún servidor encontrado"
-        "log_error"             = "Error"
-        "log_drivers_ok"        = "Drivers verificados OK"
-        "log_drivers_missing"   = "Drivers no instalados"
-        "log_favorite_added"    = "Añadido a favoritos"
-        "log_favorite_removed"  = "Quitado de favoritos"
-        "log_clear"             = "Limpiar"
+        "log_title"              = "📋 Log de Actividad"
+        "log_connected"          = "Conectado"
+        "log_disconnected"       = "Desconectado"
+        "log_scan_start"         = "Escaneando red..."
+        "log_scan_found"         = "servidor(es) encontrado(s)"
+        "log_scan_none"          = "Ningún servidor encontrado"
+        "log_error"              = "Error"
+        "log_drivers_ok"         = "Drivers verificados OK"
+        "log_drivers_missing"    = "Drivers no instalados"
+        "log_favorite_added"     = "Añadido a favoritos"
+        "log_favorite_removed"   = "Quitado de favoritos"
+        "log_clear"              = "Limpiar"
         
         # VPN / Internet
-        "btn_vpn"               = "🌐 VPN"
-        "vpn_title"             = "Conexión por Internet (VPN)"
-        "vpn_no_vpn"            = "No se detectó Tailscale ni ZeroTier instalado"
-        "vpn_scanning"          = "Escaneando peers VPN..."
-        "vpn_no_peers"          = "No se encontraron peers con USB/IP activo"
-        "vpn_peer_name"         = "Nombre"
-        "vpn_peer_ip"           = "IP"
-        "vpn_peer_status"       = "USB/IP"
-        "vpn_connect"           = "Conectar"
-        "vpn_refresh"           = "Actualizar"
-        "vpn_close"             = "Cerrar"
-        "vpn_found_peers"       = "peers con USB/IP encontrados"
-        "vpn_detected"          = "detectado. Buscando servidores USB/IP..."
-        "vpn_install_hint"      = "Instala uno para conectar por Internet."
-        "vpn_no_peers_online"   = "VPN conectada pero no hay peers online."
-        "vpn_ensure_server"     = "Asegúrate que el servidor esté en la VPN."
-        "vpn_col_name"          = "Nombre"
-        "vpn_col_ip"            = "IP"
-        "vpn_col_status"        = "Estado"
-        "vpn_col_usbip"         = "USB/IP"
-        "vpn_online"            = "Online"
-        "vpn_offline"           = "Offline"
-        "vpn_info"              = "Tailscale/ZeroTier son gratuitos y no requieren abrir puertos en el router."
-        "vpn_add_all"           = "Todos"
+        "btn_vpn"                = "🌐 VPN"
+        "vpn_title"              = "Conexión por Internet (VPN)"
+        "vpn_no_vpn"             = "No se detectó Tailscale ni ZeroTier instalado"
+        "vpn_scanning"           = "Escaneando peers VPN..."
+        "vpn_no_peers"           = "No se encontraron peers con USB/IP activo"
+        "vpn_peer_name"          = "Nombre"
+        "vpn_peer_ip"            = "IP"
+        "vpn_peer_status"        = "USB/IP"
+        "vpn_connect"            = "Conectar"
+        "vpn_refresh"            = "Actualizar"
+        "vpn_close"              = "Cerrar"
+        "vpn_found_peers"        = "peers con USB/IP encontrados"
+        "vpn_detected"           = "detectado. Buscando servidores USB/IP..."
+        "vpn_install_hint"       = "Instala uno para conectar por Internet."
+        "vpn_no_peers_online"    = "VPN conectada pero no hay peers online."
+        "vpn_ensure_server"      = "Asegúrate que el servidor esté en la VPN."
+        "vpn_col_name"           = "Nombre"
+        "vpn_col_ip"             = "IP"
+        "vpn_col_status"         = "Estado"
+        "vpn_col_usbip"          = "USB/IP"
+        "vpn_online"             = "Online"
+        "vpn_offline"            = "Offline"
+        "vpn_info"               = "Tailscale/ZeroTier son gratuitos y no requieren abrir puertos en el router."
+        "vpn_add_all"            = "Todos"
+        
+        # Notificaciones Toast
+        "notify_connected"       = "Dispositivo conectado"
+        "notify_disconnected"    = "Dispositivo desconectado"
+        "notify_connection_lost" = "Conexión perdida"
+        "notify_reconnecting"    = "Reconectando..."
+        "notify_reconnected"     = "Reconectado exitosamente"
+        
+        # Temas
+        "theme_dark"             = "Modo Oscuro"
+        "theme_light"            = "Modo Claro"
+        "btn_theme"              = "🌙"
+        
+        # Auto-Reconnect
+        "auto_reconnect"         = "Auto-Reconectar"
+        "auto_reconnect_on"      = "Auto-reconexión activada"
+        "auto_reconnect_off"     = "Auto-reconexión desactivada"
     }
     "en" = @{
         # Main buttons
-        "btn_scan"              = "🔍 Scan"
-        "btn_refresh"           = "🔄 List"
-        "btn_ssh"               = "🖥️ SSH"
-        "btn_install_drivers"   = "Install"
-        "btn_uninstall_drivers" = "Uninstall"
-        "btn_update"            = "🔄 Update"
+        "btn_scan"               = "🔍 Scan"
+        "btn_refresh"            = "🔄 List"
+        "btn_ssh"                = "🖥️ SSH"
+        "btn_install_drivers"    = "Install"
+        "btn_uninstall_drivers"  = "Uninstall"
+        "btn_update"             = "🔄 Update"
         
         # Labels
-        "lbl_server"            = "Server:"
+        "lbl_server"             = "Server:"
         
         # TreeView
-        "node_hubs"             = "📡 USB Hubs"
-        "node_connected"        = "✅ Connected Devices"
-        "node_favorites"        = "⭐ Favorites"
+        "node_hubs"              = "📡 USB Hubs"
+        "node_connected"         = "✅ Connected Devices"
+        "node_favorites"         = "⭐ Favorites"
         
         # Status
-        "status_ready"          = "✓ Ready"
-        "status_scanning"       = "Scanning..."
-        "status_listing"        = "Listing devices on"
-        "status_connecting"     = "Connecting"
-        "status_disconnecting"  = "Disconnecting"
-        "status_servers_found"  = "server(s) found"
-        "status_devices_found"  = "device(s)"
-        "status_no_server"      = "No server found in subnet"
-        "status_error"          = "Error"
+        "status_ready"           = "✓ Ready"
+        "status_scanning"        = "Scanning..."
+        "status_listing"         = "Listing devices on"
+        "status_connecting"      = "Connecting"
+        "status_disconnecting"   = "Disconnecting"
+        "status_servers_found"   = "server(s) found"
+        "status_devices_found"   = "device(s)"
+        "status_no_server"       = "No server found in subnet"
+        "status_error"           = "Error"
         
         # Context menu
-        "menu_connect"          = "🔌 Connect"
-        "menu_disconnect"       = "❌ Disconnect"
-        "menu_add_favorite"     = "⭐ Add to Favorites"
-        "menu_remove_favorite"  = "❌ Remove from Favorites"
-        "menu_remove_server"    = "🗑️ Remove server"
-        "menu_properties"       = "📋 Properties"
+        "menu_connect"           = "🔌 Connect"
+        "menu_disconnect"        = "❌ Disconnect"
+        "menu_add_favorite"      = "⭐ Add to Favorites"
+        "menu_remove_favorite"   = "❌ Remove from Favorites"
+        "menu_remove_server"     = "🗑️ Remove server"
+        "menu_properties"        = "📋 Properties"
         
         # Tray
-        "tray_scan"             = "📡 Scan Network"
-        "tray_show"             = "🔼 Show Window"
-        "tray_exit"             = "❌ Exit"
-        "tray_minimized"        = "Minimized to system tray"
+        "tray_scan"              = "📡 Scan Network"
+        "tray_show"              = "🔼 Show Window"
+        "tray_exit"              = "❌ Exit"
+        "tray_minimized"         = "Minimized to system tray"
         
         # Updates
-        "update_checking"       = "Checking for updates..."
-        "update_available"      = "New version available"
-        "update_current"        = "You have the latest version"
-        "update_download"       = "Download and install"
-        "update_downloading"    = "Downloading update..."
-        "update_error"          = "Error checking for updates"
+        "update_checking"        = "Checking for updates..."
+        "update_available"       = "New version available"
+        "update_current"         = "You have the latest version"
+        "update_download"        = "Download and install"
+        "update_downloading"     = "Downloading update..."
+        "update_error"           = "Error checking for updates"
         
         # Dialogs
-        "dlg_server_ip"         = "Server IP:"
-        "dlg_confirm"           = "Confirm"
-        "dlg_cancel"            = "Cancel"
+        "dlg_server_ip"          = "Server IP:"
+        "dlg_confirm"            = "Confirm"
+        "dlg_cancel"             = "Cancel"
         
         # Tooltips
-        "tooltip_busid"         = "Bus ID"
-        "tooltip_vidpid"        = "VID:PID"
-        "tooltip_vendor"        = "Vendor"
-        "tooltip_product"       = "Product"
-        "tooltip_server"        = "Server"
-        "tooltip_autoconnect"   = "Auto-connect"
+        "tooltip_busid"          = "Bus ID"
+        "tooltip_vidpid"         = "VID:PID"
+        "tooltip_vendor"         = "Vendor"
+        "tooltip_product"        = "Product"
+        "tooltip_server"         = "Server"
+        "tooltip_autoconnect"    = "Auto-connect"
         
         # Title
-        "title_main"            = "SnakeFoxu    USB/IP Manager"
-        "title_language"        = "🌐 ENG"
+        "title_main"             = "SnakeFoxu    USB/IP Manager"
+        "title_language"         = "🌐 ENG"
         
         # Log
-        "log_title"             = "📋 Activity Log"
-        "log_connected"         = "Connected"
-        "log_disconnected"      = "Disconnected"
-        "log_scan_start"        = "Scanning network..."
-        "log_scan_found"        = "server(s) found"
-        "log_scan_none"         = "No servers found"
-        "log_error"             = "Error"
-        "log_drivers_ok"        = "Drivers verified OK"
-        "log_drivers_missing"   = "Drivers not installed"
-        "log_favorite_added"    = "Added to favorites"
-        "log_favorite_removed"  = "Removed from favorites"
-        "log_clear"             = "Clear"
+        "log_title"              = "📋 Activity Log"
+        "log_connected"          = "Connected"
+        "log_disconnected"       = "Disconnected"
+        "log_scan_start"         = "Scanning network..."
+        "log_scan_found"         = "server(s) found"
+        "log_scan_none"          = "No servers found"
+        "log_error"              = "Error"
+        "log_drivers_ok"         = "Drivers verified OK"
+        "log_drivers_missing"    = "Drivers not installed"
+        "log_favorite_added"     = "Added to favorites"
+        "log_favorite_removed"   = "Removed from favorites"
+        "log_clear"              = "Clear"
         
         # VPN / Internet
-        "btn_vpn"               = "🌐 VPN"
-        "vpn_title"             = "Internet Connection (VPN)"
-        "vpn_no_vpn"            = "Neither Tailscale nor ZeroTier detected"
-        "vpn_scanning"          = "Scanning VPN peers..."
-        "vpn_no_peers"          = "No peers with active USB/IP found"
-        "vpn_peer_name"         = "Name"
-        "vpn_peer_ip"           = "IP"
-        "vpn_peer_status"       = "USB/IP"
-        "vpn_connect"           = "Connect"
-        "vpn_refresh"           = "Refresh"
-        "vpn_close"             = "Close"
-        "vpn_found_peers"       = "peers with USB/IP found"
-        "vpn_detected"          = "detected. Searching for USB/IP servers..."
-        "vpn_install_hint"      = "Install one to connect over Internet."
-        "vpn_no_peers_online"   = "VPN connected but no peers online."
-        "vpn_ensure_server"     = "Make sure the server is on the VPN."
-        "vpn_col_name"          = "Name"
-        "vpn_col_ip"            = "IP"
-        "vpn_col_status"        = "Status"
-        "vpn_col_usbip"         = "USB/IP"
-        "vpn_online"            = "Online"
-        "vpn_offline"           = "Offline"
-        "vpn_info"              = "Tailscale/ZeroTier are free and don't require port forwarding."
-        "vpn_add_all"           = "All"
+        "btn_vpn"                = "🌐 VPN"
+        "vpn_title"              = "Internet Connection (VPN)"
+        "vpn_no_vpn"             = "Neither Tailscale nor ZeroTier detected"
+        "vpn_scanning"           = "Scanning VPN peers..."
+        "vpn_no_peers"           = "No peers with active USB/IP found"
+        "vpn_peer_name"          = "Name"
+        "vpn_peer_ip"            = "IP"
+        "vpn_peer_status"        = "USB/IP"
+        "vpn_connect"            = "Connect"
+        "vpn_refresh"            = "Refresh"
+        "vpn_close"              = "Close"
+        "vpn_found_peers"        = "peers with USB/IP found"
+        "vpn_detected"           = "detected. Searching for USB/IP servers..."
+        "vpn_install_hint"       = "Install one to connect over Internet."
+        "vpn_no_peers_online"    = "VPN connected but no peers online."
+        "vpn_ensure_server"      = "Make sure the server is on the VPN."
+        "vpn_col_name"           = "Name"
+        "vpn_col_ip"             = "IP"
+        "vpn_col_status"         = "Status"
+        "vpn_col_usbip"          = "USB/IP"
+        "vpn_online"             = "Online"
+        "vpn_offline"            = "Offline"
+        "vpn_info"               = "Tailscale/ZeroTier are free and don't require port forwarding."
+        "vpn_add_all"            = "All"
+        
+        # Toast Notifications
+        "notify_connected"       = "Device connected"
+        "notify_disconnected"    = "Device disconnected"
+        "notify_connection_lost" = "Connection lost"
+        "notify_reconnecting"    = "Reconnecting..."
+        "notify_reconnected"     = "Reconnected successfully"
+        
+        # Themes
+        "theme_dark"             = "Dark Mode"
+        "theme_light"            = "Light Mode"
+        "btn_theme"              = "🌙"
+        
+        # Auto-Reconnect
+        "auto_reconnect"         = "Auto-Reconnect"
+        "auto_reconnect_on"      = "Auto-reconnect enabled"
+        "auto_reconnect_off"     = "Auto-reconnect disabled"
     }
 }
 
@@ -271,6 +305,68 @@ function Get-Text {
     $text = $script:Translations[$script:Language][$Key]
     if (-not $text) { return $Key }
     return $text
+}
+
+# ============================================
+# SISTEMA DE TEMAS (DARK/LIGHT)
+# ============================================
+$script:CurrentTheme = "dark"  # Default theme
+
+$script:Themes = @{
+    "dark"  = @{
+        FormBack     = [System.Drawing.Color]::FromArgb(30, 30, 30)
+        PanelBack    = [System.Drawing.Color]::FromArgb(45, 45, 48)
+        ControlBack  = [System.Drawing.Color]::FromArgb(62, 62, 66)
+        TextColor    = [System.Drawing.Color]::White
+        AccentColor  = [System.Drawing.Color]::FromArgb(0, 122, 204)
+        BorderColor  = [System.Drawing.Color]::FromArgb(67, 67, 70)
+        StatusBar    = [System.Drawing.Color]::FromArgb(45, 45, 48)
+        TreeViewBack = [System.Drawing.Color]::FromArgb(37, 37, 38)
+        LogBack      = [System.Drawing.Color]::FromArgb(30, 30, 30)
+        ButtonIcon   = "🌙"
+    }
+    "light" = @{
+        FormBack     = [System.Drawing.Color]::FromArgb(243, 243, 243)
+        PanelBack    = [System.Drawing.Color]::FromArgb(255, 255, 255)
+        ControlBack  = [System.Drawing.Color]::FromArgb(230, 230, 230)
+        TextColor    = [System.Drawing.Color]::FromArgb(30, 30, 30)
+        AccentColor  = [System.Drawing.Color]::FromArgb(0, 120, 212)
+        BorderColor  = [System.Drawing.Color]::FromArgb(200, 200, 200)
+        StatusBar    = [System.Drawing.Color]::FromArgb(230, 230, 230)
+        TreeViewBack = [System.Drawing.Color]::FromArgb(255, 255, 255)
+        LogBack      = [System.Drawing.Color]::FromArgb(250, 250, 250)
+        ButtonIcon   = "☀️"
+    }
+}
+
+function Show-Notification {
+    <#
+    .SYNOPSIS
+        Muestra notificación toast en el área de sistema
+    .PARAMETER Title
+        Título de la notificación
+    .PARAMETER Message
+        Mensaje de la notificación
+    .PARAMETER Type
+        Tipo: Info, Success, Warning, Error
+    #>
+    param(
+        [string]$Title,
+        [string]$Message,
+        [ValidateSet("Info", "Success", "Warning", "Error")]
+        [string]$Type = "Info"
+    )
+    
+    if (-not $script:trayIcon) { return }
+    
+    $icon = switch ($Type) {
+        "Info" { [System.Windows.Forms.ToolTipIcon]::Info }
+        "Success" { [System.Windows.Forms.ToolTipIcon]::Info }
+        "Warning" { [System.Windows.Forms.ToolTipIcon]::Warning }
+        "Error" { [System.Windows.Forms.ToolTipIcon]::Error }
+    }
+    
+    $script:trayIcon.ShowBalloonTip(3000, $Title, $Message, $icon)
 }
 
 function Add-LogEntry {
@@ -3141,6 +3237,7 @@ function Show-MainWindow {
                     $statusLabel.Text = "✓ Conectado: $busId"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
                     Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_connected'): $busId @ $serverIP"
+                    Show-Notification -Title (Get-Text 'notify_connected') -Message "$busId @ $serverIP" -Type "Success"
                     Update-ConnectedDevices
                 }
                 else {
@@ -3171,6 +3268,7 @@ function Show-MainWindow {
                         $statusLabel.Text = "✓ Conectado: $busId"
                         $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
                         Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_connected'): $busId @ $serverIP"
+                        Show-Notification -Title (Get-Text 'notify_connected') -Message "$busId @ $serverIP" -Type "Success"
                         Update-ConnectedDevices
                     }
                     else {
@@ -3198,6 +3296,7 @@ function Show-MainWindow {
                     $statusLabel.Text = "✓ Desconectado puerto $port"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
                     Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_disconnected'): Port $port"
+                    Show-Notification -Title (Get-Text 'notify_disconnected') -Message "Port $port" -Type "Info"
                     Update-ConnectedDevices
                 }
                 else {
@@ -3391,6 +3490,8 @@ function Show-MainWindow {
                     if ($successCount -gt 0) {
                         $statusLabel.Text = "✓ Reconectados $successCount/$($autoConnectFavs.Count) favoritos"
                         $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                        Add-LogEntry -Type "Success" -Message "$(Get-Text 'auto_reconnect'): $successCount/$($autoConnectFavs.Count)"
+                        Show-Notification -Title (Get-Text 'notify_reconnected') -Message "$successCount $(Get-Text 'node_favorites')" -Type "Success"
                     }
                     else {
                         $statusLabel.Text = "Listo. Escaneando red..."
