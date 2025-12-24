@@ -47,7 +47,8 @@ $script:MaxLogEntries = 100
 # ============================================
 # SISTEMA MULTI-IDIOMA
 # ============================================
-$script:Language = "en"  # Default language (English)
+# Detectar idioma del sistema automáticamente (español si el sistema está en español, inglés por defecto)
+$script:Language = if ([System.Globalization.CultureInfo]::CurrentUICulture.TwoLetterISOLanguageName -eq "es") { "es" } else { "en" }
 
 $script:Translations = @{
     "es" = @{
@@ -173,6 +174,24 @@ $script:Translations = @{
         "auto_reconnect"         = "Auto-Reconectar"
         "auto_reconnect_on"      = "Auto-reconexión activada"
         "auto_reconnect_off"     = "Auto-reconexión desactivada"
+        
+        # Selector de Subred
+        "subnet_select_title"    = "Seleccionar Red"
+        "subnet_multiple_found"  = "Se encontraron múltiples redes. Selecciona una:"
+        "subnet_detected"        = "Subredes detectadas"
+        "subnet_auto_selected"   = "Auto-seleccionada"
+        "subnet_selected"        = "Seleccionada"
+        "subnet_scanning"        = "Iniciando escaneo"
+        "subnet_none_found"      = "No se encontraron subredes válidas"
+        "subnet_not_selected"    = "No se seleccionó subred"
+        
+        # Status Labels
+        "status_connecting"      = "Conectando"
+        "status_disconnecting"   = "Desconectando puerto"
+        "status_connected"       = "Conectado"
+        "status_disconnected"    = "Desconectado puerto"
+        "status_reconnecting"    = "Reconectando"
+        "status_favorites"       = "favorito(s)"
     }
     "en" = @{
         # Main buttons
@@ -297,6 +316,24 @@ $script:Translations = @{
         "auto_reconnect"         = "Auto-Reconnect"
         "auto_reconnect_on"      = "Auto-reconnect enabled"
         "auto_reconnect_off"     = "Auto-reconnect disabled"
+        
+        # Subnet Selector
+        "subnet_select_title"    = "Select Network"
+        "subnet_multiple_found"  = "Multiple networks found. Select one:"
+        "subnet_detected"        = "Subnets detected"
+        "subnet_auto_selected"   = "Auto-selected"
+        "subnet_selected"        = "Selected"
+        "subnet_scanning"        = "Starting scan"
+        "subnet_none_found"      = "No valid subnets found"
+        "subnet_not_selected"    = "No subnet selected"
+        
+        # Status Labels
+        "status_connecting"      = "Connecting"
+        "status_disconnecting"   = "Disconnecting port"
+        "status_connected"       = "Connected"
+        "status_disconnected"    = "Disconnected port"
+        "status_reconnecting"    = "Reconnecting"
+        "status_favorites"       = "favorite(s)"
     }
 }
 
@@ -732,7 +769,7 @@ function Get-AppConfig {
         Favorites          = @()
         AutoConnectOnStart = $false
         Servers            = @()
-        Language           = "en"
+        Language           = $script:Language  # Usar idioma detectado del sistema
         WizardCompleted    = $false  # Se pone a true cuando el usuario completa o salta el wizard
     }
     
@@ -755,7 +792,7 @@ function Get-AppConfig {
             
             # Idioma
             if (-not $config.Language) { 
-                $config | Add-Member -NotePropertyName "Language" -NotePropertyValue "en" -Force 
+                $config | Add-Member -NotePropertyName "Language" -NotePropertyValue $script:Language -Force 
             }
             
             # Wizard completado
@@ -3269,11 +3306,16 @@ function Show-MainWindow {
             }
         })
     
-    # Doble click para conectar
+    # Doble click para conectar/desconectar
     $treeView.Add_NodeMouseDoubleClick({
             param($sender, $e)
             $selectedNode = $e.Node
-            if ($selectedNode -and $selectedNode.Tag -and $selectedNode.Tag.Type -eq "remote") {
+            if (-not $selectedNode -or -not $selectedNode.Tag) { return }
+            
+            $nodeType = $selectedNode.Tag.Type
+            
+            # Conectar dispositivo remoto o favorito
+            if ($nodeType -eq "remote" -or $nodeType -eq "favorite") {
                 $serverIP = $selectedNode.Tag.ServerIP
                 $busId = $selectedNode.Tag.BusId
             
@@ -3294,6 +3336,29 @@ function Show-MainWindow {
                     $statusLabel.Text = "Error: $($result.Error)"
                     $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(244, 135, 113)
                     Add-LogEntry -Type "Error" -Message "$(Get-Text 'log_error'): $busId - $($result.Error)"
+                }
+            }
+            # Desconectar dispositivo conectado
+            elseif ($nodeType -eq "connected") {
+                $port = $selectedNode.Tag.Port
+                
+                $statusLabel.Text = "Desconectando puerto $port..."
+                $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(86, 156, 214)
+                $form.Refresh()
+                
+                $result = Disconnect-UsbipDevice -Port $port
+                
+                if ($result.Success) {
+                    $statusLabel.Text = "✓ Desconectado puerto $port"
+                    $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(78, 201, 176)
+                    Add-LogEntry -Type "Success" -Message "$(Get-Text 'log_disconnected'): Port $port"
+                    Show-Notification -Title (Get-Text 'notify_disconnected') -Message "Port $port" -Type "Info"
+                    Update-ConnectedDevices
+                }
+                else {
+                    $statusLabel.Text = "Error: $($result.Error)"
+                    $statusLabel.ForeColor = [System.Drawing.Color]::FromArgb(244, 135, 113)
+                    Add-LogEntry -Type "Error" -Message "$(Get-Text 'log_error'): Port $port - $($result.Error)"
                 }
             }
         })
@@ -3563,7 +3628,7 @@ function Show-MainWindow {
             # Auto-escanear red (con selector si hay múltiples subredes)
             $allSubnets = @(Get-AllLocalSubnets)  # Forzar a array
             
-            Add-LogEntry -Type "Info" -Message "Subredes detectadas: $($allSubnets.Count)"
+            Add-LogEntry -Type "Info" -Message "$(Get-Text 'subnet_detected'): $($allSubnets.Count)"
             
             if ($allSubnets.Count -gt 0) {
                 $selectedSubnet = $null
@@ -3571,12 +3636,12 @@ function Show-MainWindow {
                 if ($allSubnets.Count -eq 1) {
                     # Solo una subred, usarla directamente
                     $selectedSubnet = $allSubnets[0].Subnet
-                    Add-LogEntry -Type "Info" -Message "Auto-seleccionada: $selectedSubnet"
+                    Add-LogEntry -Type "Info" -Message "$(Get-Text 'subnet_auto_selected'): $selectedSubnet"
                 }
                 else {
                     # Múltiples subredes, mostrar selector
                     $subnetForm = New-Object System.Windows.Forms.Form
-                    $subnetForm.Text = if ($script:Language -eq "es") { "Seleccionar Red" } else { "Select Network" }
+                    $subnetForm.Text = Get-Text 'subnet_select_title'
                     $subnetForm.Size = New-Object System.Drawing.Size(350, 200)
                     $subnetForm.StartPosition = "CenterScreen"
                     $subnetForm.FormBorderStyle = "FixedDialog"
@@ -3586,7 +3651,7 @@ function Show-MainWindow {
                     $subnetForm.ForeColor = [System.Drawing.Color]::White
                     
                     $lblInfo = New-Object System.Windows.Forms.Label
-                    $lblInfo.Text = if ($script:Language -eq "es") { "Se encontraron múltiples redes. Selecciona una:" } else { "Multiple networks found. Select one:" }
+                    $lblInfo.Text = Get-Text 'subnet_multiple_found'
                     $lblInfo.Location = New-Object System.Drawing.Point(15, 15)
                     $lblInfo.AutoSize = $true
                     $subnetForm.Controls.Add($lblInfo)
@@ -3625,7 +3690,7 @@ function Show-MainWindow {
                     else {
                         $selectedSubnet = $allSubnets[0].Subnet
                     }
-                    Add-LogEntry -Type "Info" -Message "Seleccionada: $selectedSubnet"
+                    Add-LogEntry -Type "Info" -Message "$(Get-Text 'subnet_selected'): $selectedSubnet"
                 }
                 
                 if ($selectedSubnet) {
@@ -3638,15 +3703,15 @@ function Show-MainWindow {
                         Update-TreeView -ServerIP $ServerIP -ClearFirst $false
                         Update-ConnectedDevices
                     }
-                    Add-LogEntry -Type "Info" -Message "Iniciando escaneo: $selectedSubnet.0/24"
+                    Add-LogEntry -Type "Info" -Message "$(Get-Text 'subnet_scanning'): $selectedSubnet.0/24"
                     Start-SubnetScan -SubnetBase $selectedSubnet -IPTextBox $ipTextBox -StatusLabel $statusLabel -ProgressBar $progressBar -OnServerFound $autoListCallback
                 }
                 else {
-                    Add-LogEntry -Type "Warning" -Message "No se seleccionó subred"
+                    Add-LogEntry -Type "Warning" -Message (Get-Text 'subnet_not_selected')
                 }
             }
             else {
-                Add-LogEntry -Type "Warning" -Message "No se encontraron subredes válidas"
+                Add-LogEntry -Type "Warning" -Message (Get-Text 'subnet_none_found')
             }
         })
     
