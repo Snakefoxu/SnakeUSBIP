@@ -2968,21 +2968,18 @@ function Show-MainWindow {
     
     # Cambiar idioma
     $langButton.Add_Click({
-            # Toggle idioma
-            if ($script:Language -eq "es") {
-                $script:Language = "en"
-                $langButton.Text = "🌐 EN"
-                $updateButton.Text = "⬆️ Update"
-            }
-            else {
-                $script:Language = "es"
-                $langButton.Text = "🌐 ES"
-                $updateButton.Text = "⬆️ Actualizar"
-            }
+            # Toggle idioma basado en estado actual
+            $newLang = if ($script:Language -eq "es") { "en" } else { "es" }
+            $script:Language = $newLang
+            
+            # Actualizar botón de idioma
+            $langButton.Text = if ($newLang -eq "es") { "🌐 ES" } else { "🌐 EN" }
+            $updateButton.Text = if ($newLang -eq "es") { "⬆️ Actualizar" } else { "⬆️ Update" }
         
-            # Guardar preferencia
+            # Guardar preferencia (Get-AppConfig sobrescribe $script:Language, lo restauramos)
             $config = Get-AppConfig
-            $config.Language = $script:Language
+            $script:Language = $newLang  # Restaurar idioma después de Get-AppConfig
+            $config.Language = $newLang
             Save-AppConfig -Config $config
         
             # Actualizar textos de UI que se pueden actualizar fácilmente
@@ -3007,7 +3004,7 @@ function Show-MainWindow {
             $vpnButton.Text = Get-Text "btn_vpn"
         
             $statusLabel.Text = Get-Text "status_ready"
-        }.GetNewClosure())
+        })
     
     # Buscar actualizaciones
     $updateButton.Add_Click({
