@@ -1,5 +1,7 @@
 # 📖 Uso de SnakeUSBIP
 
+> **v2.0.0** - Esta documentación aplica a la versión WPF (.NET 9). La interfaz es similar a v1.x pero con rendimiento mejorado.
+
 ## Interfaz Principal
 
 ```
@@ -96,6 +98,7 @@ Ver [VPN_INTERNET.md](VPN_INTERNET.md) para configuración completa.
         │ ❌ Quitar de Favoritos  │
         │ 🗑️ Quitar servidor      │
         ├─────────────────────────┤
+        │ ✏️ Renombrar            │ 🆕 v2.0
         │ 📋 Propiedades          │
         └─────────────────────────┘
 ```
@@ -107,6 +110,7 @@ Ver [VPN_INTERNET.md](VPN_INTERNET.md) para configuración completa.
 | ⭐ Añadir a Favoritos | Guarda el dispositivo para reconexión rápida |
 | ❌ Quitar de Favoritos | Elimina de la lista de favoritos |
 | 🗑️ Quitar servidor | Elimina el servidor del árbol |
+| ✏️ Renombrar | Asigna un nombre personalizado al dispositivo (🆕 v2.0) |
 | 📋 Propiedades | Muestra información detallada (VID:PID, fabricante, etc.) |
 
 ## Atajos
