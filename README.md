@@ -1,9 +1,11 @@
-# 🦊 SnakeUSBIP - Cliente USB/IP Gratuito para Windows
+# 🦊 SnakeUSBIP - Free USB/IP Client for Windows
 
-**v1.7.0** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE.md) | [🌐 Conexión VPN](docs/VPN_INTERNET.md)
+🌐 **Language / Idioma:** **English** | [Español](README_ES.md)
 
-**Comparte y conecta dispositivos USB por red (LAN/WiFi/Internet) fácilmente.**
-Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Compatible con **Raspberry Pi, Orange Pi, Banana Pi, routers OpenWRT, CrealityBox** y cualquier placa ARM/x86 con Linux. Olvida la línea de comandos; usa nuestra **GUI moderna** para conectar impresoras, escáneres y dongles remotamente.
+**v2.0.0** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [🌐 VPN Connection](docs/VPN_INTERNET_EN.md)
+
+**Share and connect USB devices over network (LAN/WiFi/Internet) easily.**
+Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and 11. Compatible with **Raspberry Pi, Orange Pi, Banana Pi, OpenWRT routers, CrealityBox** and any ARM/x86 board running Linux.
 
 [![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
@@ -16,80 +18,85 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
   <img src="youtube_thumbnail.png" width="50%" alt="Video Tutorial">
 </a>
 
-▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)**
+▶️ **[Watch full tutorial on YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)** (Spanish audio, visual guide)
 
-## ✨ Características
+## 🆕 What's New in v2.0
 
-- 🔍 **Autodescubrimiento** - Escanea servidores USB/IP en tu red local- 
-- 🌐 **Conexión por Internet** - Conecta vía Tailscale/ZeroTier (NAT traversal)- 
-- 🔌 **Conexión fácil** - Conecta/desconecta dispositivos con un click
-- ⭐ **Favoritos** - Guarda dispositivos para reconexión rápida
-- � **Log de Actividad** - Historial de conexiones, escaneos y errores
-- 🖥️ **SSH integrado** - Configura servidores Raspberry Pi directamente
-- 📋 **Info detallada** - VID:PID y fabricante de cada dispositivo
-- 🎨 **GUI moderna** - Interfaz estilo macOS con botones redondos
-- 🌐 **Multi-idioma** - Español e Inglés
-- 🔄 **Auto-actualización** - Detecta nuevas versiones desde GitHub
+- 🏗️ **Complete Rewrite** - Migrated from PowerShell to .NET 9 (C# / WPF)
+- ⚡ **Ultra-Fast** - Native GUI with instant response times
+- ✏️ **Rename Devices** - Assign custom names to USB devices (saved permanently)
+- 📚 **Updated Database** - December 2025 `usb.ids` (+17,000 new devices)
+- 🐛 **Bug Fixes** - Hardware ID conflicts resolved, cleaner logs
 
-## 📦 Instalación
+## ✨ Features
 
-### Opción 1: Portable (Recomendado)
-1. Descarga desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
-   - **Windows x64**: `SnakeUSBIP_v1.7.0_Portable.zip`
-   - **Windows ARM64**: `SnakeUSBIP_v1.7.0_Portable-ARM64.zip` (Surface Pro X, etc.)
-2. Extrae el ZIP en cualquier carpeta
-3. Ejecuta `SnakeUSBIP.exe` como Administrador
-4. ¡Listo!
+- 🔍 **Auto-Discovery** - Scan for USB/IP servers on your local network
+- 🌐 **Internet Connection** - Connect via Tailscale/ZeroTier (NAT traversal)
+- 🔌 **Easy Connection** - Connect/disconnect devices with one click
+- ⭐ **Favorites** - Save devices for quick reconnection
+- 📋 **Activity Log** - History of connections, scans, and errors
+- 🖥️ **Built-in SSH** - Configure Raspberry Pi servers directly
+- 📋 **Detailed Info** - VID:PID and manufacturer for each device
+- 🎨 **Modern GUI** - Native WPF interface with dark/light themes
+- 🌐 **Multi-language** - English and Spanish
+- 🔄 **Auto-update** - Detects new versions from GitHub
 
-### Opción 2: Instalador (solo x64)
-1. Descarga `SnakeUSBIP_Setup_v1.7.0.exe` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
-2. Ejecuta el instalador como Administrador
-3. Sigue el asistente de instalación
+## 📦 Installation
 
-### Opción 3: Desde código fuente
-```powershell
-# Requiere PS2EXE (https://github.com/MScholtes/PS2EXE)
-Invoke-PS2EXE -InputFile "SnakeUSBIP.ps1" -OutputFile "SnakeUSBIP.exe" -NoConsole -requireAdmin -iconFile "Logo-SnakeFoxU-con-e.ico"
-```
+### Option 1: Portable (Recommended)
+1. Download from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
+   - **Windows x64**: `SnakeUSBIP-v2.0.0-x64.zip`
+   - **Windows ARM64**: `SnakeUSBIP-v2.0.0-arm64.zip` (Surface Pro X, etc.)
+2. Extract the ZIP to any folder
+3. Run `SnakeUSBIP.exe` as Administrator
+4. Done!
 
-## 🚀 Uso Rápido
+### Option 2: Installer (x64 only)
+1. Download `SnakeUSBIP_Setup_v2.0.0.exe` from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+2. Run the installer as Administrator
+3. Follow the installation wizard
 
-1. **Escanear** - Click en `🔍 Escanear` para encontrar servidores
-2. **Listar** - Click en `🔄 Listar` para ver dispositivos disponibles
-3. **Conectar** - Doble-click en un dispositivo o click derecho → Conectar
-4. **Desconectar** - Click derecho → Desconectar
+### ⚠️ ARM64 Users
+ARM64 drivers are **test-signed**. See `README_ARM64.md` in the ZIP for instructions to enable Windows Test Mode.
 
-### 🌐 Conexión por Internet (VPN)
+## 🚀 Quick Start
 
-1. Instala **[Tailscale](https://tailscale.com/download)** en Windows y en tu servidor
-2. Click en `🌐 VPN` para ver peers con USB/IP activo
-3. Selecciona un servidor remoto y conecta
+1. **Scan** - Click `🔍 Scan` to find servers
+2. **List** - Click `🔄 List` to see available devices
+3. **Connect** - Double-click a device or right-click → Connect
+4. **Disconnect** - Right-click → Disconnect
 
-Ver [docs/VPN_INTERNET.md](docs/VPN_INTERNET.md) para guía completa.
+### 🌐 Internet Connection (VPN)
 
-## 🐧 Servidor USB/IP (Linux)
+1. Install **[Tailscale](https://tailscale.com/download)** on Windows and your server
+2. Click `🌐 VPN` to see peers with active USB/IP
+3. Select a remote server and connect
 
-Funciona en **cualquier dispositivo con Linux** que tenga puertos USB:
+See [docs/VPN_INTERNET_EN.md](docs/VPN_INTERNET_EN.md) for complete guide.
 
-| Dispositivo | Compatibilidad |
-|-------------|----------------|
-| 🍓 Raspberry Pi (todos) | ✅ Recomendado |
+## 🐧 USB/IP Server (Linux)
+
+Works on **any Linux device** with USB ports:
+
+| Device | Compatibility |
+|--------|---------------|
+| 🍓 Raspberry Pi (all models) | ✅ Recommended |
 | 🍊 Orange Pi / Banana Pi | ✅ |
 | 📦 Arduino Yún / similar | ✅ |
-| 📡 Routers con OpenWRT | ✅ |
+| 📡 OpenWRT Routers | ✅ |
 | 🖨️ CrealityBox (OpenWRT) | ✅ |
-| 💻 Cualquier PC Linux | ✅ |
-| 🖥️ Servidor x86/ARM | ✅ |
+| 💻 Any Linux PC | ✅ |
+| 🖥️ x86/ARM Server | ✅ |
 
-Ver [docs/RASPBERRY_PI_SERVER.md](docs/RASPBERRY_PI_SERVER.md) para instrucciones completas.
+See [docs/RASPBERRY_PI_SERVER_EN.md](docs/RASPBERRY_PI_SERVER_EN.md) for complete instructions.
 
-**Resumen rápido (Debian/Ubuntu/Raspbian):**
+**Quick setup (Debian/Ubuntu/Raspbian):**
 ```bash
 sudo apt update && sudo apt install -y linux-tools-generic hwdata
 sudo modprobe usbip_host
 sudo usbipd -D
 sudo usbip list -l
-sudo usbip bind -b 1-1.4  # Reemplaza con tu bus-id
+sudo usbip bind -b 1-1.4  # Replace with your bus-id
 ```
 
 **OpenWRT:**
@@ -98,86 +105,56 @@ opkg update && opkg install usbip-server kmod-usb-ohci
 usbipd -D
 ```
 
-## � ¿Qué puedo hacer con mi dispositivo?
+## 🎯 What can I do with my device?
 
-¿Tienes una **Raspberry Pi, Orange Pi o CrealityBox** sin usar? ¡Conviértelos en un Hub USB remoto!
+Have a spare **Raspberry Pi, Orange Pi or CrealityBox**? Turn them into a remote USB Hub!
 
-| Dispositivo | Caso de Uso |
-|-------------|-------------|
-| 🖨️ **CrealityBox** | Comparte la impresora 3D USB, por red. Conecta desde cualquier PC sin cables |
-| 🍓 **Raspberry Pi** | Hub USB central: escáneres, dongles de licencia, lectores de tarjetas |
-| 🍊 **Orange Pi** | Servidor USB compacto y económico para oficina |
-| 📡 **Router OpenWRT** | Comparte USB de almacenamiento o impresora desde el router |
-| 🔐 **Dongle de Licencia** | Comparte llaves USB de software (AutoCAD, etc.) entre PCs |
+| Device | Use Case |
+|--------|----------|
+| 🖨️ **CrealityBox** | Share your 3D printer over network. Connect from any PC without cables |
+| 🍓 **Raspberry Pi** | Central USB hub: scanners, license dongles, card readers |
+| 🍊 **Orange Pi** | Compact and affordable USB server for office |
+| 📡 **OpenWRT Router** | Share USB storage or printer from your router |
+| 🔐 **License Dongle** | Share USB software keys (AutoCAD, etc.) between PCs |
 
-### Ejemplo real: CrealityBox como servidor USB
-```bash
-# 1. Accede por SSH a tu CrealityBox
-ssh root@192.168.1.x
-
-# 2. Instala USB/IP
-opkg update && opkg install usbip-server kmod-usb-ohci
-
-# 3. Inicia el servidor
-usbipd -D
-
-# 4. Exporta la impresora USB
-usbip list -l          # Ver dispositivos
-usbip bind -b 1-1      # Exportar impresora
-```
-
-Ahora conecta desde Windows con SnakeUSBIP y tu impresora 3D aparece como si estuviera conectada localmente.
-
-## �🚀 Próximas Actualizaciones
-
-**v1.8:**
-- 🔄 Auto-Reconnect | 🌙 Modo Oscuro | 🔔 Notificaciones
-
-**v2.0:**
-- 🗜️ Compresión de Datos | 📈 Dashboard de Rendimiento | 🏷️ Nicknames | 🔒 Filtros IP
-
-**v2.x:**
-- 🖥️ Servidor Windows | 🐧 Cliente Multiplataforma (Linux/Mac) | 🤖 Detección Auto
-
-## 📁 Estructura
+## 📁 Structure
 
 ```
-Portable/
-├── SnakeUSBIP.exe      # Aplicación principal
-├── SnakeUSBIP.ps1      # Código fuente PowerShell
-├── usbipw.exe          # Cliente USB/IP
-├── devnode.exe         # Gestor de dispositivos
-├── libusbip.dll        # Librería USB/IP
-├── drivers/            # Drivers USB/IP
-├── usb.ids             # Base de datos USB
-├── CleanDrivers.ps1    # Script para limpiar drivers
-└── Logo-SnakeFoxU-con-e.ico  # Icono de la app
+SnakeUSBIP/
+├── SnakeUSBIP.exe      # Main application (.NET 9 WPF)
+├── usbipw.exe          # USB/IP client
+├── devnode.exe         # Device manager
+├── libusbip.dll        # USB/IP library
+├── drivers/            # USB/IP drivers (WHLK certified x64)
+├── usb.ids             # USB database (Dec 2025)
+├── CleanDrivers.ps1    # Driver cleanup script
+└── Logo-SnakeFoxU-con-e.ico  # App icon
 ```
 
-## ⚙️ Requisitos
+## ⚙️ Requirements
 
 - Windows 10/11
-- Permisos de Administrador
-- Red local con servidor USB/IP
+- Administrator privileges
+- Local network with USB/IP server
 
-## 📄 Licencia
+## 📄 License
 
-GPL v3 (GNU General Public License) - Ver [LICENSE](LICENSE)
+GPL v3 (GNU General Public License) - See [LICENSE](LICENSE)
 
-## 🙏 Créditos
+## 🙏 Credits
 
-Este proyecto no sería posible sin el trabajo de:
+This project wouldn't be possible without the work of:
 
-| Proyecto | Autor | Contribución |
-|----------|-------|--------------|
-| [usbip-win2](https://github.com/vadimgrn/usbip-win2) | **Vadim Grn** | Drivers USB/IP firmados por Microsoft (WHLK certified). Core del cliente Windows. |
-| [OctoWrt](https://github.com/ihrapsa/OctoWrt) | **ihrapsa** | Guía original para OpenWrt en CrealityBox. Inspiración para soporte de dispositivos embebidos. |
-| [OctoWrt Fork](https://github.com/shivajiva101/OctoWrt) | **ShivaJiva** | Mantenimiento activo de OctoWrt. Releases actualizados para CrealityBox. |
-| [USB/IP](https://www.kernel.org/doc/html/latest/usb/usbip_protocol.html) | **Linux Kernel** | Protocolo original USB/IP |
-| **SnakeUSBIP** | **SnakeFoxu** | GUI PowerShell, integración VPN, documentación |
+| Project | Author | Contribution |
+|---------|--------|--------------|
+| [usbip-win2](https://github.com/vadimgrn/usbip-win2) | **Vadim Grn** | Microsoft-signed USB/IP drivers (WHLK certified). Core of the Windows client. |
+| [OctoWrt](https://github.com/ihrapsa/OctoWrt) | **ihrapsa** | Original OpenWrt guide for CrealityBox. Inspiration for embedded device support. |
+| [OctoWrt Fork](https://github.com/shivajiva101/OctoWrt) | **ShivaJiva** | Active OctoWrt maintenance. Updated releases for CrealityBox. |
+| [USB/IP](https://www.kernel.org/doc/html/latest/usb/usbip_protocol.html) | **Linux Kernel** | Original USB/IP protocol |
+| **SnakeUSBIP** | **SnakeFoxu** | .NET WPF GUI, VPN integration, documentation |
 
-### Agradecimientos especiales
+### Special Thanks
 
-- 🦊 **Vadim Grn** - Por los drivers firmados que hacen posible usar USB/IP en Windows sin modo test
-- 🐙 **Comunidad OctoWrt** - Por demostrar que la CrealityBox puede ser mucho más que un pisapapeles
-- 🐧 **Linux USB/IP Team** - Por crear el protocolo que hace todo esto posible
+- 🦊 **Vadim Grn** - For the signed drivers that make USB/IP possible on Windows without test mode
+- 🐙 **OctoWrt Community** - For showing the CrealityBox can be much more than a paperweight
+- 🐧 **Linux USB/IP Team** - For creating the protocol that makes all this possible

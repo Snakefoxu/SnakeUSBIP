@@ -1,5 +1,66 @@
 # CHANGELOG - SnakeUSBIP
 
+## [2.0.0] - 2025-12-25
+
+### Added
+- **Revamped Architecture (Migration)** 🏗️
+  - Complete codebase migration from PowerShell to **.NET 9 (C# / WPF)**.
+  - Delivers higher performance, stability, and an ultra-fast native GUI.
+- **Rename USB Devices** ✏️
+  - New "Rename" context menu in the device list.
+  - Allows assigning friendly names (e.g., "Laser Camera") that are persistently saved.
+  - Your custom names take precedence over automatic hardware detection.
+- **Updated Hardware Database** 📚
+  - Updated `usb.ids` to the December 2025 version.
+  - Native recognition of +17,000 new devices.
+- **Complete x64 Distribution** 📦
+  - Available as both **Portable** (ZIP) and **Installer** (EXE).
+
+### Fixed
+- **Identification:** Fixed hardware ID conflict for `0bda:5100` (Acmer Camera vs Realtek Adapter).
+- **Logging:** Cleanup of redundant activity log messages.
+- **Installer:** Fixed installer compilation errors.
+
+---
+
+## [1.8.0] - 2025-12-24
+
+### Maintenance
+- **Legacy Release** 📦
+  - Versión final basada en PowerShell (v1.x)
+  - Congelada para migración a v2.0 (WPF)
+  - Limpieza final de repositorio y dependencias
+
+## [1.7.3] - 2025-12-20
+
+### Changed
+- **Default language is now English** 🌐
+  - App starts in English by default (was Spanish)
+  - Spanish-speaking users can switch with one click
+- **Language button shows flag emojis** 🇬🇧🇪🇸
+  - `🇬🇧 EN` for English, `🇪🇸 ES` for Spanish
+  - Clearer visual indicator of current language
+
+---
+
+## [1.7.2] - 2025-12-19
+
+### Añadido
+- **Botón "Añadir Todos" en diálogo VPN** ➕
+  - Nuevo botón verde que añade todos los servidores VPN con USB/IP activo
+  - Permite conectar múltiples servidores Tailscale/ZeroTier de golpe
+
+### Corregido
+- **Escaneo de red local separado de VPN** 🔍
+  - El botón "Escanear" ahora solo busca en la red LOCAL (192.168.x.x, etc.)
+  - Excluye automáticamente subredes de Tailscale (100.64.0.0/10)
+  - Para buscar servidores VPN, usar el botón "🌐 VPN"
+- **Botón VPN ahora lista dispositivos** 🔗
+  - Al seleccionar un peer y pulsar "Conectar", se listan sus dispositivos en el TreeView
+  - Ya no es necesario escribir manualmente la IP del servidor VPN
+
+---
+
 ## [1.7.0] - 2025-12-19
 
 ### Añadido
