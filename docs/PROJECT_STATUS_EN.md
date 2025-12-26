@@ -1,6 +1,6 @@
 # Project Status: SnakeUSBIP
 
-## ✅ Current Version: 2.0.0 [2025-12-25]
+## ✅ Current Version: 2.0.0 [2025-12-26]
 
 > **New architecture:** Completely migrated from PowerShell to .NET 9 (C# / WPF)
 
@@ -8,34 +8,56 @@
 
 #### Version 2.0 (WPF)
 - ✅ **.NET 9 Architecture** - Native performance, ultra-fast GUI
-- ✅ **Rename Devices** - Persistent custom names
+- ✅ **VS Code Dark+ Theme** - Professional blue-accented dark mode
+- ✅ **Rename Devices** - Persistent custom names (stored in config.json)
 - ✅ **Updated Database** - usb.ids December 2025 (+17K devices)
 - ✅ **ARM64 Support** - Windows on ARM (test-signed drivers)
+- ✅ **Dynamic Version Check** - Reads version from assembly, not hardcoded
 
 #### Inherited from v1.x (PowerShell)
-- ✅ **USB/IP Connect/Disconnect**
-- ✅ **Auto-Discovery** - Local subnet scanning
-- ✅ **TreeView GUI** - Hierarchical with context menu
-- ✅ **Favorites System** - Auto-reconnection
-- ✅ **VID:PID Information** - Extended data
-- ✅ **Device Counters** - "(X)" in each node
-- ✅ **Tooltips** - Info on mouse hover
-- ✅ **System Tray** - Minimize to tray
-- ✅ **Multiple Servers** - Connect to several simultaneously
-- ✅ **Multi-language** - English/Spanish
-- ✅ **Auto-update** - From GitHub
-- ✅ **Portable & Installer** - x64 (WHLK) and ARM64
-- ✅ **Activity Log** - Event history
-- ✅ **VPN Connection** - Tailscale/ZeroTier
+- ✅ USB/IP Connect/Disconnect
+- ✅ Auto-Discovery (subnet scanning port 3240)
+- ✅ TreeView GUI with context menu
+- ✅ Favorites System with auto-reconnection
+- ✅ VID:PID device information
+- ✅ Device counters "(X)" in each node
+- ✅ Tooltips on hover
+- ✅ System Tray (minimize to tray)
+- ✅ Multiple servers simultaneously
+- ✅ Multi-language (English/Spanish)
+- ✅ Auto-update from GitHub
+- ✅ Portable & Installer (x64 WHQL + ARM64)
+- ✅ Activity Log with timestamps
+- ✅ VPN Connection (Tailscale/ZeroTier)
+- ✅ SSH Configuration dialog
+
+### ⚠️ Known Limitations
+
+| Issue | Reason |
+|-------|--------|
+| "Unknown Publisher" in UAC | App not code-signed (requires ~$75/year certificate) |
+| ARM64 requires Test Mode | Drivers are test-signed, not WHQL certified |
 
 ### Pending (Roadmap)
-- [ ] Toast notifications (connect/disconnect)
+- [ ] Toast notifications (connect/disconnect events)
 - [ ] Auto-reconnect when server drops
 - [ ] USB data compression
 - [ ] Performance dashboard
+- [ ] Additional languages
+
+---
+
+## 📦 Release Artifacts
+
+| File | Size | Platform |
+|------|------|----------|
+| `SnakeUSBIP-v2.0.0-x64.zip` | 67.5 MB | Windows x64 Portable |
+| `SnakeUSBIP-v2.0.0-arm64.zip` | 63.1 MB | Windows ARM64 Portable |
+| `SnakeUSBIP_Setup_v2.0.0.exe` | 66.9 MB | Windows x64 Installer |
 
 ---
 
 ## 🔗 Links
-- GitHub: https://github.com/Snakefoxu/SnakeUSBIP
-- YouTube: https://www.youtube.com/watch?v=mETEs9INlq4
+- **GitHub:** https://github.com/Snakefoxu/SnakeUSBIP
+- **YouTube:** https://www.youtube.com/watch?v=mETEs9INlq4
+- **Documentation:** [docs/](../docs/)
