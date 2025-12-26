@@ -1,5 +1,29 @@
 # CHANGELOG - SnakeUSBIP
 
+## [2.0.2] - 2025-12-26
+
+### Fixed
+- **Auto-Update** 🐛
+  - Fixed a critical bug where the application failed to parse release tags from GitHub API due to case sensitivity.
+  - Added proper JSON property mapping for reliability.
+
+## [2.0.1] - 2025-12-26
+
+### Improved
+- **Notifications** 🔔
+  - Implemented hybrid notification system:
+    - **Visible Window:** Custom WPF Toast popup (non-intrusive, auto-hides).
+    - **Minimized:** Standard Windows BalloonTip (ensures visibility).
+  - Notifications no longer accumulate in Windows Action Center.
+- **Device Persistence** 💾
+  - Application now detects devices that were already connected before startup.
+  - Connected devices are prominently displayed with full descriptions.
+- **Connection Monitor** ⚡
+  - Reduced monitoring interval from 10s to 2s for faster disconnect detection.
+  - Improved device matching logic (OR -> AND condition) to avoid false positives.
+- **UI UX** ✨
+  - Connected devices node now shows full device name and ID (e.g., `1-1: Camera (046d:0825)`).
+
 ## [2.0.0] - 2025-12-25
 
 ### Added

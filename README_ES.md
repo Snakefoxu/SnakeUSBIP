@@ -2,17 +2,15 @@
 
 🌐 **Idioma / Language:** [English](README.md) | **Español**
 
-**v2.0.0** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE_ES.md) | [📚 Wiki](https://github.com/Snakefoxu/SnakeUSBIP/wiki) | [🌐 VPN](docs/VPN_INTERNET_ES.md)
+**v2.0.2** | [Descargar Última Versión](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 Manual de Usuario](docs/USAGE_ES.md) | [🌐 Conexión VPN](docs/VPN_INTERNET_ES.md)
 
 **Comparte y conecta dispositivos USB por red (LAN/WiFi/Internet) fácilmente.**
 Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Compatible con **Raspberry Pi, Orange Pi, Banana Pi, routers OpenWRT, CrealityBox** y cualquier placa ARM/x86 con Linux.
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)](https://github.com/SnakeFoxu/SnakeUSBIP/releases/latest)
-[![.NET](https://img.shields.io/badge/.NET-9.0-purple?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
-[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&label=descargas)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
-[![License](https://img.shields.io/badge/licencia-GPL%20v3-green?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/Windows-x64%20%7C%20ARM64-0078D6?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
+[![License](https://img.shields.io/github/license/SnakeFoxu/SnakeUSBIP?style=flat-square&color=green)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64%20%26%20ARM64)-lightgrey?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
 
 ## 🎬 Video Tutorial
 
@@ -22,13 +20,15 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 
 ▶️ **[Ver tutorial completo en YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)**
 
-## 🆕 Novedades en v2.0
+## 🆕 Novedades en v2.0.2
 
 - 🏗️ **Reescritura Completa** - Migrado de PowerShell a .NET 9 (C# / WPF)
+- 🔔 **Notificaciones Híbridas** - Popups no intrusivos (Ventana) + BalloonTips (Bandeja)
+- 💾 **Persistencia de Dispositivos** - Recuerda dispositivos conectados tras reiniciar
 - ⚡ **Ultra-Rápido** - Interfaz nativa con tiempos de respuesta instantáneos
 - ✏️ **Renombrar Dispositivos** - Asigna nombres personalizados a dispositivos USB (guardados permanentemente)
 - 📚 **Base de Datos Actualizada** - `usb.ids` de Diciembre 2025 (+17,000 nuevos dispositivos)
-- 🐛 **Correcciones** - Conflictos de ID de hardware resueltos, logs más limpios
+- 🐛 **Correcciones** - Arreglado Auto-Update, conflictos de hardware y lógica del monitor
 
 ## ✨ Características
 
@@ -45,7 +45,7 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 
 ## 📦 Instalación
 
-### Opción 1: Portable (Recomendado)
+### Opción 1: Portable 
 1. Descarga desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
    - **Windows x64**: `SnakeUSBIP-v2.0.0-x64.zip`
    - **Windows ARM64**: `SnakeUSBIP-v2.0.0-arm64.zip` (Surface Pro X, etc.)
@@ -53,7 +53,7 @@ Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Win
 3. Ejecuta `SnakeUSBIP.exe` como Administrador
 4. ¡Listo!
 
-### Opción 2: Instalador (solo x64)
+### Opción 2: Instalador (solo x64) (Recomendado)
 1. Descarga `SnakeUSBIP_Setup_v2.0.0.exe` desde [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
 2. Ejecuta el instalador como Administrador
 3. Sigue el asistente de instalación
@@ -160,18 +160,3 @@ Este proyecto no sería posible sin el trabajo de:
 - 🦊 **Vadim Grn** - Por los drivers firmados que hacen posible usar USB/IP en Windows sin modo test
 - 🐙 **Comunidad OctoWrt** - Por demostrar que la CrealityBox puede ser mucho más que un pisapapeles
 - 🐧 **Linux USB/IP Team** - Por crear el protocolo que hace todo esto posible
-
----
-<details>
-<summary>🔍 Palabras clave / Tags</summary>
-
-`USB por red` `cliente USB/IP` `compartir USB red` `dispositivos USB remotos` `USB/IP Windows`
-`alternativa VirtualHere` `alternativa FlexiHub` `alternativa USB Network Gate` `USB gratis`
-`Raspberry Pi servidor USB` `Orange Pi hub USB` `CrealityBox USB` `OpenWRT USB/IP`
-`compartir dongle USB` `dongle licencia red` `impresora 3D USB red` `grabador láser remoto`
-`Tailscale USB` `ZeroTier USB` `USB por VPN` `USB por Internet`
-`compartir impresora USB` `escáner remoto` `hub USB por red` `hub USB inalámbrico`
-`.NET 9 WPF` `USB/IP código abierto` `cliente USB GPL` `Windows 10 USB/IP` `Windows 11 USB/IP`
-`ARM64 USB/IP` `Surface Pro X USB/IP` `drivers certificados WHLK`
-
-</details>

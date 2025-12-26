@@ -2,17 +2,15 @@
 
 🌐 **Language / Idioma:** **English** | [Español](README_ES.md)
 
-**v2.0.0** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [📚 Wiki](https://github.com/Snakefoxu/SnakeUSBIP/wiki) | [🌐 VPN](docs/VPN_INTERNET_EN.md)
+**v2.0.2** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [🌐 VPN Connection](docs/VPN_INTERNET_EN.md)
 
 **Share and connect USB devices over network (LAN/WiFi/Internet) easily.**
 Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and 11. Compatible with **Raspberry Pi, Orange Pi, Banana Pi, OpenWRT routers, CrealityBox** and any ARM/x86 board running Linux.
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)](https://github.com/SnakeFoxu/SnakeUSBIP/releases/latest)
-[![.NET](https://img.shields.io/badge/.NET-9.0-purple?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
-[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&label=downloads)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
-[![License](https://img.shields.io/badge/license-GPL%20v3-green?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/Windows-x64%20%7C%20ARM64-0078D6?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
+[![License](https://img.shields.io/github/license/SnakeFoxu/SnakeUSBIP?style=flat-square&color=green)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64%20%26%20ARM64)-lightgrey?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
 
 ## 🎬 Video Tutorial
 
@@ -22,13 +20,15 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 
 ▶️ **[Watch full tutorial on YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)** (Spanish audio, visual guide)
 
-## 🆕 What's New in v2.0
+## 🆕 What's New in v2.0.2
 
 - 🏗️ **Complete Rewrite** - Migrated from PowerShell to .NET 9 (C# / WPF)
+- 🔔 **Hybrid Notifications** - Custom non-intrusive popups (Window) + BalloonTips (Tray)
+- 💾 **Device Persistence** - Remembers connected devices after restart
 - ⚡ **Ultra-Fast** - Native GUI with instant response times
 - ✏️ **Rename Devices** - Assign custom names to USB devices (saved permanently)
 - 📚 **Updated Database** - December 2025 `usb.ids` (+17,000 new devices)
-- 🐛 **Bug Fixes** - Hardware ID conflicts resolved, cleaner logs
+- 🐛 **Bug Fixes** - Fixed Auto-Update, Hardware ID conflicts, connection monitor logic
 
 ## ✨ Features
 
@@ -45,7 +45,7 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 
 ## 📦 Installation
 
-### Option 1: Portable (Recommended)
+### Option 1: Portable 
 1. Download from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
    - **Windows x64**: `SnakeUSBIP-v2.0.0-x64.zip`
    - **Windows ARM64**: `SnakeUSBIP-v2.0.0-arm64.zip` (Surface Pro X, etc.)
@@ -53,7 +53,7 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 3. Run `SnakeUSBIP.exe` as Administrator
 4. Done!
 
-### Option 2: Installer (x64 only)
+### Option 2: Installer (x64 only) (Recommended)
 1. Download `SnakeUSBIP_Setup_v2.0.0.exe` from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
 2. Run the installer as Administrator
 3. Follow the installation wizard
@@ -160,18 +160,3 @@ This project wouldn't be possible without the work of:
 - 🦊 **Vadim Grn** - For the signed drivers that make USB/IP possible on Windows without test mode
 - 🐙 **OctoWrt Community** - For showing the CrealityBox can be much more than a paperweight
 - 🐧 **Linux USB/IP Team** - For creating the protocol that makes all this possible
-
----
-<details>
-<summary>🔍 Keywords / Tags</summary>
-
-`USB over IP` `USB/IP client` `USB network sharing` `remote USB devices` `Windows USB/IP` 
-`VirtualHere alternative` `FlexiHub alternative` `USB Network Gate alternative` `free USB sharing`
-`Raspberry Pi USB server` `Orange Pi USB hub` `CrealityBox USB` `OpenWRT USB/IP`
-`USB dongle sharing` `license dongle network` `3D printer USB network` `laser engraver remote`
-`Tailscale USB` `ZeroTier USB` `USB over VPN` `USB over Internet`
-`share USB printer` `remote scanner` `USB hub over network` `wireless USB hub`
-`.NET 9 WPF` `open source USB/IP` `GPL USB client` `Windows 10 USB/IP` `Windows 11 USB/IP`
-`ARM64 USB/IP` `Surface Pro X USB/IP` `WHLK certified drivers`
-
-</details>
