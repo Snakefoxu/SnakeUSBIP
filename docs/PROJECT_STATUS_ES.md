@@ -40,9 +40,8 @@
 | "Editor desconocido" en UAC | App no firmada digitalmente (requiere certificado ~$75/año) |
 | ARM64 requiere Test Mode | Drivers son test-signed, no certificados WHQL |
 
-### Pendiente (Roadmap)
-- [ ] Dashboard de rendimiento (estadísticas de conexión, monitor de latencia)
-- [ ] Idiomas adicionales (Portugués, Francés, Alemán)
+### Enfoque de Desarrollo
+⚠️ **Estabilidad primero** - No hay nuevas features planificadas. Enfoque en corrección de bugs y fiabilidad para dispositivos en tiempo real (grabadores láser, impresoras 3D, etc.)
 
 ---
 

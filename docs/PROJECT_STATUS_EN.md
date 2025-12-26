@@ -40,9 +40,8 @@
 | "Unknown Publisher" in UAC | App not code-signed (requires ~$75/year certificate) |
 | ARM64 requires Test Mode | Drivers are test-signed, not WHQL certified |
 
-### Pending (Roadmap)
-- [ ] Performance dashboard (connection stats, latency monitor)
-- [ ] Additional languages (Portuguese, French, German)
+### Development Focus
+⚠️ **Stability first** - No new features planned. Focus on bug fixes and reliability for real-time devices (laser engravers, 3D printers, etc.)
 
 ---
 
