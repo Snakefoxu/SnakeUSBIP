@@ -30,6 +30,8 @@
 - ✅ Activity Log with timestamps
 - ✅ VPN Connection (Tailscale/ZeroTier)
 - ✅ SSH Configuration dialog
+- ✅ **Toast Notifications** (connect/disconnect events via system tray)
+- ✅ **Auto-reconnect** when connection drops (ConnectionMonitorService)
 
 ### ⚠️ Known Limitations
 
@@ -39,11 +41,9 @@
 | ARM64 requires Test Mode | Drivers are test-signed, not WHQL certified |
 
 ### Pending (Roadmap)
-- [ ] Toast notifications (connect/disconnect events)
-- [ ] Auto-reconnect when server drops
-- [ ] USB data compression
+- [ ] USB data compression (requires protocol changes)
 - [ ] Performance dashboard
-- [ ] Additional languages
+- [ ] Additional languages (Portuguese, French, German)
 
 ---
 

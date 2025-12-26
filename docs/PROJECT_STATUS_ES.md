@@ -30,6 +30,8 @@
 - ✅ Log de Actividad con timestamps
 - ✅ Conexión VPN (Tailscale/ZeroTier)
 - ✅ Diálogo de configuración SSH
+- ✅ **Notificaciones Toast** (eventos conectar/desconectar via bandeja del sistema)
+- ✅ **Auto-reconexión** cuando cae la conexión (ConnectionMonitorService)
 
 ### ⚠️ Limitaciones Conocidas
 
@@ -39,11 +41,9 @@
 | ARM64 requiere Test Mode | Drivers son test-signed, no certificados WHQL |
 
 ### Pendiente (Roadmap)
-- [ ] Notificaciones toast (eventos conectar/desconectar)
-- [ ] Auto-reconexión cuando el servidor cae
-- [ ] Compresión de datos USB
+- [ ] Compresión de datos USB (requiere cambios al protocolo)
 - [ ] Dashboard de rendimiento
-- [ ] Idiomas adicionales
+- [ ] Idiomas adicionales (Portugués, Francés, Alemán)
 
 ---
 
