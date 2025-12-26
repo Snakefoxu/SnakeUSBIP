@@ -7,10 +7,12 @@
 **Comparte y conecta dispositivos USB por red (LAN/WiFi/Internet) fácilmente.**
 Transforma cualquier dispositivo Linux en un Hub USB Virtual accesible desde Windows 10 y 11. Compatible con **Raspberry Pi, Orange Pi, Banana Pi, routers OpenWRT, CrealityBox** y cualquier placa ARM/x86 con Linux.
 
-[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&color=blue)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue?style=flat-square)](https://github.com/SnakeFoxu/SnakeUSBIP/releases/latest)
+[![.NET](https://img.shields.io/badge/.NET-9.0-purple?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
+[![GitHub Downloads](https://img.shields.io/github/downloads/SnakeFoxu/SnakeUSBIP/total?style=flat-square&logo=github&label=descargas)](https://github.com/SnakeFoxu/SnakeUSBIP/releases)
 [![GitHub Stars](https://img.shields.io/github/stars/SnakeFoxu/SnakeUSBIP?style=flat-square&logo=github&color=yellow)](https://github.com/SnakeFoxu/SnakeUSBIP/stargazers)
-[![License](https://img.shields.io/github/license/SnakeFoxu/SnakeUSBIP?style=flat-square&color=green)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64%20%26%20ARM64)-lightgrey?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
+[![License](https://img.shields.io/badge/licencia-GPL%20v3-green?style=flat-square)](LICENSE)
+[![Platform](https://img.shields.io/badge/Windows-x64%20%7C%20ARM64-0078D6?style=flat-square&logo=windows)](https://github.com/SnakeFoxu/SnakeUSBIP)
 
 ## 🎬 Video Tutorial
 
