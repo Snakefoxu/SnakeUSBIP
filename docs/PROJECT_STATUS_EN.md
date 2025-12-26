@@ -41,8 +41,7 @@
 | ARM64 requires Test Mode | Drivers are test-signed, not WHQL certified |
 
 ### Pending (Roadmap)
-- [ ] USB data compression (requires protocol changes)
-- [ ] Performance dashboard
+- [ ] Performance dashboard (connection stats, latency monitor)
 - [ ] Additional languages (Portuguese, French, German)
 
 ---
