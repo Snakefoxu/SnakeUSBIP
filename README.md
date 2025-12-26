@@ -160,3 +160,18 @@ This project wouldn't be possible without the work of:
 - 🦊 **Vadim Grn** - For the signed drivers that make USB/IP possible on Windows without test mode
 - 🐙 **OctoWrt Community** - For showing the CrealityBox can be much more than a paperweight
 - 🐧 **Linux USB/IP Team** - For creating the protocol that makes all this possible
+
+---
+<details>
+<summary>🔍 Keywords / Tags</summary>
+
+`USB over IP` `USB/IP client` `USB network sharing` `remote USB devices` `Windows USB/IP` 
+`VirtualHere alternative` `FlexiHub alternative` `USB Network Gate alternative` `free USB sharing`
+`Raspberry Pi USB server` `Orange Pi USB hub` `CrealityBox USB` `OpenWRT USB/IP`
+`USB dongle sharing` `license dongle network` `3D printer USB network` `laser engraver remote`
+`Tailscale USB` `ZeroTier USB` `USB over VPN` `USB over Internet`
+`share USB printer` `remote scanner` `USB hub over network` `wireless USB hub`
+`.NET 9 WPF` `open source USB/IP` `GPL USB client` `Windows 10 USB/IP` `Windows 11 USB/IP`
+`ARM64 USB/IP` `Surface Pro X USB/IP` `WHLK certified drivers`
+
+</details>
