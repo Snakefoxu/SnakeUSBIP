@@ -105,11 +105,13 @@ public partial class MainWindow : Window
                 Visible = true
             };
             
-            // Load icon from resources
+            // Load icon from resources - use 32x32 for tray visibility
             var iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "icon.ico");
             if (System.IO.File.Exists(iconPath))
             {
-                _trayIcon.Icon = new Icon(iconPath);
+                // Load icon with specific size for better tray visibility
+                using var iconStream = new System.IO.FileStream(iconPath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                _trayIcon.Icon = new Icon(iconStream, new System.Drawing.Size(32, 32));
             }
             else
             {
@@ -143,7 +145,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            AddLog("Warning", $"Could not initialize tray icon: {ex.Message}");
+            AddLog("Warning", string.Format(_localization.GetText("log_tray_init_error", _currentLanguage), ex.Message));
         }
     }
     
@@ -257,15 +259,15 @@ public partial class MainWindow : Window
         try
         {
             var subnet = GetLocalSubnet();
-            AddLog("Info", $"Scanning subnet {subnet}.0/24...");
+            AddLog("Info", string.Format(_localization.GetText("log_scanning_subnet", _currentLanguage), subnet));
             
             var servers = await _networkScanner.ScanNetworkAsync(subnet);
             
             // Debug: Log all found servers
-            AddLog("Info", $"Scan complete: found {servers.Count} server(s)");
+            AddLog("Info", string.Format(_localization.GetText("log_scan_complete", _currentLanguage), servers.Count));
             foreach (var srv in servers)
             {
-                AddLog("Info", $"  → Server: {srv}");
+                AddLog("Info", string.Format(_localization.GetText("log_server_found", _currentLanguage), srv));
             }
             
             if (servers.Count > 0)
@@ -364,7 +366,7 @@ public partial class MainWindow : Window
             serverNode.Header = $"🖥️ {serverIP} ({devices.Count})";
             serverNode.IsExpanded = true; // snakefoxu
             
-            AddLog("Info", $"{devices.Count} device(s) on {serverIP}");
+            AddLog("Info", string.Format(_localization.GetText("log_devices_on_server", _currentLanguage), devices.Count, serverIP));
         }
         catch (Exception ex)
         {
@@ -384,7 +386,7 @@ public partial class MainWindow : Window
             
             if (connectedDevices.Count > 0)
             {
-                AddLog("Info", $"Found {connectedDevices.Count} device(s) already connected");
+                AddLog("Info", string.Format(_localization.GetText("log_devices_already_connected", _currentLanguage), connectedDevices.Count));
                 
                 foreach (var device in connectedDevices)
                 {
@@ -426,7 +428,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            AddLog("Warning", $"Could not load connected devices: {ex.Message}");
+            AddLog("Warning", string.Format(_localization.GetText("log_load_connected_error", _currentLanguage), ex.Message));
         }
     }
     
@@ -439,7 +441,7 @@ public partial class MainWindow : Window
         var favorites = _favorites.GetFavorites().Where(f => f.AutoConnect).ToList();
         if (favorites.Count == 0) return;
         
-        AddLog("Info", $"Auto-connecting {favorites.Count} favorite(s)...");
+        AddLog("Info", string.Format(_localization.GetText("log_auto_connecting", _currentLanguage), favorites.Count));
         
         foreach (var fav in favorites)
         {
@@ -448,7 +450,7 @@ public partial class MainWindow : Window
                 var result = await _usbip.ConnectAsync(fav.ServerIP, fav.BusId);
                 if (result.Success)
                 {
-                    AddLog("Success", $"Connected {fav.Description} ({fav.BusId})");
+                    AddLog("Success", string.Format(_localization.GetText("log_connected_favorite", _currentLanguage), fav.Description, fav.BusId));
                     
                     // Add to connected list
                     var connNode = new TreeViewItem 
@@ -460,12 +462,12 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    AddLog("Warning", $"Failed to connect {fav.BusId}: {result.Error}");
+                    AddLog("Warning", string.Format(_localization.GetText("log_connection_failed", _currentLanguage), fav.BusId, result.Error));
                 }
             }
             catch (Exception ex)
             {
-                AddLog("Error", $"Error connecting {fav.BusId}: {ex.Message}");
+                AddLog("Error", string.Format(_localization.GetText("log_connection_error", _currentLanguage), fav.BusId, ex.Message));
             }
         }
         
@@ -484,7 +486,7 @@ public partial class MainWindow : Window
         if (selectedNode.Tag is UsbDevice device)
         {
             // Connect device
-            AddLog("Info", $"Connecting {device.BusId} on {device.ServerIP}...");
+            AddLog("Info", string.Format(_localization.GetText("log_connecting_device", _currentLanguage), device.BusId, device.ServerIP));
             lblStatus.Text = $"{_localization.GetText("status_connecting", _currentLanguage)} {device.BusId}...";
             lblStatus.Foreground = (SolidColorBrush)FindResource("StatusInfo");
             
@@ -492,7 +494,7 @@ public partial class MainWindow : Window
             
             if (result.Success)
             {
-                AddLog("Success", $"Connected {device.BusId}");
+                AddLog("Success", string.Format(_localization.GetText("log_connection_success", _currentLanguage), device.BusId));
                 lblStatus.Text = $"✓ {_localization.GetText("log_connected", _currentLanguage)}: {device.BusId}";
                 lblStatus.Foreground = (SolidColorBrush)FindResource("StatusSuccess");
                 
@@ -520,7 +522,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                AddLog("Error", result.Error ?? "Connection failed");
+                AddLog("Error", result.Error ?? _localization.GetText("log_connection_general_failed", _currentLanguage));
                 lblStatus.Text = $"Error: {result.Error}";
                 lblStatus.Foreground = (SolidColorBrush)FindResource("StatusError");
             }
@@ -528,7 +530,7 @@ public partial class MainWindow : Window
         else if (selectedNode.Tag is ConnectedDevice connectedDevice)
         {
             // Disconnect device - need to find port
-            AddLog("Info", $"Disconnecting {connectedDevice.BusId}...");
+            AddLog("Info", string.Format(_localization.GetText("log_disconnecting", _currentLanguage), connectedDevice.BusId));
             lblStatus.Text = $"{_localization.GetText("status_disconnecting", _currentLanguage)} {connectedDevice.BusId}...";
             lblStatus.Foreground = (SolidColorBrush)FindResource("StatusInfo");
             
@@ -544,7 +546,7 @@ public partial class MainWindow : Window
                 
                 if (result.Success)
                 {
-                    AddLog("Success", $"Disconnected port {portDevice.Port}");
+                    AddLog("Success", string.Format(_localization.GetText("log_disconnected_port", _currentLanguage), portDevice.Port));
                     lblStatus.Text = $"✓ {_localization.GetText("log_disconnected", _currentLanguage)}";
                     lblStatus.Foreground = (SolidColorBrush)FindResource("StatusSuccess");
                     
@@ -579,12 +581,12 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    AddLog("Error", result.Error ?? "Disconnect failed");
+                    AddLog("Error", result.Error ?? _localization.GetText("log_disconnect_failed", _currentLanguage));
                 }
             }
             else
             {
-                AddLog("Warning", $"Device not found in connected list, may already be disconnected");
+                AddLog("Warning", _localization.GetText("log_device_not_found", _currentLanguage));
                 // Still remove from UI
                 nodeConnected.Items.Remove(selectedNode);
                 _connectionMonitor.RemoveDevice(connectedDevice.ServerIP, connectedDevice.BusId);
@@ -596,6 +598,26 @@ public partial class MainWindow : Window
     private void UpdateConnectedCount()
     {
         nodeConnected.Header = $"☑️ {_localization.GetText("node_connected", _currentLanguage).Replace("☑️ ", "")} ({nodeConnected.Items.Count})";
+    }
+    
+    /// <summary>
+    /// Override OnClosing to properly dispose of tray icon and clean up resources
+    /// Prevents "ghost" tray icon from remaining after app closure
+    /// </summary>
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    {
+        // Cleanup tray icon
+        if (_trayIcon != null)
+        {
+            _trayIcon.Visible = false;
+            _trayIcon.Dispose();
+            _trayIcon = null;
+        }
+        
+        // Stop connection monitor
+        _connectionMonitor?.Stop();
+        
+        base.OnClosing(e);
     }
     
     #region Window Controls
@@ -626,7 +648,6 @@ public partial class MainWindow : Window
         _currentLanguage = _currentLanguage == "es" ? "en" : "es";
         _config.SetLanguage(_currentLanguage);
         UpdateUITexts();
-        AddLog("Info", $"Language changed to {(_currentLanguage == "es" ? "Español" : "English")}");
     }
     
     private void BtnTheme_Click(object sender, RoutedEventArgs e)
@@ -815,7 +836,7 @@ public partial class MainWindow : Window
         lblStatus.Text = $"{_localization.GetText("status_listing", _currentLanguage)} {servers.Count} server(s)...";
         lblStatus.Foreground = (SolidColorBrush)FindResource("StatusInfo");
         
-        AddLog("Info", $"Listing devices on {servers.Count} server(s)...");
+        AddLog("Info", string.Format(_localization.GetText("log_listing_devices", _currentLanguage), servers.Count));
         
         int totalDevices = 0;
         
@@ -838,7 +859,7 @@ public partial class MainWindow : Window
             
             lblStatus.Text = $"✓ {totalDevices} {_localization.GetText("status_devices_found", _currentLanguage)} on {servers.Count} server(s)";
             lblStatus.Foreground = (SolidColorBrush)FindResource("StatusSuccess");
-            AddLog("Success", $"Listed {totalDevices} devices on {servers.Count} servers");
+            AddLog("Success", string.Format(_localization.GetText("log_listed_devices", _currentLanguage), totalDevices, servers.Count));
         }
         catch (Exception ex)
         {
@@ -877,7 +898,7 @@ public partial class MainWindow : Window
     {
         lblStatus.Text = _localization.GetText("update_checking", _currentLanguage);
         lblStatus.Foreground = (SolidColorBrush)FindResource("StatusInfo");
-        AddLog("Info", "Checking for updates...");
+        AddLog("Info", _localization.GetText("log_checking_updates", _currentLanguage));
         
         try
         {
@@ -888,7 +909,7 @@ public partial class MainWindow : Window
             
             if (updateInfo.UpdateAvailable)
             {
-                AddLog("Info", $"New version available: {updateInfo.LatestVersion}");
+                AddLog("Info", string.Format(_localization.GetText("log_update_available", _currentLanguage), updateInfo.LatestVersion));
                 lblStatus.Text = $"⬆️ {_localization.GetText("update_available", _currentLanguage)}: v{updateInfo.LatestVersion}";
                 lblStatus.Foreground = (SolidColorBrush)FindResource("StatusWarning");
                 
@@ -900,13 +921,13 @@ public partial class MainWindow : Window
                 
                 if (result == System.Windows.MessageBoxResult.Yes && updateInfo.DownloadUrl != null && updateInfo.InstallerName != null)
                 {
-                    AddLog("Info", "Downloading update...");
+                    AddLog("Info", _localization.GetText("log_downloading_update", _currentLanguage));
                     lblStatus.Text = _localization.GetText("update_downloading", _currentLanguage);
                     
                     var installResult = await _updates.StartUpdateAsync(updateInfo.DownloadUrl, updateInfo.InstallerName);
                     if (!installResult.Success)
                     {
-                        AddLog("Error", installResult.Error ?? "Update failed");
+                        AddLog("Error", installResult.Error ?? _localization.GetText("log_update_failed", _currentLanguage));
                     }
                 }
             }
@@ -914,7 +935,7 @@ public partial class MainWindow : Window
             {
                 lblStatus.Text = _localization.GetText("update_current", _currentLanguage);
                 lblStatus.Foreground = (SolidColorBrush)FindResource("StatusSuccess");
-                AddLog("Success", $"You have the latest version (v{updateInfo.CurrentVersion})");
+                AddLog("Success", string.Format(_localization.GetText("log_latest_version", _currentLanguage), updateInfo.CurrentVersion));
             }
         }
         catch (Exception ex)
@@ -942,31 +963,31 @@ public partial class MainWindow : Window
     
     private async void BtnInstallDrivers_Click(object sender, RoutedEventArgs e)
     {
-        AddLog("Info", "Installing drivers...");
+        AddLog("Info", _localization.GetText("log_installing_drivers", _currentLanguage));
         var result = await _drivers.InstallAsync();
         if (result.Success)
         {
-            AddLog("Success", "Drivers installed successfully");
+            AddLog("Success", _localization.GetText("log_drivers_installed", _currentLanguage));
             CheckDriverStatus();
         }
         else
         {
-            AddLog("Error", result.Error ?? "Failed to install drivers");
+            AddLog("Error", result.Error ?? _localization.GetText("log_install_drivers_failed", _currentLanguage));
         }
     }
     
     private async void BtnUninstallDrivers_Click(object sender, RoutedEventArgs e)
     {
-        AddLog("Info", "Uninstalling drivers...");
+        AddLog("Info", _localization.GetText("log_uninstalling_drivers", _currentLanguage));
         var result = await _drivers.UninstallAsync();
         if (result.Success)
         {
-            AddLog("Success", "Drivers uninstalled successfully");
+            AddLog("Success", _localization.GetText("log_drivers_uninstalled", _currentLanguage));
             CheckDriverStatus();
         }
         else
         {
-            AddLog("Error", result.Error ?? "Failed to uninstall drivers");
+            AddLog("Error", result.Error ?? _localization.GetText("log_uninstall_drivers_failed", _currentLanguage));
         }
     }
     

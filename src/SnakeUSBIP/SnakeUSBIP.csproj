@@ -12,7 +12,7 @@
     <!-- App Info -->
     <AssemblyName>SnakeUSBIP</AssemblyName>
     <RootNamespace>SnakeUSBIP</RootNamespace>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <Company>SnakeFoxu</Company>
     <Product>SnakeUSBIP - USB/IP Manager</Product>
     <Description>USB/IP client for Windows - Connect remote USB devices over network</Description>

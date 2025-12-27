@@ -78,14 +78,50 @@ public class DriverService
     {
         try
         {
-            // Get installed driver OEM names
-            var status = CheckStatus();
-            if (!status.Installed)
-                return new OperationResult { Success = true }; // Already uninstalled
+            // First, enumerate installed USB/IP drivers
+            var psi = new ProcessStartInfo
+            {
+                FileName = "pnputil",
+                Arguments = "/enum-drivers",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
             
-            // Uninstall usbip drivers
-            var result = await RunPnpUtilAsync("/delete-driver oem*.inf /uninstall /force");
-            return result;
+            using var enumProcess = Process.Start(psi);
+            if (enumProcess == null)
+                return new OperationResult { Success = false, Error = "Failed to enumerate drivers" };
+            
+            var output = await enumProcess.StandardOutput.ReadToEndAsync();
+            await enumProcess.WaitForExitAsync();
+            
+            // Find usbip/vhci driver OEM names using regex
+            var matches = System.Text.RegularExpressions.Regex.Matches(output, @"(oem\d+\.inf)", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            var usbipDrivers = new List<string>();
+            
+            // Check each match to see if it's a usbip driver
+            var blocks = output.Split(new[] { "Published name:", "Nombre publicado:" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var block in blocks)
+            {
+                if ((block.Contains("usbip", StringComparison.OrdinalIgnoreCase) || 
+                     block.Contains("vhci", StringComparison.OrdinalIgnoreCase)) &&
+                    System.Text.RegularExpressions.Regex.Match(block, @"(oem\d+\.inf)", System.Text.RegularExpressions.RegexOptions.IgnoreCase) is { Success: true } match)
+                {
+                    if (!usbipDrivers.Contains(match.Value))
+                        usbipDrivers.Add(match.Value);
+                }
+            }
+            
+            if (usbipDrivers.Count == 0)
+                return new OperationResult { Success = true }; // No drivers to uninstall
+            
+            // Uninstall each driver
+            foreach (var driver in usbipDrivers)
+            {
+                await RunPnpUtilAsync($"/delete-driver {driver} /uninstall");
+            }
+            
+            return new OperationResult { Success = true };
         }
         catch (Exception ex)
         {

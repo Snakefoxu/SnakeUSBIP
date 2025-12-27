@@ -2,6 +2,14 @@
 
 ## [2.0.3] - 2025-12-27
 
+### Added
+- **Single Instance** 🔒 - Mutex prevents multiple app instances from running
+- **Full Translation** 🌐 - Activity Log messages now translate when switching language
+
+### Fixed
+- **Tray Icon Cleanup** 🧹 - Fixed ghost tray icon when closing application
+- **OnClosing Handler** - Proper disposal of NotifyIcon and ConnectionMonitor
+
 ### Added - SnakeUSBIP Server (Windows) 🖥️
 - **New Component:** SnakeUSBIP Server - GUI wrapper for usbipd-win
   - Auto-installation of usbipd-win driver (bundled MSI)
