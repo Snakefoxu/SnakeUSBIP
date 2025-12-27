@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <!-- App Info -->
+    <AssemblyName>SnakeUSBIP</AssemblyName>
+    <RootNamespace>SnakeUSBIP</RootNamespace>
+    <Version>2.0.2</Version>
+    <Company>SnakeFoxu</Company>
+    <Product>SnakeUSBIP - USB/IP Manager</Product>
+    <Description>USB/IP client for Windows - Connect remote USB devices over network</Description>
+    <Copyright>© 2025 SnakeFoxu</Copyright>
+    
+    <!-- Build Options -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    
+    <!-- Icon -->
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    
+    <!-- Manifest for Admin Elevation -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**\*" />
+  </ItemGroup>
+  
+  <!-- Copy icon to output for TrayIcon -->
+  <ItemGroup>
+    <Content Include="Assets\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

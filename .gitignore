@@ -1,0 +1,32 @@
+# SnakeUSBIP-WPF .gitignore
+
+# Build outputs
+bin/
+obj/
+publish/
+release/
+Portable-X64/
+Portable-ARM64/
+
+# IDE
+.vs/
+*.user
+*.suo
+
+# Build scripts - KEEP THESE (critical for builds)
+# Build-Themes.ps1 - committed
+# Publish-Release.ps1 - committed
+
+# Binaries
+*.zip
+*.exe
+!CleanDrivers.ps1
+USBip-*.exe
+
+# Backups
+*.backup*
+backups/
+
+# Temp
+*.tmp
+*.log

@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnakeUSBIP - Tutorial Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Caption Bar - Bilingual Subtitles */
+        .caption-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%);
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 5000;
+            border-top: 2px solid #569cd6;
+        }
+
+        .caption-es {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .caption-en {
+            color: #9cdcfe;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .caption-step {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #007acc;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Red Click Arrow */
+        .click-arrow {
+            position: absolute;
+            z-index: 4000;
+            pointer-events: none;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .click-arrow.visible {
+            display: block;
+            animation: bounce 0.8s infinite;
+        }
+
+        .click-arrow svg {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translate(-50%, -100%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -100%) scale(1.1) translateY(-5px);
+            }
+        }
+
+        /* Click Ripple Effect */
+        .click-ripple {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #ff4444;
+            pointer-events: none;
+            z-index: 3999;
+            display: none;
+        }
+
+        .click-ripple.visible {
+            display: block;
+            animation: ripple 1s infinite;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            background: rgba(45, 45, 48, 0.95);
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .demo-btn.play {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .demo-btn.play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .demo-btn.pause {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .demo-btn.reset {
+            background: linear-gradient(135deg, #607D8B, #455A64);
+            color: white;
+        }
+
+        .step-indicator {
+            color: #9cdcfe;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: rgba(86, 156, 214, 0.2);
+            border-radius: 20px;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        /* App Window */
+        .app-container {
+            position: relative;
+            margin-bottom: 100px;
+        }
+
+        .app-window {
+            width: 520px;
+            background: #252526;
+            border-radius: 12px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .app-window.minimized {
+            transform: scale(0.3);
+            opacity: 0;
+        }
+
+        /* Title Bar */
+        .title-bar {
+            background: linear-gradient(180deg, #3c3c3c 0%, #2d2d30 100%);
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .title-bar h1 {
+            font-size: 17px;
+            color: #569cd6;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-bar h1 span {
+            color: #9cdcfe;
+            font-weight: normal;
+            font-size: 13px;
+        }
+
+        .title-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .title-btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            background: linear-gradient(180deg, #4e4e52 0%, #3e3e42 100%);
+            color: white;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .title-btn:hover {
+            background: linear-gradient(180deg, #5e5e62 0%, #4e4e52 100%);
+            transform: translateY(-1px);
+        }
+
+        .title-btn.active {
+            background: linear-gradient(135deg, #007acc, #005a9e);
+            box-shadow: 0 0 15px rgba(0, 122, 204, 0.4);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+            margin-left: 15px;
+        }
+
+        .window-btn {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .window-btn.minimize {
+            background: #ffbd44;
+        }
+
+        .window-btn.maximize {
+            background: #00ca4e;
+        }
+
+        .window-btn.close {
+            background: #ff605c;
+        }
+
+        .window-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* Server Panel */
+        .server-panel {
+            background: #252526;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #1e1e1e;
+        }
+
+        .server-panel label {
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .server-panel input {
+            background: linear-gradient(180deg, #333337 0%, #2a2a2e 100%);
+            border: 1px solid #444;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 150px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .scan-btn {
+            background: linear-gradient(135deg, #007acc, #005a9e);
+            color: white;
+        }
+
+        .scan-btn:hover {
+            box-shadow: 0 0 15px rgba(0, 122, 204, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .scan-btn.scanning {
+            animation: pulse 1s infinite;
+        }
+
+        .list-btn {
+            background: linear-gradient(180deg, #4e4e52 0%, #3e3e42 100%);
+            color: white;
+        }
+
+        .ssh-btn {
+            background: linear-gradient(180deg, #605070 0%, #505055 100%);
+            color: white;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(0, 122, 204, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(0, 122, 204, 0.8);
+            }
+        }
+
+        /* TreeView */
+        .treeview {
+            background: linear-gradient(180deg, #252526 0%, #1e1e1e 100%);
+            min-height: 280px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 12px 15px;
+            color: white;
+            font-size: 13px;
+        }
+
+        .tree-node {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 2px 0;
+        }
+
+        .tree-node:hover {
+            background: rgba(55, 55, 61, 0.8);
+        }
+
+        .tree-node.selected {
+            background: linear-gradient(90deg, #094771, #0a5a8a);
+        }
+
+        .tree-node.server {
+            color: #dcdcdc;
+            font-weight: 600;
+        }
+
+        .tree-node.device {
+            color: #ce9178;
+            padding-left: 35px;
+        }
+
+        .tree-node.connected {
+            color: #4ec9b0;
+            background: rgba(78, 201, 176, 0.1);
+        }
+
+        .tree-node.favorite {
+            color: #ffc864;
+            padding-left: 35px;
+        }
+
+        .tree-node.hub {
+            color: #9cdcfe;
+            font-weight: 600;
+        }
+
+        .tree-children {
+            margin-left: 12px;
+        }
+
+        /* Status Panel */
+        .status-panel {
+            background: linear-gradient(180deg, #2d2d30 0%, #252528 100%);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #1e1e1e;
+        }
+
+        .status-text {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .status-text.success {
+            color: #4ec9b0;
+        }
+
+        .status-text.scanning {
+            color: #569cd6;
+        }
+
+        .driver-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .driver-label {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .driver-label.installed {
+            color: #4ec9b0;
+            background: rgba(78, 201, 176, 0.15);
+        }
+
+        .driver-label.not-installed {
+            color: #f48771;
+            background: rgba(244, 135, 113, 0.15);
+        }
+
+        .driver-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .driver-install {
+            background: linear-gradient(135deg, #6b4ba3, #4b0082);
+            color: white;
+        }
+
+        .driver-uninstall {
+            background: linear-gradient(135deg, #8b4040, #644040);
+            color: white;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal {
+            background: #1e1e1e;
+            border-radius: 12px;
+            width: 480px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-header {
+            background: linear-gradient(180deg, #3c3c3c 0%, #2d2d30 100%);
+            padding: 18px 20px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header h2 {
+            color: #569cd6;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 20px;
+            color: #ccc;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .modal-body pre {
+            background: #252526;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+        }
+
+        .modal-footer {
+            background: #2d2d30;
+            padding: 15px 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .modal-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-input-group label {
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        .modal-input-group input {
+            background: #333337;
+            border: 1px solid #444;
+            color: white;
+            padding: 8px 10px;
+            border-radius: 6px;
+            width: 90px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .modal-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #007acc, #005a9e);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: #3e3e42;
+            color: white;
+        }
+
+        .modal-btn.success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        /* Driver Modal */
+        .progress-bar {
+            background: #333;
+            border-radius: 10px;
+            height: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .step-list {
+            margin: 15px 0;
+        }
+
+        .step-item {
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-item.pending {
+            color: #888;
+        }
+
+        .step-item.active {
+            color: #569cd6;
+            background: rgba(86, 156, 214, 0.15);
+        }
+
+        .step-item.done {
+            color: #4ec9b0;
+        }
+
+        /* Tray Area */
+        .tray-area {
+            position: fixed;
+            bottom: 120px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(45, 45, 48, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+
+        .tray-area.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tray-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #569cd6, #4ec9b0);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .tray-text {
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #2d2d30, #252526);
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px 25px;
+            color: white;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 3000;
+        }
+
+        .toast.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+
+        .toast h4 {
+            color: #569cd6;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .toast p {
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        /* Scanning indicator */
+        .scanning-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #569cd6;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Context Menu */
+        .context-menu {
+            position: absolute;
+            background: #2d2d30;
+            border: 1px solid #555;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+            min-width: 180px;
+        }
+
+        .context-menu.visible {
+            display: block;
+        }
+
+        .context-item {
+            padding: 10px 18px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .context-item:hover {
+            background: #094771;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Red Click Arrow -->
+    <div class="click-arrow" id="clickArrow">
+        <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L12 16M12 16L6 10M12 16L18 10" stroke="#ff4444" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <circle cx="12" cy="20" r="3" fill="#ff4444" />
+        </svg>
+    </div>
+
+    <!-- Click Ripple -->
+    <div class="click-ripple" id="clickRipple"></div>
+
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+        <button class="demo-btn play" id="playBtn">▶️ Iniciar Demo</button>
+        <button class="demo-btn pause" id="pauseBtn" style="display: none;">⏸️ Pausar</button>
+        <button class="demo-btn reset" id="resetBtn">🔄 Reiniciar</button>
+        <div class="step-indicator" id="stepIndicator">Paso 0 / 12</div>
+    </div>
+
+    <div class="app-container">
+        <div class="app-window" id="mainWindow">
+            <!-- Title Bar -->
+            <div class="title-bar">
+                <h1>🦊 SnakeFoxu <span>USB/IP Manager</span></h1>
+                <div class="title-buttons">
+                    <button class="title-btn" id="langBtn">🌐 ES</button>
+                    <button class="title-btn" id="updateBtn">⬆️ Actualizar</button>
+                    <div class="window-controls">
+                        <button class="window-btn minimize" id="minimizeBtn"></button>
+                        <button class="window-btn maximize"></button>
+                        <button class="window-btn close" id="closeBtn"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Panel -->
+            <div class="server-panel">
+                <label id="serverLabel">Servidor:</label>
+                <input type="text" id="serverIp" value="192.168.1.100">
+                <button class="action-btn scan-btn" id="scanBtn">🔍 Escanear</button>
+                <button class="action-btn list-btn" id="listBtn">🔄 Listar</button>
+                <button class="action-btn ssh-btn" id="sshBtn">🖥️ SSH</button>
+            </div>
+
+            <!-- TreeView -->
+            <div class="treeview" id="treeView">
+                <div class="tree-node hub" id="hubsNode">📡 USB Hubs (0)</div>
+                <div class="tree-children" id="hubsChildren"></div>
+                <div class="tree-node hub" style="margin-top: 8px;" id="connectedNode">✅ Dispositivos Conectados (0)
+                </div>
+                <div class="tree-children" id="connectedChildren"></div>
+                <div class="tree-node hub" style="margin-top: 8px;" id="favoritesNode">⭐ Favoritos (0)</div>
+                <div class="tree-children" id="favoritesChildren"></div>
+            </div>
+
+            <!-- Status Panel -->
+            <div class="status-panel">
+                <div>
+                    <span class="status-text" id="statusText">✓ Listo</span>
+                    <div class="driver-label not-installed" id="driverLabel" style="margin-top: 5px;">⚠️ Drivers: No
+                        instalados</div>
+                </div>
+                <div class="driver-section">
+                    <button class="driver-btn driver-install" id="installDriverBtn">📦 Instalar</button>
+                    <button class="driver-btn driver-uninstall" id="uninstallDriverBtn">🗑️ Desinstalar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="contextMenu">
+        <div class="context-item" id="menuConnect">🔌 Conectar</div>
+        <div class="context-item" id="menuDisconnect">❌ Desconectar</div>
+        <div class="context-item" id="menuFavorite">⭐ Añadir a Favoritos</div>
+    </div>
+
+    <!-- SSH Modal -->
+    <div class="modal-overlay" id="sshModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="sshModalTitle">📡 SSH - Configurar Servidor USB/IP</h2>
+            </div>
+            <div class="modal-body">
+                <h4>📋 Instrucciones para Linux/Raspberry Pi:</h4>
+                <pre>1. sudo apt install usbip hwdata usbutils
+2. sudo modprobe usbip_host
+3. sudo usbipd -D
+4. usbip list -l
+5. sudo usbip bind -b [BUS-ID]</pre>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-input-group">
+                    <label>Usuario:</label>
+                    <input type="text" id="sshUser" value="pi">
+                    <span style="color: white;">@</span>
+                    <input type="text" id="sshIp" value="192.168.1.100">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="modal-btn secondary" id="copyBtn">📋 Copiar</button>
+                    <button class="modal-btn primary" id="connectSshBtn">🔗 Conectar</button>
+                    <button class="modal-btn secondary" id="closeSshBtn">✖️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Modal -->
+    <div class="modal-overlay" id="driverModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="driverModalTitle">📦 Instalando Drivers USB/IP</h2>
+            </div>
+            <div class="modal-body">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="driverProgress"></div>
+                </div>
+                <div class="step-list" id="driverSteps">
+                    <div class="step-item pending" id="dStep1">⏳ Verificando sistema...</div>
+                    <div class="step-item pending" id="dStep2">⏳ Copiando archivos...</div>
+                    <div class="step-item pending" id="dStep3">⏳ Registrando drivers (pnputil)...</div>
+                    <div class="step-item pending" id="dStep4">⏳ Creando nodo de dispositivo...</div>
+                    <div class="step-item pending" id="dStep5">⏳ Finalizando...</div>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+                <button class="modal-btn success" id="driverDoneBtn" style="display: none;">✓ Completado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div class="modal-overlay" id="updateModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🔄 Actualización Disponible</h2>
+            </div>
+            <div class="modal-body">
+                <div style="background: rgba(86,156,214,0.15); padding: 15px; border-radius: 8px;">
+                    <div style="color: #888;">Versión actual: v1.5.0</div>
+                    <div style="color: #4ec9b0; font-size: 16px; font-weight: 600; margin-top: 5px;">Nueva versión:
+                        v1.6.0</div>
+                </div>
+                <p style="margin-top: 15px;"><strong>Novedades:</strong><br>• Iconos por tipo de dispositivo<br>•
+                    Ventana SSH mejorada<br>• Correcciones de estabilidad</p>
+            </div>
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button class="modal-btn secondary" id="updateLaterBtn">Más tarde</button>
+                <button class="modal-btn primary" id="updateNowBtn">⬇️ Descargar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <h4 id="toastTitle">🦊 SnakeUSBIP</h4>
+        <p id="toastMsg">Mensaje</p>
+    </div>
+
+    <!-- Tray Area -->
+    <div class="tray-area" id="trayArea">
+        <div class="tray-icon" id="trayIcon">🦊</div>
+        <span class="tray-text">Minimizado a bandeja</span>
+    </div>
+
+    <!-- Caption Bar -->
+    <div class="caption-bar" id="captionBar">
+        <div class="caption-step" id="captionStep">0/12</div>
+        <div class="caption-es" id="captionEs">Haz clic en "Iniciar Demo" para comenzar</div>
+        <div class="caption-en" id="captionEn">Click "Start Demo" to begin</div>
+    </div>
+
+    <script>
+        // === DEMO STEPS WITH CAPTIONS ===
+        const demoSteps = [
+            {
+                action: 'intro',
+                es: 'Bienvenido a SnakeUSBIP - Gestor USB/IP para Windows',
+                en: 'Welcome to SnakeUSBIP - USB/IP Manager for Windows',
+                arrow: null
+            },
+            {
+                action: 'installDrivers',
+                es: 'Paso 1: Instalando drivers USB/IP (pnputil + devnode)',
+                en: 'Step 1: Installing USB/IP drivers (pnputil + devnode)',
+                arrow: { target: 'installDriverBtn', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'showSSH',
+                es: 'Paso 2: Instrucciones SSH para configurar servidor Linux/Raspberry Pi',
+                en: 'Step 2: SSH instructions to configure Linux/Raspberry Pi server',
+                arrow: { target: 'sshBtn', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'scan',
+                es: 'Paso 3: Escaneando la red local para encontrar servidores USB/IP',
+                en: 'Step 3: Scanning local network to find USB/IP servers',
+                arrow: { target: 'scanBtn', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'showDevices',
+                es: 'Paso 4: Dispositivos USB remotos encontrados en 2 servidores',
+                en: 'Step 4: Remote USB devices found on 2 servers',
+                arrow: null
+            },
+            {
+                action: 'connectDevice',
+                es: 'Paso 5: Conectando dispositivo USB remoto a este PC',
+                en: 'Step 5: Connecting remote USB device to this PC',
+                arrow: { target: 'device0', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'addFavorite',
+                es: 'Paso 6: Añadiendo dispositivo a favoritos para reconexión automática',
+                en: 'Step 6: Adding device to favorites for auto-reconnection',
+                arrow: null
+            },
+            {
+                action: 'checkUpdate',
+                es: 'Paso 7: Verificando actualizaciones desde GitHub',
+                en: 'Step 7: Checking for updates from GitHub',
+                arrow: { target: 'updateBtn', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'switchLang',
+                es: 'Paso 8: Cambiando idioma a inglés / Switching to English',
+                en: 'Step 8: Switching language to English',
+                arrow: { target: 'langBtn', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'showEnglish',
+                es: 'Paso 9: Interfaz ahora en inglés / Interface now in English',
+                en: 'Step 9: Interface now in English',
+                arrow: null
+            },
+            {
+                action: 'minimize',
+                es: 'Paso 10: Minimizando a la bandeja del sistema',
+                en: 'Step 10: Minimizing to system tray',
+                arrow: { target: 'minimizeBtn', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'restore',
+                es: 'Paso 11: Restaurando desde la bandeja del sistema',
+                en: 'Step 11: Restoring from system tray',
+                arrow: { target: 'trayIcon', offsetX: 0, offsetY: -10 }
+            },
+            {
+                action: 'complete',
+                es: '✓ Demo completo - ¡Gracias por ver!',
+                en: '✓ Demo complete - Thanks for watching!',
+                arrow: null
+            }
+        ];
+
+        let currentStep = 0;
+        let demoRunning = false;
+        let demoPaused = false;
+        let driversInstalled = false;
+        let currentLang = 'es';
+
+        const devices = [
+            { busId: "1-1.4", desc: "Realtek USB Ethernet Adapter", icon: "🌐" },
+            { busId: "1-1.3", desc: "Logitech USB Receiver", icon: "🖱️" },
+            { busId: "1-1.2", desc: "SanDisk Cruzer Blade 32GB", icon: "💾" },
+            { busId: "1-1.1", desc: "Microsoft USB Keyboard", icon: "⌨️" }
+        ];
+
+        // === ARROW & CAPTION FUNCTIONS ===
+        function showArrow(targetId, offsetX = 0, offsetY = 0) {
+            const target = document.getElementById(targetId);
+            const arrow = document.getElementById('clickArrow');
+            const ripple = document.getElementById('clickRipple');
+
+            if (target && arrow) {
+                const rect = target.getBoundingClientRect();
+                const x = rect.left + rect.width / 2 + offsetX;
+                const y = rect.top + offsetY;
+
+                arrow.style.left = x + 'px';
+                arrow.style.top = y + 'px';
+                arrow.classList.add('visible');
+
+                ripple.style.left = x + 'px';
+                ripple.style.top = (rect.top + rect.height / 2) + 'px';
+                ripple.classList.add('visible');
+            }
+        }
+
+        function hideArrow() {
+            document.getElementById('clickArrow').classList.remove('visible');
+            document.getElementById('clickRipple').classList.remove('visible');
+        }
+
+        function updateCaption(step) {
+            const s = demoSteps[step];
+            document.getElementById('captionStep').textContent = `${step}/${demoSteps.length - 1}`;
+            document.getElementById('captionEs').textContent = s.es;
+            document.getElementById('captionEn').textContent = s.en;
+            document.getElementById('stepIndicator').textContent = `Paso ${step} / ${demoSteps.length - 1}`;
+
+            if (s.arrow) {
+                setTimeout(() => showArrow(s.arrow.target, s.arrow.offsetX, s.arrow.offsetY), 300);
+            } else {
+                hideArrow();
+            }
+        }
+
+        function showToast(title, msg) {
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMsg').textContent = msg;
+            document.getElementById('toast').classList.add('visible');
+            setTimeout(() => document.getElementById('toast').classList.remove('visible'), 2000);
+        }
+
+        async function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        // === DEMO ACTIONS ===
+        async function executeStep(step) {
+            if (demoPaused || !demoRunning) return;
+
+            updateCaption(step);
+            const s = demoSteps[step];
+
+            switch (s.action) {
+                case 'intro':
+                    await wait(3000);
+                    break;
+
+                case 'installDrivers':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('driverModal').classList.add('visible');
+                    const progress = document.getElementById('driverProgress');
+                    for (let i = 1; i <= 5; i++) {
+                        document.getElementById('dStep' + i).className = 'step-item active';
+                        progress.style.width = (i * 20) + '%';
+                        await wait(600);
+                        document.getElementById('dStep' + i).className = 'step-item done';
+                        document.getElementById('dStep' + i).textContent = '✓ ' + document.getElementById('dStep' + i).textContent.substring(2);
+                    }
+                    driversInstalled = true;
+                    document.getElementById('driverLabel').textContent = '✓ Drivers: Instalados';
+                    document.getElementById('driverLabel').className = 'driver-label installed';
+                    document.getElementById('driverDoneBtn').style.display = 'inline-block';
+                    await wait(1500);
+                    document.getElementById('driverModal').classList.remove('visible');
+                    break;
+
+                case 'scan':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('scanBtn').classList.add('scanning');
+                    document.getElementById('statusText').innerHTML = '<span class="scanning-indicator"></span>Escaneando...';
+                    await wait(2500);
+                    document.getElementById('scanBtn').classList.remove('scanning');
+                    document.getElementById('statusText').textContent = '✓ 2 servidores, 6 dispositivos';
+                    document.getElementById('statusText').className = 'status-text success';
+                    break;
+
+                case 'showDevices':
+                    document.getElementById('hubsChildren').innerHTML = `
+                        <div class="tree-node server">🖥️ 192.168.1.100 (4)</div>
+                        <div class="tree-children">
+                            ${devices.map((d, i) => `<div class="tree-node device" id="device${i}">${d.icon} ${d.busId}: ${d.desc}</div>`).join('')}
+                        </div>
+                        <div class="tree-node server" style="margin-top: 5px;">🖥️ 192.168.1.101 (2)</div>
+                        <div class="tree-children">
+                            <div class="tree-node device">📷 2-1.1: Logitech C920 Webcam</div>
+                            <div class="tree-node device">🎤 2-1.2: Blue Yeti Microphone</div>
+                        </div>
+                    `;
+                    document.getElementById('hubsNode').textContent = '📡 USB Hubs (2)';
+                    await wait(3000);
+                    break;
+
+                case 'connectDevice':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('device0').classList.add('selected');
+                    await wait(500);
+                    document.getElementById('connectedChildren').innerHTML = '<div class="tree-node connected">✅ 1-1.4: Realtek USB Ethernet (192.168.1.100)</div>';
+                    document.getElementById('connectedNode').textContent = '✅ Dispositivos Conectados (1)';
+                    showToast('🦊 SnakeUSBIP', 'Dispositivo conectado');
+                    document.getElementById('device0').classList.remove('selected');
+                    await wait(2000);
+                    break;
+
+                case 'addFavorite':
+                    document.getElementById('favoritesChildren').innerHTML = '<div class="tree-node favorite">⭐ 1-1.4: Realtek USB Ethernet<br><span style="color:#888;font-size:11px;margin-left:28px;">→ 192.168.1.100</span></div>';
+                    document.getElementById('favoritesNode').textContent = '⭐ Favoritos (1)';
+                    showToast('🦊 SnakeUSBIP', 'Añadido a favoritos');
+                    await wait(2500);
+                    break;
+
+                case 'showSSH':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('sshModal').classList.add('visible');
+                    await wait(4000);
+                    document.getElementById('sshModal').classList.remove('visible');
+                    break;
+
+                case 'checkUpdate':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('updateModal').classList.add('visible');
+                    await wait(3500);
+                    document.getElementById('updateModal').classList.remove('visible');
+                    break;
+
+                case 'switchLang':
+                    await wait(1500);
+                    hideArrow();
+                    currentLang = 'en';
+                    document.getElementById('langBtn').textContent = '🌐 EN';
+                    document.getElementById('langBtn').classList.add('active');
+                    document.getElementById('serverLabel').textContent = 'Server:';
+                    document.getElementById('scanBtn').textContent = '🔍 Scan';
+                    document.getElementById('listBtn').textContent = '🔄 List';
+                    document.getElementById('updateBtn').textContent = '⬆️ Update';
+                    document.getElementById('hubsNode').textContent = '📡 USB Hubs (2)';
+                    document.getElementById('connectedNode').textContent = '✅ Connected Devices (1)';
+                    document.getElementById('favoritesNode').textContent = '⭐ Favorites (1)';
+                    document.getElementById('statusText').textContent = '✓ Ready';
+                    document.getElementById('driverLabel').textContent = '✓ Drivers: Installed';
+                    document.getElementById('installDriverBtn').textContent = '📦 Install';
+                    document.getElementById('uninstallDriverBtn').textContent = '🗑️ Uninstall';
+                    await wait(500);
+                    document.getElementById('langBtn').classList.remove('active');
+                    await wait(2000);
+                    break;
+
+                case 'showEnglish':
+                    await wait(2500);
+                    break;
+
+                case 'minimize':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('mainWindow').classList.add('minimized');
+                    document.getElementById('trayArea').classList.add('visible');
+                    showToast('🦊 SnakeUSBIP', 'Minimized to tray');
+                    await wait(2500);
+                    break;
+
+                case 'restore':
+                    await wait(1500);
+                    hideArrow();
+                    document.getElementById('mainWindow').classList.remove('minimized');
+                    document.getElementById('trayArea').classList.remove('visible');
+                    await wait(2000);
+                    break;
+
+                case 'complete':
+                    demoRunning = false;
+                    document.getElementById('playBtn').style.display = 'inline-block';
+                    document.getElementById('pauseBtn').style.display = 'none';
+                    await wait(2000);
+                    break;
+            }
+
+            if (step < demoSteps.length - 1 && demoRunning && !demoPaused) {
+                currentStep = step + 1;
+                executeStep(currentStep);
+            }
+        }
+
+        // === CONTROLS ===
+        document.getElementById('playBtn').addEventListener('click', function () {
+            if (!demoRunning) {
+                demoRunning = true;
+                demoPaused = false;
+                this.style.display = 'none';
+                document.getElementById('pauseBtn').style.display = 'inline-block';
+                executeStep(currentStep);
+            }
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', function () {
+            demoPaused = !demoPaused;
+            this.textContent = demoPaused ? '▶️ Continuar' : '⏸️ Pausar';
+            if (!demoPaused) executeStep(currentStep);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function () {
+            demoRunning = false;
+            demoPaused = false;
+            currentStep = 0;
+            currentLang = 'es';
+            driversInstalled = false;
+            hideArrow();
+
+            // Reset UI
+            document.getElementById('hubsChildren').innerHTML = '';
+            document.getElementById('connectedChildren').innerHTML = '';
+            document.getElementById('favoritesChildren').innerHTML = '';
+            document.getElementById('hubsNode').textContent = '📡 USB Hubs (0)';
+            document.getElementById('connectedNode').textContent = '✅ Dispositivos Conectados (0)';
+            document.getElementById('favoritesNode').textContent = '⭐ Favoritos (0)';
+            document.getElementById('mainWindow').classList.remove('minimized');
+            document.getElementById('trayArea').classList.remove('visible');
+            document.getElementById('sshModal').classList.remove('visible');
+            document.getElementById('updateModal').classList.remove('visible');
+            document.getElementById('driverModal').classList.remove('visible');
+            document.getElementById('toast').classList.remove('visible');
+            document.getElementById('playBtn').style.display = 'inline-block';
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('langBtn').textContent = '🌐 ES';
+            document.getElementById('serverLabel').textContent = 'Servidor:';
+            document.getElementById('scanBtn').textContent = '🔍 Escanear';
+            document.getElementById('listBtn').textContent = '🔄 Listar';
+            document.getElementById('updateBtn').textContent = '⬆️ Actualizar';
+            document.getElementById('statusText').textContent = '✓ Listo';
+            document.getElementById('driverLabel').textContent = '⚠️ Drivers: No instalados';
+            document.getElementById('driverLabel').className = 'driver-label not-installed';
+            document.getElementById('installDriverBtn').textContent = '📦 Instalar';
+            document.getElementById('uninstallDriverBtn').textContent = '🗑️ Desinstalar';
+            document.getElementById('driverProgress').style.width = '0%';
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById('dStep' + i);
+                el.className = 'step-item pending';
+                el.textContent = ['⏳ Verificando sistema...', '⏳ Copiando archivos...', '⏳ Registrando drivers (pnputil)...', '⏳ Creando nodo de dispositivo...', '⏳ Finalizando...'][i - 1];
+            }
+            document.getElementById('driverDoneBtn').style.display = 'none';
+
+            updateCaption(0);
+        });
+
+        // Manual interactions
+        document.getElementById('closeSshBtn').addEventListener('click', () => document.getElementById('sshModal').classList.remove('visible'));
+        document.getElementById('updateLaterBtn').addEventListener('click', () => document.getElementById('updateModal').classList.remove('visible'));
+        document.getElementById('driverDoneBtn').addEventListener('click', () => document.getElementById('driverModal').classList.remove('visible'));
+        document.getElementById('trayIcon').addEventListener('click', () => {
+            document.getElementById('mainWindow').classList.remove('minimized');
+            document.getElementById('trayArea').classList.remove('visible');
+        });
+
+        // Initialize
+        updateCaption(0);
+    </script>
+</body>
+
+</html>
