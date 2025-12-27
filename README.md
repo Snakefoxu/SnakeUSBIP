@@ -14,11 +14,11 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 
 ## 🎬 Video Tutorial
 
-<a href="https://www.youtube.com/watch?v=mETEs9INlq4">
+<a href="https://youtu.be/tICyZ-5VeWc">
   <img src="docs/demo.gif" width="50%" alt="Video Tutorial">
 </a>
 
-▶️ **[Watch full tutorial on YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)** (Spanish audio, visual guide)
+▶️ **[Watch full tutorial on YouTube](https://youtu.be/tICyZ-5VeWc)** (Spanish audio, visual guide)
 
 ## 🆕 What's New in v2.0.2
 
