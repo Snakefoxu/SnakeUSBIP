@@ -5,23 +5,15 @@ bin/
 obj/
 publish/
 release/
-Portable-X64/
-Portable-ARM64/
 
 # IDE
 .vs/
 *.user
 *.suo
 
-# Build scripts - KEEP THESE (critical for builds)
-# Build-Themes.ps1 - committed
-# Publish-Release.ps1 - committed
-
-# Binaries
-*.zip
-*.exe
+# Protected source files - DO NOT COMMIT
+*.ps1
 !CleanDrivers.ps1
-USBip-*.exe
 
 # Backups
 *.backup*
@@ -30,3 +22,15 @@ backups/
 # Temp
 *.tmp
 *.log
+
+# Portable releases (pre-compiled, distribuidas por GitHub Releases)
+Portable-*/
+
+# Third-party binaries (no subir ejecutables de terceros)
+USBip-*.exe
+usbip.exe
+usbipd.exe
+
+# Build tools and extractors
+*_extractor.zip
+inno*.zip
