@@ -34,3 +34,11 @@ usbipd.exe
 # Build tools and extractors
 *_extractor.zip
 inno*.zip
+
+# Internal documentation and development files
+_reference/
+docs/TAREAS_PENDIENTES.md
+docs/PROJECT_STATUS.md
+docs/create_tutorial_gif.py
+docs/tutorial-demo.html
+docs/USAGE
