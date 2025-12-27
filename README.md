@@ -15,27 +15,20 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 ## 🎬 Video Tutorial
 
 <a href="https://www.youtube.com/watch?v=mETEs9INlq4">
-  <img src="youtube_thumbnail.png" width="50%" alt="Video Tutorial">
+  <img src="docs/demo.gif" width="50%" alt="Video Tutorial">
 </a>
 
 ▶️ **[Watch full tutorial on YouTube](https://www.youtube.com/watch?v=mETEs9INlq4)** (Spanish audio, visual guide)
 
-## � Demo
+## 🆕 What's New in v2.0.2
 
-![SnakeUSBIP Demo](docs/demo.gif)
-
-## �🆕 What's New in v2.0.3
-
-- 🔒 **Single Instance** - Only one app instance can run at a time
-- 🌐 **Full Localization** - Activity Log now translates with language switch
-- 🧹 **Tray Cleanup** - Fixed ghost tray icon on app close
-- 🎨 **Icon Fix** - Application icon now displays correctly in explorer
-- 🏗️ **Complete Rewrite** - Migrated from PowerShell to .NET 9 (C# / WPF)
+- ️ **Complete Rewrite** - Migrated from PowerShell to .NET 9 (C# / WPF)
 - 🔔 **Hybrid Notifications** - Custom non-intrusive popups (Window) + BalloonTips (Tray)
 - 💾 **Device Persistence** - Remembers connected devices after restart
 - ⚡ **Ultra-Fast** - Native GUI with instant response times
 - ✏️ **Rename Devices** - Assign custom names to USB devices (saved permanently)
 - 📚 **Updated Database** - December 2025 `usb.ids` (+17,000 new devices)
+- 🐛 **Bug Fixes** - Fixed Auto-Update, Hardware ID conflicts, connection monitor logic
 
 ## ✨ Features
 
