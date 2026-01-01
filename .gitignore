@@ -1,41 +1,79 @@
-# SnakeUSBIP-WPF .gitignore
+# ========================================
+# .gitignore - SnakeUSBIP-WPF
+# Synced with Global SnakeFoxu Rules
+# ========================================
 
-# Build outputs
-bin/
-obj/
+# ============ RUTAS LOCALES / NUGET ============
+**/obj/**/*.json
+**/obj/**/*.dgspec.json
+**/obj/**/*.assets.json
+**/obj/**/project.assets.json
+*.nuget.dgspec.json
+*.sourcelink.json
+
+# ============ BUILD ARTIFACTS ============
+**/bin/
+**/obj/
+**/out/
 publish/
 release/
+*.exe
+*.dll
+*.pdb
+*.cache
 
-# IDE
-.vs/
-*.user
+# ============ LOGS ============
+*.log
+logs/
+
+# ============ OS FILES ============
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ============ IDE ============
+.vscode/
+.idea/
 *.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
 
+# ============ INTERNAL ============
+.agent/
+.gemini/
+backups/
+*_backup*
+
+# ============ SECURITY ============
 # Protected source files - DO NOT COMMIT
 *.ps1
 !CleanDrivers.ps1
+Publish-Release.ps1
+**/RESTORE_EMERGENCY.ps1
+**/CREATE_BACKUP.ps1
 
-# Backups
-*.backup*
-backups/
-
-# Temp
+# ============ TEMP ============
 *.tmp
-*.log
+*.temp
+~$*
 
-# Portable releases (pre-compiled, distribuidas por GitHub Releases)
+# ============ PROJECT SPECIFIC ============
+# Portable releases (distributed via GitHub Releases)
 Portable-*/
 
-# Third-party binaries (no subir ejecutables de terceros)
+# Third-party binaries
 USBip-*.exe
 usbip.exe
 usbipd.exe
 
-# Build tools and extractors
+# Build tools
 *_extractor.zip
 inno*.zip
 
-# Internal documentation and development files
+# Internal docs
 _reference/
 docs/TAREAS_PENDIENTES.md
 docs/PROJECT_STATUS.md
