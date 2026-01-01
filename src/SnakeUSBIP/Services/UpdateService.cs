@@ -102,6 +102,28 @@ public class UpdateService
     {
         try
         {
+            // === SECURITY VALIDATION ===
+            // Only allow downloads from official GitHub releases
+            if (string.IsNullOrEmpty(downloadUrl) || string.IsNullOrEmpty(installerName))
+                return new OperationResult { Success = false, Error = "Invalid download parameters" };
+            
+            // Validate URL is from trusted GitHub domain
+            if (!Uri.TryCreate(downloadUrl, UriKind.Absolute, out var uri))
+                return new OperationResult { Success = false, Error = "Invalid download URL format" };
+            
+            var allowedHosts = new[] { "github.com", "objects.githubusercontent.com", "github-releases.githubusercontent.com" };
+            if (!allowedHosts.Any(h => uri.Host.EndsWith(h, StringComparison.OrdinalIgnoreCase)))
+                return new OperationResult { Success = false, Error = $"Untrusted download host: {uri.Host}" };
+            
+            // Validate installer name (prevent path traversal)
+            if (installerName.Contains("..") || installerName.Contains("/") || installerName.Contains("\\"))
+                return new OperationResult { Success = false, Error = "Invalid installer name" };
+            
+            // Validate extension
+            if (!installerName.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                return new OperationResult { Success = false, Error = "Installer must be an .exe file" };
+            // === END SECURITY VALIDATION ===
+            
             using var client = new HttpClient();
             var tempDir = Path.GetTempPath();
             var installerPath = Path.Combine(tempDir, installerName);
@@ -133,6 +155,7 @@ public class UpdateService
             return new OperationResult { Success = false, Error = ex.Message };
         }
     }
+
 }
 
 public class UpdateInfo
