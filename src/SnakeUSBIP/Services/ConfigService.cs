@@ -13,10 +13,38 @@ public class ConfigService
     
     public ConfigService()
     {
-        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var appDir = Path.Combine(appData, "SnakeUSBIP");
-        Directory.CreateDirectory(appDir);
-        _configPath = Path.Combine(appDir, "config.json");
+        try 
+        {
+            var appBaseDir = AppDomain.CurrentDomain.BaseDirectory;
+            var portableMarker = Path.Combine(appBaseDir, ".portable");
+            
+            // Check if running in strict Portable Mode (marker file exists)
+            if (File.Exists(portableMarker))
+            {
+                _configPath = Path.Combine(appBaseDir, "config.json");
+            }
+            else
+            {
+                // Standard Installed Mode uses AppData
+                var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var configDir = Path.Combine(appData, "SnakeUSBIP");
+                
+                if (!Directory.Exists(configDir))
+                {
+                    Directory.CreateDirectory(configDir);
+                }
+                
+                _configPath = Path.Combine(configDir, "config.json");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Fail-safe logic: attempt AppData if something critical fails, 
+            // or if we catch an exception, try to use a default safe path.
+            System.Diagnostics.Debug.WriteLine($"[ConfigService] Path init error: {ex.Message}");
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            _configPath = Path.Combine(appData, "SnakeUSBIP", "config.json");
+        }
     }
     
     public AppConfig Load()

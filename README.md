@@ -2,7 +2,7 @@
 
 🌐 **Language / Idioma:** **English** | [Español](README_ES.md)
 
-**v2.0.3** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [🌐 VPN Connection](docs/VPN_INTERNET_EN.md) | [🖥️ Windows Server](https://github.com/SnakeFoxu/SnakeUSBIP-Server)
+**v2.0.4** | [Download Latest](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest) | [📖 User Manual](docs/USAGE_EN.md) | [🌐 VPN Connection](docs/VPN_INTERNET_EN.md) | [🖥️ Windows Server](https://github.com/SnakeFoxu/SnakeUSBIP-Server)
 
 **Share and connect USB devices over network (LAN/WiFi/Internet) easily.**
 Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and 11. Compatible with **Raspberry Pi, Orange Pi, Banana Pi, OpenWRT routers, CrealityBox** and any ARM/x86 board running Linux.
@@ -20,15 +20,17 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 
 ▶️ **[Watch full tutorial on YouTube](https://youtu.be/tICyZ-5VeWc)** (Spanish audio, visual guide)
 
-## 🆕 What's New in v2.0.2
+## 🆕 What's New in v2.0.4
 
+- 📦 **Hybrid Portable Mode** - ZIP releases store config locally, installer uses AppData
+- 📚 **Updated USB Database** - February 2026 `usb.ids` with latest devices
+- 🔧 **Improved Installer** - Option to install USB/IP drivers during setup
+- © **Updated Copyright** - 2025-2026
+
+### Previous: v2.0.2
 - ️ **Complete Rewrite** - Migrated from PowerShell to .NET 9 (C# / WPF)
-- 🔔 **Hybrid Notifications** - Custom non-intrusive popups (Window) + BalloonTips (Tray)
-- 💾 **Device Persistence** - Remembers connected devices after restart
-- ⚡ **Ultra-Fast** - Native GUI with instant response times
-- ✏️ **Rename Devices** - Assign custom names to USB devices (saved permanently)
-- 📚 **Updated Database** - December 2025 `usb.ids` (+17,000 new devices)
-- 🐛 **Bug Fixes** - Fixed Auto-Update, Hardware ID conflicts, connection monitor logic
+- 🔔 **Hybrid Notifications** - Custom popups + BalloonTips
+- 💾 **Device Persistence** - Remembers connected devices
 
 ## ✨ Features
 
@@ -47,14 +49,14 @@ Transform any Linux device into a Virtual USB Hub accessible from Windows 10 and
 
 ### Option 1: Portable 
 1. Download from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest):
-   - **Windows x64**: `SnakeUSBIP-v2.0.0-x64.zip`
-   - **Windows ARM64**: `SnakeUSBIP-v2.0.0-arm64.zip` (Surface Pro X, etc.)
+   - **Windows x64**: `SnakeUSBIP-v2.0.4-x64.zip`
+   - **Windows ARM64**: `SnakeUSBIP-v2.0.4-arm64.zip` (Surface Pro X, etc.)
 2. Extract the ZIP to any folder
 3. Run `SnakeUSBIP.exe` as Administrator
 4. Done!
 
 ### Option 2: Installer (x64 only) (Recommended)
-1. Download `SnakeUSBIP_Setup_v2.0.0.exe` from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
+1. Download `SnakeUSBIP_Setup_v2.0.4.exe` from [Releases](https://github.com/Snakefoxu/SnakeUSBIP/releases/latest)
 2. Run the installer as Administrator
 3. Follow the installation wizard
 
