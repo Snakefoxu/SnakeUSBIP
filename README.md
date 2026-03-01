@@ -161,7 +161,26 @@ SnakeUSBIP/
 - Administrator privileges
 - Local network with USB/IP server
 
-## 📄 License
+## �️ Roadmap
+
+Planned features for future releases:
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🔄 **Smart Reconnect** | Auto-reconnect with exponential backoff when connection drops | Planned |
+| 📋 **Connection Profiles** | Save complete configs (server + device + VPN) as named profiles | Planned |
+| 🔔 **Enhanced Tray** | Quick connect/disconnect from system tray with status indicators | Planned |
+| 🩺 **Network Diagnostics** | Built-in connection tester (ping, latency, port check on TCP 3240) | Planned |
+| 📊 **Device Dashboard** | Device type icons, real-time bandwidth and latency monitoring | Planned |
+| 🧙 **Setup Wizard** | First-run guide: install drivers → scan → connect first device | Planned |
+| 🌐 **Tailscale/ZeroTier API** | Auto-detect VPN peers with active USB/IP servers | Planned |
+| 🌍 **More Languages** | German, French, Portuguese (community contributions welcome!) | Planned |
+| 📱 **Android Companion** | Monitor USB/IP connections from your phone | Exploring |
+| 🔌 **OctoPrint/Klipper Plugin** | Auto-configure USB/IP on Raspberry Pi with mDNS discovery | Exploring |
+
+> 💡 **Have a feature idea?** Open an [Issue](https://github.com/Snakefoxu/SnakeUSBIP/issues) or start a [Discussion](https://github.com/Snakefoxu/SnakeUSBIP/discussions)!
+
+## �📄 License
 
 GPL v3 (GNU General Public License) - See [LICENSE](LICENSE)
 

@@ -159,6 +159,25 @@ SnakeUSBIP/
 - Permisos de Administrador
 - Red local con servidor USB/IP
 
+## 🗺️ Roadmap
+
+Funcionalidades planificadas para futuras versiones:
+
+| Funcionalidad | Descripción | Estado |
+|---------------|-------------|--------|
+| 🔄 **Reconexión Inteligente** | Reconexión automática con backoff exponencial ante caídas | Planificado |
+| 📋 **Perfiles de Conexión** | Guardar configs completas (servidor + dispositivo + VPN) como perfiles | Planificado |
+| 🔔 **Bandeja Mejorada** | Conectar/desconectar rápido desde la bandeja con indicadores de estado | Planificado |
+| 🩺 **Diagnóstico de Red** | Test de conexión integrado (ping, latencia, verificación puerto TCP 3240) | Planificado |
+| 📊 **Dashboard de Dispositivos** | Iconos por tipo, monitoreo de ancho de banda y latencia en tiempo real | Planificado |
+| 🧙 **Asistente de Inicio** | Guía de primera ejecución: instalar drivers → escanear → conectar | Planificado |
+| 🌐 **API Tailscale/ZeroTier** | Detectar automáticamente peers VPN con servidores USB/IP activos | Planificado |
+| 🌍 **Más Idiomas** | Alemán, francés, portugués (¡contribuciones de la comunidad bienvenidas!) | Planificado |
+| 📱 **App Android** | Monitorear conexiones USB/IP desde el móvil | En estudio |
+| 🔌 **Plugin OctoPrint/Klipper** | Auto-configurar USB/IP en Raspberry Pi con descubrimiento mDNS | En estudio |
+
+> 💡 **¿Tienes una idea?** Abre un [Issue](https://github.com/Snakefoxu/SnakeUSBIP/issues) o inicia una [Discusión](https://github.com/Snakefoxu/SnakeUSBIP/discussions)!
+
 ## 📄 Licencia
 
 GPL v3 (GNU General Public License) - Ver [LICENSE](LICENSE)
