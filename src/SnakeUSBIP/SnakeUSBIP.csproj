@@ -1,45 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<!--
+    SnakeUSBIP - (c) 2025-2026 SnakeFoxu
+    Source code not included in public distribution.
+    Download compiled binaries from: https://github.com/Snakefoxu/SnakeUSBIP/releases
+    License: GPL-3.0
+-->
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-    
-    <!-- App Info -->
     <AssemblyName>SnakeUSBIP</AssemblyName>
-    <RootNamespace>SnakeUSBIP</RootNamespace>
     <Version>2.0.4</Version>
-    <Company>SnakeFoxu</Company>
-    <Product>SnakeUSBIP - USB/IP Manager</Product>
-    <Description>USB/IP client for Windows - Connect remote USB devices over network</Description>
-    <Copyright>© 2025-2026 SnakeFoxu</Copyright>
-    
-    <!-- Build Options -->
-    <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    
-    <!-- Icon -->
-    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    
-    <!-- Manifest for Admin Elevation -->
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Authors>SnakeFoxu</Authors>
+    <Copyright>(c) 2025-2026 SnakeFoxu</Copyright>
+    <Description>USB/IP Client for Windows</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Resource Include="Assets\**\*" />
-  </ItemGroup>
-  
-  <!-- Copy icon to output for TrayIcon -->
-  <ItemGroup>
-    <Content Include="Assets\icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

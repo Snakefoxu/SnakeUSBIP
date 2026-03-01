@@ -80,3 +80,9 @@ docs/PROJECT_STATUS.md
 docs/create_tutorial_gif.py
 docs/tutorial-demo.html
 docs/USAGE
+
+# ============ SOURCE PROTECTION ============
+*.sln
+_reference/
+*.backup*
+*_Source_*.zip

@@ -1,10 +1,14 @@
-using System.Windows;
+﻿// SnakeUSBIP - (c) 2025-2026 SnakeFoxu
+// Source code not included in public distribution.
+// Download compiled binaries from: https://github.com/Snakefoxu/SnakeUSBIP/releases
+// License: GPL-3.0
 
-[assembly:ThemeInfo(
-    ResourceDictionaryLocation.None,            //where theme specific resource dictionaries are located
-                                                //(used if a resource is not found in the page,
-                                                // or application resource dictionaries)
-    ResourceDictionaryLocation.SourceAssembly   //where the generic resource dictionary is located
-                                                //(used if a resource is not found in the page,
-                                                // app, or any theme specific resource dictionaries)
-)]
+using System.Reflection;
+
+[assembly: AssemblyTitle("SnakeUSBIP")]
+[assembly: AssemblyDescription("USB/IP Client for Windows")]
+[assembly: AssemblyCompany("SnakeFoxu")]
+[assembly: AssemblyProduct("SnakeUSBIP")]
+[assembly: AssemblyCopyright("(c) 2025-2026 SnakeFoxu")]
+[assembly: AssemblyVersion("2.0.4.0")]
+[assembly: AssemblyFileVersion("2.0.4.0")]
